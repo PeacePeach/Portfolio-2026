@@ -30,7 +30,7 @@ export default async function CaseStudyPage({ params }: PageProps<"/work/[slug]"
     <>
       <Header />
       <main id="main" className="container-page pt-[calc(var(--spacing-header)+4rem)]">
-        <Link href="/#explore" className="type-label-s text-ink-muted hover:text-ink">
+        <Link href="/#explore" className="hover-underline type-label-s text-ink-muted hover:text-ink">
           ← All work
         </Link>
         <h1 className="mt-10 type-display-m uppercase">{project.title}</h1>
@@ -41,7 +41,7 @@ export default async function CaseStudyPage({ params }: PageProps<"/work/[slug]"
           <ol className="flex flex-wrap gap-x-8 gap-y-3">
             {project.sections.map((s, i) => (
               <li key={s.id}>
-                <a href={`#${s.id}`} className="type-label-s text-ink-muted hover:text-ink">
+                <a href={`#${s.id}`} className="hover-underline type-label-s text-ink-muted hover:text-ink">
                   {String(i + 1).padStart(2, "0")} {s.title}
                 </a>
               </li>

@@ -121,6 +121,20 @@
   --duration-base: 320ms;
   --duration-slow: 700ms;
   --duration-image: 1200ms;
+  --duration-underline: 400ms;      /* = optionHover in motion.ts */
+
+  /* ---- Hover underline (one style for every link) --------------------- */
+  --underline-thickness: 3px;
+  --underline-offset: 0.25rem;      /* single-line links; tiles set their own gap */
+}
+
+:root {
+  /* Blue gradient line, fading to 20 % on the right (Figma 2:134). */
+  --underline-gradient: linear-gradient(
+    to right,
+    var(--color-highlight),
+    color-mix(in srgb, var(--color-highlight) 20%, transparent)
+  );
 }
 
 /* ---- Responsive token values ----------------------------------------- */
@@ -298,6 +312,34 @@
   font-weight: var(--text-brand--font-weight);
   letter-spacing: var(--text-brand--letter-spacing);
   font-variation-settings: var(--font-display--font-variation-settings);
+}
+
+/* Hover underline: draws in left to right on hover or keyboard focus,
+   retracts to the right on leave. Put it on the link, or on a child of a
+   .group link. Tiles that need a bigger gap draw the same line in flow
+   (see KnowMe) with the --underline-* tokens. */
+@utility hover-underline {
+  position: relative;
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: calc(100% + var(--underline-offset));
+    height: var(--underline-thickness);
+    border-radius: 9999px;
+    background-image: var(--underline-gradient);
+    transform: scaleX(0);
+    transform-origin: right center;
+    transition: transform var(--duration-underline) var(--ease-out-expo);
+    pointer-events: none;
+  }
+  &:hover::after,
+  &:focus-visible::after,
+  :where(.group:hover, .group:focus-visible) &::after {
+    transform: scaleX(1);
+    transform-origin: left center;
+  }
 }
 
 /* Subtle film grain used by image placeholders. */

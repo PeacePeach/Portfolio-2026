@@ -71,10 +71,10 @@ function EvidenceEntry({ evidence: e }: { evidence: EvidenceItem }) {
         <p className="mt-3 max-w-[56ch] text-ink-muted">{e.body}</p>
         <Link
           href={e.href}
-          className="type-label-s mt-5 inline-flex items-center gap-2 text-ink"
+          className="group type-label-s mt-5 inline-flex items-center gap-2 text-ink"
           aria-label={`Read “${e.title}” in the ${e.project.title} case study`}
         >
-          <span className="relative after:absolute after:-bottom-1 after:left-0 after:h-px after:w-full after:origin-left after:bg-current after:transition-transform after:duration-(--duration-base) after:ease-out-expo hover:after:scale-x-0">
+          <span className="hover-underline">
             Read in case study
           </span>
           <ArrowUpRight className="size-3.5" />

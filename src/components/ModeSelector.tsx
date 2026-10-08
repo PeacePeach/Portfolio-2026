@@ -59,7 +59,7 @@ export function ModeSelector<T extends string>({
               {selected ? (
                 <motion.span
                   layoutId={`${idPrefix}-underline`}
-                  className="absolute inset-x-0 bottom-0 h-px bg-ink"
+                  className="absolute inset-x-0 bottom-0 h-(--underline-thickness) rounded-full [background-image:var(--underline-gradient)]"
                   transition={{ duration: duration.slow, ease: ease.outExpo }}
                 />
               ) : null}

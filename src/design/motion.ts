@@ -63,7 +63,7 @@ export const intro = {
 export const introWithoutLoader = 0.1;
 
 /** Hover on the Know me by options: hint opens, underline draws, rows below move. */
-export const optionHover = { duration: 0.4, ease: ease.outExpo } as const;
+export const optionHover = { duration: 0.4, ease: ease.outExpo } as const; // = --duration-underline
 
 /** Content swaps inside the Explore section (mode + capability changes). */
 export const swap: { enter: Transition; exit: Transition; stagger: number; offset: number } = {

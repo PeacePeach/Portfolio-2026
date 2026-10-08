@@ -17,13 +17,13 @@ export function Footer() {
         </a>
       </div>
       <div className="grid-page mt-20 gap-y-4 md:mt-32">
-        <a href={`mailto:${site.email}`} className="type-label-s col-span-4 md:col-span-3 text-ink hover:text-ink-muted">
+        <a href={`mailto:${site.email}`} className="hover-underline type-label-s col-span-4 justify-self-start md:col-span-3 text-ink">
           {site.email}
         </a>
-        <ul className="col-span-4 flex gap-6 md:col-span-4 md:col-start-6">
+        <ul className="type-label-s col-span-4 flex gap-6 md:col-span-4 md:col-start-6">
           {site.footer.links.map((l) => (
             <li key={l.label}>
-              <a href={l.href} className="type-label-s text-ink hover:text-ink-muted">
+              <a href={l.href} className="hover-underline type-label-s text-ink">
                 {l.label}
               </a>
             </li>

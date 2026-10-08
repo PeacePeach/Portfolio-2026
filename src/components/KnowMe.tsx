@@ -88,11 +88,12 @@ export function KnowMe({ className = "" }: { className?: string }) {
                       </span>
                       <motion.span
                         aria-hidden="true"
-                        initial={{ scaleX: 0 }}
-                        animate={{ scaleX: 1 }}
-                        exit={{ scaleX: 0 }}
+                        // Same line as .hover-underline: in from the left, out to the right.
+                        initial={{ scaleX: 0, originX: 0 }}
+                        animate={{ scaleX: 1, originX: 0 }}
+                        exit={{ scaleX: 0, originX: 1 }}
                         transition={t}
-                        className="block h-[3px] origin-left bg-linear-to-r from-highlight to-highlight/20"
+                        className="block h-(--underline-thickness) rounded-full [background-image:var(--underline-gradient)]"
                       />
                     </motion.span>
                   )}
