@@ -10,7 +10,7 @@ export function Header() {
     <header className="fixed inset-x-0 top-0 z-40 mix-blend-difference">
       <div className="container-page grid h-header grid-cols-[1fr_auto] items-center gap-6 md:grid-cols-[1fr_auto_1fr]">
         <Link href="/" className="font-display text-brand font-normal uppercase text-ink">
-          {site.name}.
+          {site.shortName}
         </Link>
         <nav aria-label="Primary" className="hidden md:block">
           <ul className="flex gap-12">

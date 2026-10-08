@@ -2,16 +2,18 @@
  * Site-wide copy. Everything here is placeholder and safe to edit.
  */
 export const site = {
-  name: "Han",
+  name: "Han Xu",
+  /** Header wordmark, e.g. first name + last initial. */
+  shortName: "Han X.",
   role: "Product Design Leadership",
-  title: "Han — Product Design Leadership",
+  title: "Han Xu — Product Design Leadership",
   description: "Making complex products and systems understandable, useful, and meaningful.",
   email: "hello@example.com",
 
   /** Opening loader. The name collapses to its initials and final period. */
   loader: {
     enabled: true,
-    name: "Han.",
+    name: "Han Xu.",
   },
 
   nav: [{ label: "Work", href: "/#explore" }],
