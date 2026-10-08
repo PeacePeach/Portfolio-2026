@@ -65,22 +65,22 @@
   --text-heading-s--line-height: 1.2;
   --text-heading-s--font-weight: 600;
 
-  /* Body: Geist Light */
+  /* Body: Geist Regular */
   --text-body-l: 1.25rem;                                   /* 20 / 150% */
   --text-body-l--line-height: 1.5;
-  --text-body-l--font-weight: 300;
+  --text-body-l--font-weight: 400;
   --text-body-m: 1rem;                                      /* 16 / 150%  (Body_M_1.5) */
   --text-body-m--line-height: 1.5;
-  --text-body-m--font-weight: 300;
+  --text-body-m--font-weight: 400;
   --text-body-m-tight: 1rem;                                /* 16 / 120%  (Body_M_1.2) */
   --text-body-m-tight--line-height: 1.2;
-  --text-body-m-tight--font-weight: 300;
+  --text-body-m-tight--font-weight: 400;
   --text-body-s: 0.875rem;                                  /* 14 / 150% */
   --text-body-s--line-height: 1.5;
-  --text-body-s--font-weight: 300;
+  --text-body-s--font-weight: 400;
   --text-body-xs: 0.75rem;                                  /* 12 / 120% */
   --text-body-xs--line-height: 1.2;
-  --text-body-xs--font-weight: 300;
+  --text-body-xs--font-weight: 400;
 
   /* Label: Geist SemiBold, 120%, uppercase */
   --text-label-l: 1rem;                                     /* 16 */
