@@ -26,7 +26,7 @@ export const pageSlide = { duration: 0.9 } as const;
 
 /** Work page: when its two columns reveal, with and without the page slide. */
 export const workIntro = {
-  afterSlide: { nav: 0.7, content: 1.2 },
+  afterSlide: { nav: 0.7, content: 1.6 },
   direct: { nav: 0.15, content: 0.65 },
   /** Filter list opening and closing under a category. */
   filters: { duration: 0.5, ease: ease.outExpo },

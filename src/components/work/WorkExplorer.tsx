@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { Check, Grid, MessageCircle, Radio } from "react-feather";
 import type { Project } from "@/content/types";
@@ -16,7 +16,7 @@ import {
   type WorkView,
 } from "@/content/work";
 import { workIntro } from "@/design/motion";
-import { consumePageSlide } from "@/lib/pageTransition";
+import { cameBySlide } from "@/lib/pageTransition";
 import { Reveal } from "../ui/Reveal";
 import { ProjectCard } from "./ProjectCard";
 
@@ -26,7 +26,11 @@ const iconProps = { size: 18, strokeWidth: 1.33, "aria-hidden": true } as const;
 
 export function WorkExplorerFromUrl({ projects }: { projects: Project[] }) {
   const param = useSearchParams().get("view");
-  return <WorkExplorer view={isWorkView(param) ? param : defaultWorkView} projects={projects} />;
+  const view = isWorkView(param) ? param : defaultWorkView;
+  // The router keeps visited pages alive (Activity). Arriving from a link must
+  // start fresh: the chosen view, no filters, and the entrance replayed.
+  const { bfcacheId } = useRouter();
+  return <WorkExplorer key={`${bfcacheId}-${view}`} view={view} projects={projects} />;
 }
 
 /**
@@ -34,11 +38,23 @@ export function WorkExplorerFromUrl({ projects }: { projects: Project[] }) {
  * to bottom, then the content for the chosen view does the same. Only the
  * selected category shows its filters.
  */
-export function WorkExplorer({ view: initialView, projects }: { view: WorkView; projects: Project[] }) {
+export function WorkExplorer({
+  view: initialView,
+  projects,
+  idle = false,
+}: {
+  view: WorkView;
+  projects: Project[];
+  /** Static shell shown while the URL is read: held hidden so the wrong view never flashes. */
+  idle?: boolean;
+}) {
   const [view, setView] = useState(initialView);
   const [caseFilters, setCaseFilters] = useState<string[]>([]); // empty = All
-  const [powerFilters, setPowerFilters] = useState<string[]>([]); // empty = no filter
-  const [timing] = useState(() => (consumePageSlide() ? workIntro.afterSlide : workIntro.direct));
+  // Arriving on Super powers starts on its first power so the grid has a focus.
+  const [powerFilters, setPowerFilters] = useState<string[]>(() =>
+    initialView === "super-powers" ? [superPowerFilters[0].id] : [],
+  ); // empty = no filter
+  const [timing] = useState(() => (cameBySlide() ? workIntro.afterSlide : workIntro.direct));
   const [switched, setSwitched] = useState(false);
 
   const choose = (v: WorkView) => {
@@ -57,7 +73,7 @@ export function WorkExplorer({ view: initialView, projects }: { view: WorkView; 
 
   return (
     <div className="container-page grid gap-y-12 pt-[calc(var(--spacing-header)+1.875rem)] pb-section md:grid-cols-[14.25rem_minmax(0,1fr)] md:gap-x-(--spacing-margin)">
-      <Reveal delay={timing.nav} className="self-start md:sticky md:top-[calc(var(--spacing-header)+1.875rem)]">
+      <Reveal play={!idle} delay={timing.nav} className="self-start md:sticky md:top-[calc(var(--spacing-header)+1.875rem)]">
         <nav aria-label={workCopy.heading}>
           <p className="type-body-s uppercase text-ink/60">{workCopy.heading}</p>
           <ul className="mt-5 flex flex-col gap-4">
@@ -93,7 +109,7 @@ export function WorkExplorer({ view: initialView, projects }: { view: WorkView; 
         </nav>
       </Reveal>
 
-      <Reveal key={view} delay={switched ? 0 : timing.content} className="min-w-0">
+      <Reveal key={view} play={!idle} delay={switched ? 0 : timing.content} className="min-w-0">
         {view === "hanxgpt" ? (
           <p className="type-body-m text-ink-muted">{workCopy.hanxgpt}</p>
         ) : (

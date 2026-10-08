@@ -16,7 +16,7 @@ export default function WorkPage() {
     <PageSlide>
       <Header />
       <main id="main">
-        <Suspense fallback={<WorkExplorer view={defaultWorkView} projects={projects} />}>
+        <Suspense fallback={<WorkExplorer view={defaultWorkView} projects={projects} idle />}>
           <WorkExplorerFromUrl projects={projects} />
         </Suspense>
       </main>
