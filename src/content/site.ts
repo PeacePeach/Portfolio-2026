@@ -8,16 +8,28 @@ export const site = {
   description: "Making complex products and systems understandable, useful, and meaningful.",
   email: "hello@example.com",
 
-  nav: [
-    { label: "Work", href: "/#explore" },
-    { label: "Contact", href: "/#contact" },
-  ],
+  /** Opening loader. The name collapses to its initials and final period. */
+  loader: {
+    enabled: true,
+    name: "Han.",
+  },
+
+  nav: [{ label: "Work", href: "/#explore" }],
+  cta: { label: "Get in touch", href: "/#contact" },
 
   hero: {
-    /** Each array item renders on its own line. */
-    statement: ["Designing", "for", "complexity."],
+    /** One entry per line. `indent` is in em of the headline size. */
+    statement: [
+      { text: "Designing", indent: 0.9 },
+      { text: "for", indent: 0.9 },
+      { text: "complexity.", indent: 0 },
+    ],
+    /** Which line the supporting copy sits beside on desktop. */
+    asideLine: 1,
     description: "Making complex products and systems understandable, useful, and meaningful.",
-    scrollLabel: "Explore work",
+    index: "01 // 02",
+    scrollLabel: "Scroll",
+    scrollButtonLabel: "Scroll to Explore my work",
   },
 
   explore: {

@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { fontVariables } from "@/design/fonts";
 import { site } from "@/content/site";
 import { Providers } from "@/components/Providers";
+import { Intro } from "@/components/intro/Intro";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -20,7 +21,12 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <a href="#main" className="meta sr-only z-50 bg-ink px-3 py-2 text-canvas focus:not-sr-only focus:fixed focus:top-3 focus:left-3">
           Skip to content
         </a>
-        <Providers>{children}</Providers>
+        <noscript>
+          <style>{`[data-loader]{display:none!important}[data-reveal]{opacity:1!important;transform:none!important}`}</style>
+        </noscript>
+        <Providers>
+          <Intro>{children}</Intro>
+        </Providers>
       </body>
     </html>
   );

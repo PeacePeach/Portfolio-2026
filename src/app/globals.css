@@ -13,14 +13,18 @@
   /* ---- Color -------------------------------------------------------- */
   --color-*: initial;
   --color-canvas: #0a0a0a;          /* page background, near black */
+  --color-hero: #050505;            /* hero base under the glow */
+  --color-hero-glow: #242424;       /* soft light in the hero background */
+  --color-paper: #fafafa;           /* loader background */
+  --color-paper-ink: #0a0a0a;       /* loader text */
   --color-surface: #141414;         /* image placeholders, raised areas */
   --color-surface-2: #1c1c1c;
-  --color-ink: #f3f1ec;             /* primary text, warm off-white */
-  --color-ink-muted: #8d8b86;       /* secondary text */
-  --color-ink-faint: #4a4946;       /* inactive labels, indices */
-  --color-line: #262624;            /* hairlines */
-  --color-line-strong: #3a3936;
-  --color-accent: #f3f1ec;          /* kept monochrome on purpose */
+  --color-ink: #f4f4f4;             /* primary text, near white */
+  --color-ink-muted: #8e8e8e;       /* secondary text */
+  --color-ink-faint: #4b4b4b;       /* inactive labels, indices */
+  --color-line: #262626;            /* hairlines */
+  --color-line-strong: #3a3a3a;
+  --color-accent: #f4f4f4;          /* kept monochrome on purpose */
   --color-transparent: transparent;
   --color-current: currentColor;
 
@@ -28,15 +32,27 @@
   --font-display: var(--font-display-family), ui-sans-serif, system-ui, sans-serif;
   --font-sans: var(--font-body-family), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-mono-family), ui-monospace, monospace;
+  --font-wide: var(--font-wide-family), ui-sans-serif, system-ui, sans-serif; /* loader */
 
   /* Fluid scale. Each step: size / line-height / tracking. */
-  /* Hero statement. Sized from the page width so the longest line
-     ("COMPLEXITY.") spans the content area; adjust the divisor if the
-     longest line changes. */
-  --text-mega: min(calc((100vw - 2 * var(--spacing-margin)) / 6.3), 19rem);
-  --text-mega--line-height: 0.86;
-  --text-mega--letter-spacing: -0.045em;
-  --text-mega--font-weight: 700;
+  /* Hero statement. Size is set per breakpoint by --mega-size below
+     (reference proportions: ~8.4vw on desktop, line-height ~0.8). */
+  --text-mega: var(--mega-size);
+  --text-mega--line-height: 0.8;
+  --text-mega--letter-spacing: -0.025em;
+  --text-mega--font-weight: 500;
+
+  --text-loader: clamp(2.25rem, 7.9vw, 9rem);           /* loader name */
+  --text-loader--line-height: 1;
+  --text-loader--letter-spacing: -0.01em;
+
+  --text-brand: clamp(1.375rem, 2.55vw, 2.5rem);       /* header name */
+  --text-brand--line-height: 1;
+  --text-brand--letter-spacing: -0.03em;
+
+  --text-small: clamp(0.6875rem, 0.92vw, 0.875rem);    /* hero supporting copy, nav */
+  --text-small--line-height: 1.33;
+  --text-small--letter-spacing: -0.005em;
 
   --text-display: clamp(2.75rem, 8.4vw, 9.5rem);        /* section titles */
   --text-display--line-height: 0.9;
@@ -71,16 +87,16 @@
   --text-lede--line-height: 1.32;
   --text-lede--letter-spacing: -0.01em;
 
-  --text-label: 0.6875rem;                              /* mono meta labels */
+  --text-label: 0.75rem;                                /* meta labels */
   --text-label--line-height: 1.2;
-  --text-label--letter-spacing: 0.06em;
+  --text-label--letter-spacing: 0.01em;
 
   /* ---- Spacing & layout --------------------------------------------- */
   --spacing: 0.25rem;               /* Tailwind base unit (p-4 = 1rem) */
   --spacing-gutter: clamp(0.75rem, 1.4vw, 1.5rem);  /* grid column gap */
   --spacing-margin: clamp(1rem, 2.4vw, 2.5rem);     /* page side margin */
   --spacing-section: clamp(6rem, 14vw, 13rem);      /* vertical rhythm between sections */
-  --spacing-header: 4rem;
+  --spacing-header: clamp(4.5rem, 8.8vw, 8rem);
 
   /* ---- Breakpoints -------------------------------------------------- */
   --breakpoint-sm: 40rem;   /* 640  */
@@ -97,6 +113,14 @@
   --duration-base: 320ms;
   --duration-slow: 700ms;
   --duration-image: 1200ms;
+}
+
+/* ---- Responsive token values ----------------------------------------- */
+:root {
+  --mega-size: 13.4vw;            /* mobile: longest line fills the width */
+}
+@media (width >= 48rem) {
+  :root { --mega-size: 8.4vw; }   /* desktop: centered block, ~56% of width */
 }
 
 /* ---- Base ------------------------------------------------------------ */
@@ -146,9 +170,9 @@
   }
 }
 
-/* Mono meta label: indices, captions, nav. */
+/* Meta label: indices, captions, nav. Small uppercase sans, as in the reference. */
 @utility meta {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: var(--text-label);
   line-height: var(--text-label--line-height);
   letter-spacing: var(--text-label--letter-spacing);
@@ -170,4 +194,27 @@
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+/* Extended width for the loader face. */
+@utility wide {
+  font-family: var(--font-wide);
+  font-variation-settings: "wdth" 125;
+  font-weight: 500;
+}
+
+/* Hero background: soft light falling from the upper left, plus grain. */
+@utility bg-hero {
+  background-color: var(--color-hero);
+  background-image: radial-gradient(
+    ellipse 75% 70% at 32% 22%,
+    var(--color-hero-glow) 0%,
+    color-mix(in srgb, var(--color-hero-glow) 45%, var(--color-hero)) 38%,
+    var(--color-hero) 78%
+  );
+}
+
+/* Loader overlay is hidden when JS is off or motion is reduced. */
+@media (prefers-reduced-motion: reduce) {
+  [data-loader] { display: none !important; }
 }

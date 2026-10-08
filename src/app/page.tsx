@@ -7,7 +7,7 @@ import { getCapabilities, getEvidenceByCapability, getProjects } from "@/content
 export default function Home() {
   return (
     <>
-      <Header intro />
+      <Header />
       <main id="main">
         <Hero nextSectionId="explore" />
         <ExploreSection
