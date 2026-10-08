@@ -38,8 +38,8 @@ export const site = {
   knowMe: {
     heading: "Get to know me by",
     options: [
-      { label: "Case Studies", hint: "Traditional way to get started", href: "/?view=project#explore", view: "project" },
-      { label: "Super Powers", hint: "Something different", href: "/?view=capability#explore", view: "capability" },
+      { label: "Case studies", hint: "Traditional way to get started", href: "/?view=project#explore", view: "project" },
+      { label: "Super powers", hint: "Something different", href: "/?view=capability#explore", view: "capability" },
       // Placeholder page until HanXGPT exists.
       { label: "HanXGPT", hint: "Something more different", href: "/hanxgpt", view: null },
     ],

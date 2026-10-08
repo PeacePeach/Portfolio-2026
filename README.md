@@ -14,6 +14,7 @@ npm run build && npm start
 |---|---|
 | Colors, type scale, spacing, grid, breakpoints, CSS easing/durations | `src/app/globals.css` (`@theme` block) |
 | Fonts (Fraunces display, Geist body) | `src/design/fonts.ts` |
+| Type styles (semantic `type-*` classes) | `src/app/globals.css`, documented in `src/design/typography.ts`, specimen at `/typography` |
 | Motion timing (loader, HX glide, hero roll and dock, content swaps) | `src/design/motion.ts` |
 | Hero copy, loader name, nav (Work / About / Resume), footer, email | `src/content/site.ts` |
 | Projects and case-study sections | `src/content/projects.ts` |
@@ -29,6 +30,13 @@ Evidence snippets carry `capabilityIds`, `projectSlug`, `sectionId` (deep link t
 `Header`, `Hero`, `ExploreSection`, `ModeSelector`, `ProjectGallery`,
 `ProjectTile`, `CapabilitySelector`, `EvidencePreview`, `Footer`, plus `ui/`
 primitives (`RollText`, `Media`, `PlaceholderTag`, `Icons`).
+
+## Typography
+
+Components use only the semantic `type-*` classes, which mirror the Figma text styles:
+`type-display-l|m|s`, `type-heading-xl|l|m|s`, `type-body-l|m|m-tight|s|xs`, `type-label-l|m|s`,
+plus `type-brand` for the HX mark. Each class sets family, size, line height, weight and
+tracking from the `--text-*` tokens in `globals.css`. Change a style there and every use follows.
 
 ## Notes
 

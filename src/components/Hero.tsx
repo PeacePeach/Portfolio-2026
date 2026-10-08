@@ -46,7 +46,7 @@ export function Hero() {
           transition={{ layout: { duration: skipped ? 0 : dock.duration, ease: dock.ease } }}
           className="relative"
         >
-          <h1 id="hero-title" className="font-display text-mega uppercase">
+          <h1 id="hero-title" className="type-display-l uppercase" style={{ lineHeight: "var(--display-l-stack)" }}>
             {statement.map((line, i) => (
               <span
                 key={line}
@@ -69,7 +69,7 @@ export function Hero() {
 
           {/* Beside the chosen line on desktop, below the headline on mobile */}
           <div
-            className="mt-8 max-w-[23.94em] overflow-hidden font-sans text-small md:absolute md:mt-0 md:w-[23.94em] md:-translate-y-1/2"
+            className="mt-8 max-w-[23.94em] overflow-hidden type-body-m-tight md:absolute md:mt-0 md:w-[23.94em] md:-translate-y-1/2"
             style={aside ?? undefined}
           >
             <motion.p

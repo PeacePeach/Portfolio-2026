@@ -22,7 +22,7 @@ export function Header() {
           href="/"
           aria-label={site.name}
           data-logo
-          className="font-display text-brand uppercase text-ink transition-opacity duration-(--duration-fast)"
+          className="type-brand uppercase text-ink transition-opacity duration-(--duration-fast)"
           style={{ opacity: logoShown ? 1 : 0 }}
         >
           {site.shortName}
@@ -39,7 +39,7 @@ export function Header() {
               <li key={item.href}>
                 <Link
                   href={item.href}
-                  className="relative font-sans text-nav uppercase text-ink after:absolute after:-bottom-1 after:left-0 after:h-px after:w-full after:origin-right after:scale-x-0 after:bg-current after:transition-transform after:duration-(--duration-base) after:ease-out-expo hover:after:origin-left hover:after:scale-x-100"
+                  className="relative type-body-m uppercase text-ink after:absolute after:-bottom-1 after:left-0 after:h-px after:w-full after:origin-right after:scale-x-0 after:bg-current after:transition-transform after:duration-(--duration-base) after:ease-out-expo hover:after:origin-left hover:after:scale-x-100"
                 >
                   {item.label}
                 </Link>

@@ -44,10 +44,10 @@ export function KnowMe({ className = "" }: { className?: string }) {
       aria-label={heading}
       data-mask-reveal
       style={{ maskImage: mask, WebkitMaskImage: mask }}
-      className={`w-[14.25em] font-sans text-option ${className}`}
+      className={`w-[14.25rem] type-body-m-tight ${className}`}
     >
-      <p className="uppercase text-ink/65">{heading}</p>
-      <ul className="mt-[2.25em]" onMouseLeave={() => setActive(null)}>
+      <p className="uppercase text-ink/60">{heading}</p>
+      <ul className="mt-9" onMouseLeave={() => setActive(null)}>
         {options.map((option, i) => {
           const open = active === i;
           return (
@@ -56,7 +56,7 @@ export function KnowMe({ className = "" }: { className?: string }) {
               layout="position"
               transition={{ layout: t }}
               // Rows sit 16 px apart; an open row grows and pushes the rows below it down.
-              className={i > 0 ? "mt-[1em]" : ""}
+              className={i > 0 ? "mt-4" : ""}
             >
               <Link
                 href={option.href}
@@ -68,9 +68,9 @@ export function KnowMe({ className = "" }: { className?: string }) {
                 }}
                 className="relative block outline-offset-8"
               >
-                <span className={`flex items-center gap-[0.5em] transition-[font-weight] ${open ? "font-semibold" : ""}`}>
+                <span className="flex items-center gap-2">
                   {option.label}
-                  <ArrowRight className="size-[1.125em] shrink-0" />
+                  <ArrowRight className="size-[1.125rem] shrink-0" />
                   <span className="sr-only">: {option.hint}</span>
                 </span>
                 <AnimatePresence initial={false}>
@@ -83,8 +83,8 @@ export function KnowMe({ className = "" }: { className?: string }) {
                       transition={t}
                       className="block overflow-hidden"
                     >
-                      <span aria-hidden="true" className="block pt-[0.5em] pb-[0.75em]">
-                        <span className="block text-hint text-ink/80">{option.hint}</span>
+                      <span aria-hidden="true" className="block pt-2 pb-3">
+                        <span className="block type-body-s text-ink/60">{option.hint}</span>
                       </span>
                       <motion.span
                         aria-hidden="true"

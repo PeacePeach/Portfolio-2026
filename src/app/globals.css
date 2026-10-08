@@ -25,89 +25,79 @@
   --color-transparent: transparent;
   --color-current: currentColor;
 
-  /* ---- Typography --------------------------------------------------- */
-  --font-display: var(--font-display-family), ui-serif, Georgia, serif;
+  /* ---- Typography ---------------------------------------------------
+     Two layers (Figma "AI Portfolio", type spec 16:10):
+       1. Primitives: the two families below.
+       2. Semantic styles: --text-<role>-<size> tokens here, combined with a
+          family and case in the type-<role>-<size> utilities further down.
+     Components use only the type-* utilities. Sizes match the Figma spec
+     at 1280 px; display and large heading sizes scale with the viewport. */
+  --font-display: var(--font-display-family), ui-serif, Georgia, serif;   /* Fraunces */
   --font-display--font-variation-settings: "SOFT" 0, "WONK" 1;
-  --font-sans: var(--font-body-family), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-body-family), ui-sans-serif, system-ui, sans-serif; /* Geist */
 
-  /* Fluid scale. Each step: size / line-height / tracking. */
-  /* Sizes below follow the Figma frames (1280 px wide), scaled with the
-     viewport: px / 1280 * 100vw. */
+  /* Display: Fraunces SemiBold, 120%, -3% */
+  --text-display-l: var(--display-l-size);                  /* 110 */
+  --text-display-l--line-height: 1.2;
+  --text-display-l--letter-spacing: -0.03em;
+  --text-display-l--font-weight: 600;
+  --display-l-stack: 0.8545; /* hero lines stacked 94 px apart (Figma 10:2, 10:41) */
+  --text-display-m: clamp(2.5rem, 5vw, 4.5rem);             /* 64 */
+  --text-display-m--line-height: 1.2;
+  --text-display-m--letter-spacing: -0.03em;
+  --text-display-m--font-weight: 600;
+  --text-display-s: clamp(2rem, 3.75vw, 3.5rem);            /* 48 */
+  --text-display-s--line-height: 1.2;
+  --text-display-s--letter-spacing: -0.03em;
+  --text-display-s--font-weight: 600;
 
-  /* Hero statement: 110 px, lines 94 px apart. Mobile size set below. */
-  --text-mega: var(--mega-size);
-  --text-mega--line-height: 0.8545;
-  --text-mega--letter-spacing: -0.03em;
-  --text-mega--font-weight: 600;
+  /* Heading: Geist SemiBold, 120% */
+  --text-heading-xl: clamp(1.75rem, 3.125vw, 2.75rem);      /* 40 */
+  --text-heading-xl--line-height: 1.2;
+  --text-heading-xl--font-weight: 600;
+  --text-heading-l: clamp(1.5rem, 2.5vw, 2.25rem);          /* 32 */
+  --text-heading-l--line-height: 1.2;
+  --text-heading-l--font-weight: 600;
+  --text-heading-m: 1.25rem;                                /* 20 */
+  --text-heading-m--line-height: 1.2;
+  --text-heading-m--font-weight: 600;
+  --text-heading-s: 1rem;                                   /* 16 */
+  --text-heading-s--line-height: 1.2;
+  --text-heading-s--font-weight: 600;
 
-  --text-loader: clamp(3.5rem, 7.8125vw, 9rem);         /* loader name: 100 px */
-  --text-loader--line-height: 1.23;
-  --text-loader--letter-spacing: -0.03em;
-  --text-loader--font-weight: 600;
+  /* Body: Geist Light */
+  --text-body-l: 1.25rem;                                   /* 20 / 150% */
+  --text-body-l--line-height: 1.5;
+  --text-body-l--font-weight: 300;
+  --text-body-m: 1rem;                                      /* 16 / 150%  (Body_M_1.5) */
+  --text-body-m--line-height: 1.5;
+  --text-body-m--font-weight: 300;
+  --text-body-m-tight: 1rem;                                /* 16 / 120%  (Body_M_1.2) */
+  --text-body-m-tight--line-height: 1.2;
+  --text-body-m-tight--font-weight: 300;
+  --text-body-s: 0.875rem;                                  /* 14 / 150% */
+  --text-body-s--line-height: 1.5;
+  --text-body-s--font-weight: 300;
+  --text-body-xs: 0.75rem;                                  /* 12 / 120% */
+  --text-body-xs--line-height: 1.2;
+  --text-body-xs--font-weight: 300;
 
-  --text-counter: clamp(1.25rem, 2.5vw, 2.75rem);       /* loader percentage: 32 px */
-  --text-counter--line-height: 1.09;
-  --text-counter--letter-spacing: -0.03em;
-  --text-counter--font-weight: 300;
+  /* Label: Geist SemiBold, 120%, uppercase */
+  --text-label-l: 1rem;                                     /* 16 */
+  --text-label-l--line-height: 1.2;
+  --text-label-l--font-weight: 600;
+  --text-label-m: 0.875rem;                                 /* 14 */
+  --text-label-m--line-height: 1.2;
+  --text-label-m--font-weight: 600;
+  --text-label-s: 0.75rem;                                  /* 12 */
+  --text-label-s--line-height: 1.2;
+  --text-label-s--font-weight: 600;
 
-  --text-brand: clamp(1.5rem, 2.5vw, 2.75rem);          /* HX logo: 32 px */
-  --text-brand--line-height: 1.09;
+  /* Brand mark (HX): Fraunces Regular 32, -3%. Outside the scale on purpose. */
+  --text-brand: clamp(1.5rem, 2.5vw, 2.75rem);
+  --text-brand--line-height: 1.2;
   --text-brand--letter-spacing: -0.03em;
   --text-brand--font-weight: 400;
-
-  --text-nav: clamp(0.875rem, 1.25vw, 1.375rem);        /* nav: 16 px */
-  --text-nav--line-height: 1.2;
-  --text-nav--letter-spacing: -0.03em;
-  --text-nav--font-weight: 400;
-
-  --text-small: clamp(0.9375rem, 1.25vw, 1.375rem);     /* hero supporting copy: 16 px */
-  --text-small--line-height: 1.2;
-  --text-small--font-weight: 300;
-
-  --text-option: clamp(0.9375rem, 1.25vw, 1.375rem);    /* Know me by options: 16 px */
-  --text-option--line-height: 1.2;
-  --text-option--font-weight: 400;
-
-  --text-hint: clamp(0.75rem, 0.9375vw, 1rem);          /* option hints: 12 px */
-  --text-hint--line-height: 1.2;
-  --text-hint--font-weight: 400;
-
-  --text-display: clamp(2.75rem, 8.4vw, 9.5rem);        /* section titles */
-  --text-display--line-height: 0.9;
-  --text-display--letter-spacing: -0.04em;
-  --text-display--font-weight: 700;
-
-  --text-headline: clamp(2rem, 4.6vw, 4.75rem);         /* mode + capability labels */
-  --text-headline--line-height: 0.95;
-  --text-headline--letter-spacing: -0.035em;
-  --text-headline--font-weight: 600;
-
-  --text-heading: clamp(1.75rem, 3.4vw, 3.5rem);        /* capability labels */
-  --text-heading--line-height: 1;
-  --text-heading--letter-spacing: -0.03em;
-  --text-heading--font-weight: 600;
-
-  --text-title: clamp(1.5rem, 2.4vw, 2.5rem);           /* project titles */
-  --text-title--line-height: 1.02;
-  --text-title--letter-spacing: -0.025em;
-  --text-title--font-weight: 600;
-
-  --text-subtitle: clamp(1.1875rem, 1.45vw, 1.5rem);    /* evidence titles */
-  --text-subtitle--line-height: 1.18;
-  --text-subtitle--letter-spacing: -0.015em;
-  --text-subtitle--font-weight: 500;
-
-  --text-body: clamp(0.9375rem, 0.95vw, 1.0625rem);
-  --text-body--line-height: 1.5;
-  --text-body--letter-spacing: -0.005em;
-
-  --text-lede: clamp(1rem, 1.15vw, 1.25rem);           /* hero supporting text */
-  --text-lede--line-height: 1.32;
-  --text-lede--letter-spacing: -0.01em;
-
-  --text-label: 0.75rem;                                /* meta labels */
-  --text-label--line-height: 1.2;
-  --text-label--letter-spacing: 0.01em;
 
   /* ---- Spacing & layout --------------------------------------------- */
   --spacing: 0.25rem;               /* Tailwind base unit (p-4 = 1rem) */
@@ -135,10 +125,10 @@
 
 /* ---- Responsive token values ----------------------------------------- */
 :root {
-  --mega-size: 13.5vw;             /* mobile: longest line fills the width */
+  --display-l-size: 13.5vw;        /* mobile: "COMPLEXITY" fits the width */
 }
 @media (width >= 48rem) {
-  :root { --mega-size: 8.59375vw; } /* desktop: 110 px at 1280 */
+  :root { --display-l-size: min(8.59375vw, 10.5rem); } /* 110 px at 1280 */
 }
 
 /* ---- Base ------------------------------------------------------------ */
@@ -152,8 +142,9 @@
     background: var(--color-canvas);
     color: var(--color-ink);
     font-family: var(--font-sans);
-    font-size: var(--text-body);
-    line-height: var(--text-body--line-height);
+    font-size: var(--text-body-m);
+    line-height: var(--text-body-m--line-height);
+    font-weight: var(--text-body-m--font-weight);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
@@ -188,13 +179,125 @@
   }
 }
 
-/* Meta label: indices, captions, nav. Small uppercase sans, as in the reference. */
-@utility meta {
+/* ---- Semantic type styles (use these in components) --------------- */
+@utility type-display-l {
+  font-family: var(--font-display);
+  font-size: var(--text-display-l);
+  line-height: var(--text-display-l--line-height);
+  font-weight: var(--text-display-l--font-weight);
+  letter-spacing: var(--text-display-l--letter-spacing);
+  font-variation-settings: var(--font-display--font-variation-settings);
+}
+@utility type-display-m {
+  font-family: var(--font-display);
+  font-size: var(--text-display-m);
+  line-height: var(--text-display-m--line-height);
+  font-weight: var(--text-display-m--font-weight);
+  letter-spacing: var(--text-display-m--letter-spacing);
+  font-variation-settings: var(--font-display--font-variation-settings);
+}
+@utility type-display-s {
+  font-family: var(--font-display);
+  font-size: var(--text-display-s);
+  line-height: var(--text-display-s--line-height);
+  font-weight: var(--text-display-s--font-weight);
+  letter-spacing: var(--text-display-s--letter-spacing);
+  font-variation-settings: var(--font-display--font-variation-settings);
+}
+@utility type-heading-xl {
   font-family: var(--font-sans);
-  font-size: var(--text-label);
-  line-height: var(--text-label--line-height);
-  letter-spacing: var(--text-label--letter-spacing);
+  font-size: var(--text-heading-xl);
+  line-height: var(--text-heading-xl--line-height);
+  font-weight: var(--text-heading-xl--font-weight);
+  letter-spacing: 0;
+}
+@utility type-heading-l {
+  font-family: var(--font-sans);
+  font-size: var(--text-heading-l);
+  line-height: var(--text-heading-l--line-height);
+  font-weight: var(--text-heading-l--font-weight);
+  letter-spacing: 0;
+}
+@utility type-heading-m {
+  font-family: var(--font-sans);
+  font-size: var(--text-heading-m);
+  line-height: var(--text-heading-m--line-height);
+  font-weight: var(--text-heading-m--font-weight);
+  letter-spacing: 0;
+}
+@utility type-heading-s {
+  font-family: var(--font-sans);
+  font-size: var(--text-heading-s);
+  line-height: var(--text-heading-s--line-height);
+  font-weight: var(--text-heading-s--font-weight);
+  letter-spacing: 0;
+}
+@utility type-body-l {
+  font-family: var(--font-sans);
+  font-size: var(--text-body-l);
+  line-height: var(--text-body-l--line-height);
+  font-weight: var(--text-body-l--font-weight);
+  letter-spacing: 0;
+}
+@utility type-body-m {
+  font-family: var(--font-sans);
+  font-size: var(--text-body-m);
+  line-height: var(--text-body-m--line-height);
+  font-weight: var(--text-body-m--font-weight);
+  letter-spacing: 0;
+}
+@utility type-body-m-tight {
+  font-family: var(--font-sans);
+  font-size: var(--text-body-m-tight);
+  line-height: var(--text-body-m-tight--line-height);
+  font-weight: var(--text-body-m-tight--font-weight);
+  letter-spacing: 0;
+}
+@utility type-body-s {
+  font-family: var(--font-sans);
+  font-size: var(--text-body-s);
+  line-height: var(--text-body-s--line-height);
+  font-weight: var(--text-body-s--font-weight);
+  letter-spacing: 0;
+}
+@utility type-body-xs {
+  font-family: var(--font-sans);
+  font-size: var(--text-body-xs);
+  line-height: var(--text-body-xs--line-height);
+  font-weight: var(--text-body-xs--font-weight);
+  letter-spacing: 0;
+}
+@utility type-label-l {
+  font-family: var(--font-sans);
+  font-size: var(--text-label-l);
+  line-height: var(--text-label-l--line-height);
+  font-weight: var(--text-label-l--font-weight);
+  letter-spacing: 0;
   text-transform: uppercase;
+}
+@utility type-label-m {
+  font-family: var(--font-sans);
+  font-size: var(--text-label-m);
+  line-height: var(--text-label-m--line-height);
+  font-weight: var(--text-label-m--font-weight);
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+@utility type-label-s {
+  font-family: var(--font-sans);
+  font-size: var(--text-label-s);
+  line-height: var(--text-label-s--line-height);
+  font-weight: var(--text-label-s--font-weight);
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+@utility type-brand {
+  font-family: var(--font-display);
+  font-size: var(--text-brand);
+  line-height: var(--text-brand--line-height);
+  font-weight: var(--text-brand--font-weight);
+  letter-spacing: var(--text-brand--letter-spacing);
+  font-variation-settings: var(--font-display--font-variation-settings);
 }
 
 /* Subtle film grain used by image placeholders. */

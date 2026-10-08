@@ -30,18 +30,18 @@ export default async function CaseStudyPage({ params }: PageProps<"/work/[slug]"
     <>
       <Header />
       <main id="main" className="container-page pt-[calc(var(--spacing-header)+4rem)]">
-        <Link href="/#explore" className="meta text-ink-muted hover:text-ink">
+        <Link href="/#explore" className="type-label-s text-ink-muted hover:text-ink">
           ← All work
         </Link>
-        <h1 className="mt-10 font-display text-display uppercase">{project.title}</h1>
-        <p className="mt-8 max-w-[52ch] text-lede text-ink-muted">{project.summary}</p>
+        <h1 className="mt-10 type-display-m uppercase">{project.title}</h1>
+        <p className="mt-8 max-w-[52ch] type-body-l text-ink-muted">{project.summary}</p>
         <Media image={project.image} ratio="16 / 9" sizes="100vw" className="mt-16" />
 
         <nav aria-label="Case study sections" className="mt-16 border-t border-line pt-6">
           <ol className="flex flex-wrap gap-x-8 gap-y-3">
             {project.sections.map((s, i) => (
               <li key={s.id}>
-                <a href={`#${s.id}`} className="meta text-ink-muted hover:text-ink">
+                <a href={`#${s.id}`} className="type-label-s text-ink-muted hover:text-ink">
                   {String(i + 1).padStart(2, "0")} {s.title}
                 </a>
               </li>
@@ -51,9 +51,9 @@ export default async function CaseStudyPage({ params }: PageProps<"/work/[slug]"
 
         {project.sections.map((s, i) => (
           <section key={s.id} id={s.id} className="grid-page min-h-[70vh] border-t border-line py-16 target:border-ink">
-            <p className="meta col-span-4 md:col-span-3 text-ink-faint">{String(i + 1).padStart(2, "0")}</p>
+            <p className="type-label-s col-span-4 md:col-span-3 text-ink-faint">{String(i + 1).padStart(2, "0")}</p>
             <div className="col-span-4 md:col-span-6">
-              <h2 className="font-display text-headline">{s.title}</h2>
+              <h2 className="type-display-s">{s.title}</h2>
               <p className="mt-6 text-ink-muted">Case study content to come. This section is a deep-link target.</p>
             </div>
           </section>

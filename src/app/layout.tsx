@@ -18,7 +18,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={fontVariables} data-scroll-behavior="smooth">
       <body>
-        <a href="#main" className="meta sr-only z-50 bg-ink px-3 py-2 text-canvas focus:not-sr-only focus:fixed focus:top-3 focus:left-3">
+        <a href="#main" className="type-label-s sr-only z-50 bg-ink px-3 py-2 text-canvas focus:not-sr-only focus:fixed focus:top-3 focus:left-3">
           Skip to content
         </a>
         <noscript>

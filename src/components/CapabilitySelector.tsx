@@ -52,9 +52,9 @@ export function CapabilitySelector({
                 transition={{ duration: duration.slow, ease: ease.outExpo }}
               />
             ) : null}
-            <span className="meta">{String(i + 1).padStart(2, "0")}</span>
-            <span className="font-display text-title md:text-heading">{c.label}</span>
-            <span className="meta tabular-nums">({counts[c.id] ?? 0})</span>
+            <span className="type-label-s">{String(i + 1).padStart(2, "0")}</span>
+            <span className="type-heading-l md:type-heading-xl">{c.label}</span>
+            <span className="type-label-s tabular-nums">({counts[c.id] ?? 0})</span>
           </button>
         );
       })}

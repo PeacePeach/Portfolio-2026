@@ -5,10 +5,10 @@ export function Footer() {
   return (
     <footer id="contact" className="container-page mt-section pb-8">
       <div className="grid-page gap-y-10 border-t border-line pt-6">
-        <p className="meta col-span-4 md:col-span-3 text-ink-muted">Contact</p>
+        <p className="type-label-s col-span-4 md:col-span-3 text-ink-muted">Contact</p>
         <a
           href={`mailto:${site.email}`}
-          className="group col-span-4 md:col-span-9 font-display text-display uppercase"
+          className="group col-span-4 md:col-span-9 type-display-l uppercase"
         >
           <span className="inline-flex items-start gap-[0.15em]">
             {site.footer.heading}
@@ -17,19 +17,19 @@ export function Footer() {
         </a>
       </div>
       <div className="grid-page mt-20 gap-y-4 md:mt-32">
-        <a href={`mailto:${site.email}`} className="meta col-span-4 md:col-span-3 text-ink hover:text-ink-muted">
+        <a href={`mailto:${site.email}`} className="type-label-s col-span-4 md:col-span-3 text-ink hover:text-ink-muted">
           {site.email}
         </a>
         <ul className="col-span-4 flex gap-6 md:col-span-4 md:col-start-6">
           {site.footer.links.map((l) => (
             <li key={l.label}>
-              <a href={l.href} className="meta text-ink hover:text-ink-muted">
+              <a href={l.href} className="type-label-s text-ink hover:text-ink-muted">
                 {l.label}
               </a>
             </li>
           ))}
         </ul>
-        <p className="meta col-span-4 md:col-span-3 md:col-start-10 md:justify-self-end text-ink-faint">
+        <p className="type-label-s col-span-4 md:col-span-3 md:col-start-10 md:justify-self-end text-ink-faint">
           © 2026 {site.name}
         </p>
       </div>

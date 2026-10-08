@@ -34,7 +34,7 @@ export function Media({
         />
       ) : null}
       <div className="grain pointer-events-none absolute inset-0" aria-hidden="true" />
-      {label ? <span className="meta absolute bottom-3 left-3 text-ink-faint">{label}</span> : null}
+      {label ? <span className="type-label-s absolute bottom-3 left-3 text-ink-faint">{label}</span> : null}
     </div>
   );
 }
