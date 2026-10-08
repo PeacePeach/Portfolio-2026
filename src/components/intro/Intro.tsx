@@ -177,8 +177,8 @@ function Loader({
   return (
     <div data-loader aria-hidden="true" className="pointer-events-none fixed inset-0 z-[100]">
       <div ref={bgRef} className="pointer-events-auto absolute inset-0 bg-canvas" />
-      <div className="absolute inset-0 flex items-center justify-center">
-        <div ref={groupRef} className="relative font-sans text-loader text-ink uppercase">
+      <div className="absolute inset-0 flex translate-x-[-0.39vw] translate-y-[1.8svh] items-center justify-center">
+        <div ref={groupRef} className="relative font-display text-loader text-ink uppercase">
           {lines.map((word, li) => {
             const start = starts[li];
             const last = li === lines.length - 1;
@@ -197,7 +197,7 @@ function Loader({
                   }}
                 />
                 {last ? (
-                  <span className="ml-[0.42em] inline-block min-w-[2.6em] overflow-hidden text-counter text-ink-muted tabular-nums">
+                  <span className="ml-[0.36em] inline-block min-w-[2.6em] overflow-hidden font-sans text-counter text-ink-muted tabular-nums">
                     <motion.span
                       className="block"
                       initial={false}

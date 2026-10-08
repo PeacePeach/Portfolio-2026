@@ -36,7 +36,7 @@ export function Hero() {
   return (
     <section aria-labelledby="hero-title" className="relative min-h-svh overflow-hidden bg-canvas">
       <div
-        className={`container-page flex min-h-svh flex-col pt-[30svh] pb-[20svh] md:pt-[32svh] ${
+        className={`container-page flex min-h-svh flex-col pt-[30svh] pb-[20svh] md:pt-[32.65svh] ${
           docked ? "md:items-start" : "md:items-center"
         }`}
       >
@@ -69,7 +69,7 @@ export function Hero() {
 
           {/* Beside the chosen line on desktop, below the headline on mobile */}
           <div
-            className="mt-8 max-w-[21.4em] overflow-hidden font-sans text-small md:absolute md:mt-0 md:w-[21.4em] md:-translate-y-1/2"
+            className="mt-8 max-w-[23.94em] overflow-hidden font-sans text-small md:absolute md:mt-0 md:w-[23.94em] md:-translate-y-1/2"
             style={aside ?? undefined}
           >
             <motion.p
@@ -83,8 +83,8 @@ export function Hero() {
           </div>
         </motion.div>
 
-        {/* Right of the docked headline on desktop (Figma 2:31: x 880, heading centred at y 301.5) */}
-        <KnowMe className="mt-16 md:absolute md:top-[calc(32svh+2.05vw)] md:left-[68.75vw] md:mt-0" />
+        {/* Right of the docked headline on desktop (Figma 10:2: x 988, heading centred at y 290.5) */}
+        <KnowMe className="mt-16 md:absolute md:top-[calc(32svh+1.19vw)] md:left-[77.1875vw] md:mt-0" />
       </div>
     </section>
   );
@@ -92,7 +92,7 @@ export function Hero() {
 
 /**
  * Places the supporting copy just right of the chosen headline line,
- * vertically centred on it (Figma: 20 px gap at 120 px type). Desktop only.
+ * vertically centred on it (Figma 10:2: about 16 px gap at 110 px type). Desktop only.
  */
 function useAsidePosition(
   blockRef: React.RefObject<HTMLDivElement | null>,
@@ -111,8 +111,8 @@ function useAsidePosition(
       // offsetLeft/Top ignore transforms, so the dock animation does not skew this.
       const size = parseFloat(getComputedStyle(line).fontSize);
       setPos({
-        left: line.offsetLeft + line.offsetWidth + size * 0.17,
-        top: line.offsetTop + line.offsetHeight / 2,
+        left: line.offsetLeft + line.offsetWidth + size * 0.15,
+        top: line.offsetTop + line.offsetHeight / 2 + size * 0.02,
       });
     };
     measure();

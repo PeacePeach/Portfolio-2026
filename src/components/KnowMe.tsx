@@ -15,7 +15,7 @@ export const EXPLORE_VIEW_EVENT = "explore:view";
  * "Get to know me by" panel beside the hero (Figma 2:31). It wipes in from
  * top to bottom once the headline has docked. Hovering or focusing an option
  * opens its hint and blue underline and moves the options below it down
- * (Figma 2:134). Rows above the active one never move, so the pointer stays
+ * (Figma 2:134, restyled in 10:41). Rows above the active one never move, so the pointer stays
  * on the row it is hovering.
  */
 export function KnowMe({ className = "" }: { className?: string }) {
@@ -44,22 +44,19 @@ export function KnowMe({ className = "" }: { className?: string }) {
       aria-label={heading}
       data-mask-reveal
       style={{ maskImage: mask, WebkitMaskImage: mask }}
-      className={`w-[14.6em] text-option ${className}`}
+      className={`w-[14.25em] font-sans text-option ${className}`}
     >
-      <p className="font-sans text-small">{heading}</p>
-      <ul className="mt-[1.6em]" onMouseLeave={() => setActive(null)}>
+      <p className="uppercase text-ink/65">{heading}</p>
+      <ul className="mt-[2.25em]" onMouseLeave={() => setActive(null)}>
         {options.map((option, i) => {
           const open = active === i;
-          const after = active !== null && i > active;
           return (
             <motion.li
               key={option.label}
               layout="position"
               transition={{ layout: t }}
-              // Default rows sit 16 px apart; rows below an open one 12 + 12 px, 24 px after it.
-              className={`${i > 0 ? (after ? (i === active! + 1 ? "mt-[1.2em]" : "mt-[0.6em]") : "mt-[0.8em]") : ""} ${
-                after ? "pb-[0.6em]" : ""
-              }`}
+              // Rows sit 16 px apart; an open row grows and pushes the rows below it down.
+              className={i > 0 ? "mt-[1em]" : ""}
             >
               <Link
                 href={option.href}
@@ -71,9 +68,9 @@ export function KnowMe({ className = "" }: { className?: string }) {
                 }}
                 className="relative block outline-offset-8"
               >
-                <span className="flex items-center gap-[0.4em] font-sans">
+                <span className={`flex items-center gap-[0.5em] transition-[font-weight] ${open ? "font-semibold" : ""}`}>
                   {option.label}
-                  <ArrowRight className="size-[0.9em] shrink-0" />
+                  <ArrowRight className="size-[1.125em] shrink-0" />
                   <span className="sr-only">: {option.hint}</span>
                 </span>
                 <AnimatePresence initial={false}>
@@ -86,8 +83,8 @@ export function KnowMe({ className = "" }: { className?: string }) {
                       transition={t}
                       className="block overflow-hidden"
                     >
-                      <span aria-hidden="true" className="block pt-[0.4em] pb-[0.6em]">
-                        <span className="block font-sans text-small font-normal text-ink/80">{option.hint}</span>
+                      <span aria-hidden="true" className="block pt-[0.5em] pb-[0.75em]">
+                        <span className="block text-hint text-ink/80">{option.hint}</span>
                       </span>
                       <motion.span
                         aria-hidden="true"

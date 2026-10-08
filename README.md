@@ -13,7 +13,7 @@ npm run build && npm start
 | What | Where |
 |---|---|
 | Colors, type scale, spacing, grid, breakpoints, CSS easing/durations | `src/app/globals.css` (`@theme` block) |
-| Fonts (Archivo Narrow display, Archivo body) | `src/design/fonts.ts` |
+| Fonts (Fraunces display, Geist body) | `src/design/fonts.ts` |
 | Motion timing (loader, HX glide, hero roll and dock, content swaps) | `src/design/motion.ts` |
 | Hero copy, loader name, nav (Work / About / Resume), footer, email | `src/content/site.ts` |
 | Projects and case-study sections | `src/content/projects.ts` |

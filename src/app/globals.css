@@ -26,25 +26,26 @@
   --color-current: currentColor;
 
   /* ---- Typography --------------------------------------------------- */
-  --font-display: var(--font-display-family), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-display-family), ui-serif, Georgia, serif;
+  --font-display--font-variation-settings: "SOFT" 0, "WONK" 1;
   --font-sans: var(--font-body-family), ui-sans-serif, system-ui, sans-serif;
 
   /* Fluid scale. Each step: size / line-height / tracking. */
   /* Sizes below follow the Figma frames (1280 px wide), scaled with the
      viewport: px / 1280 * 100vw. */
 
-  /* Hero statement: 120 px, lines 104 px apart. Mobile size set below. */
+  /* Hero statement: 110 px, lines 94 px apart. Mobile size set below. */
   --text-mega: var(--mega-size);
-  --text-mega--line-height: 0.8667;
+  --text-mega--line-height: 0.8545;
   --text-mega--letter-spacing: -0.03em;
   --text-mega--font-weight: 600;
 
   --text-loader: clamp(3.5rem, 7.8125vw, 9rem);         /* loader name: 100 px */
-  --text-loader--line-height: 1.09;
+  --text-loader--line-height: 1.23;
   --text-loader--letter-spacing: -0.03em;
   --text-loader--font-weight: 600;
 
-  --text-counter: clamp(1.5rem, 3.125vw, 3.5rem);       /* loader percentage: 40 px */
+  --text-counter: clamp(1.25rem, 2.5vw, 2.75rem);       /* loader percentage: 32 px */
   --text-counter--line-height: 1.09;
   --text-counter--letter-spacing: -0.03em;
   --text-counter--font-weight: 300;
@@ -52,20 +53,24 @@
   --text-brand: clamp(1.5rem, 2.5vw, 2.75rem);          /* HX logo: 32 px */
   --text-brand--line-height: 1.09;
   --text-brand--letter-spacing: -0.03em;
-  --text-brand--font-weight: 600;
+  --text-brand--font-weight: 400;
 
-  --text-nav: clamp(0.9375rem, 1.5625vw, 1.625rem);     /* nav: 20 px */
-  --text-nav--line-height: 1.09;
+  --text-nav: clamp(0.875rem, 1.25vw, 1.375rem);        /* nav: 16 px */
+  --text-nav--line-height: 1.2;
   --text-nav--letter-spacing: -0.03em;
-  --text-nav--font-weight: 300;
+  --text-nav--font-weight: 400;
 
   --text-small: clamp(0.9375rem, 1.25vw, 1.375rem);     /* hero supporting copy: 16 px */
   --text-small--line-height: 1.2;
   --text-small--font-weight: 300;
 
-  --text-option: clamp(1.0625rem, 1.5625vw, 1.625rem);  /* Know me by options: 20 px */
+  --text-option: clamp(0.9375rem, 1.25vw, 1.375rem);    /* Know me by options: 16 px */
   --text-option--line-height: 1.2;
-  --text-option--font-weight: 600;
+  --text-option--font-weight: 400;
+
+  --text-hint: clamp(0.75rem, 0.9375vw, 1rem);          /* option hints: 12 px */
+  --text-hint--line-height: 1.2;
+  --text-hint--font-weight: 400;
 
   --text-display: clamp(2.75rem, 8.4vw, 9.5rem);        /* section titles */
   --text-display--line-height: 0.9;
@@ -130,10 +135,10 @@
 
 /* ---- Responsive token values ----------------------------------------- */
 :root {
-  --mega-size: 17vw;              /* mobile: longest line fills the width */
+  --mega-size: 13.5vw;             /* mobile: longest line fills the width */
 }
 @media (width >= 48rem) {
-  :root { --mega-size: 9.375vw; } /* desktop: 120 px at 1280 */
+  :root { --mega-size: 8.59375vw; } /* desktop: 110 px at 1280 */
 }
 
 /* ---- Base ------------------------------------------------------------ */
