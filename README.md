@@ -36,7 +36,8 @@ primitives (`RollText`, `Media`, `PlaceholderTag`, `Icons`).
   "HX", which glides to the header logo; the headline rolls in, then docks to the left.
   Every value lives in `intro` in `src/design/motion.ts`.
   Turn the loader off with `site.loader.enabled = false`.
-- `/about` and `/resume` are placeholders until content and the resume PDF are supplied.
+- "Get to know me by" panel (`KnowMe`) wipes in after the headline docks; options live in `site.knowMe`.
+- `/about`, `/resume` and `/hanxgpt` are placeholders until their content is supplied.
 - Explore view state is shareable: `/?view=capability&capability=design-systems#explore`.
 - `prefers-reduced-motion` removes movement (Motion `reducedMotion="user"` + CSS guard).
 - Placeholder artwork in `public/placeholders/` is generated, not from any reference site.

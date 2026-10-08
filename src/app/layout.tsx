@@ -22,7 +22,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           Skip to content
         </a>
         <noscript>
-          <style>{`[data-loader]{display:none!important}[data-reveal]{opacity:1!important;transform:none!important}`}</style>
+          <style>{`[data-loader]{display:none!important}[data-reveal]{opacity:1!important;transform:none!important}[data-mask-reveal]{mask-image:none!important;-webkit-mask-image:none!important}`}</style>
         </noscript>
         <Providers>
           <Intro>{children}</Intro>

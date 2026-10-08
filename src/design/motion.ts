@@ -55,10 +55,15 @@ export const intro = {
   roll: { at: 2.75, lineStagger: 0.25, charStagger: 0.025, duration: 0.42, ease: ease.inOutQuart },
   copy: { at: 3.3, duration: 0.8, ease: ease.outExpo },
   dock: { at: 4.35, duration: 1.1, ease: ease.inOutQuart },
+  /** "Get to know me by" panel: wiped in top to bottom after the dock settles. */
+  panel: { at: 6.45, withoutLoader: 1.6, duration: 1.4, ease: ease.inOutCubic },
 } as const;
 
 /** When the loader is skipped (reduced motion, or disabled), reveals start here. */
 export const introWithoutLoader = 0.1;
+
+/** Hover on the Know me by options: hint opens, underline draws, rows below move. */
+export const optionHover = { duration: 0.4, ease: ease.outExpo } as const;
 
 /** Content swaps inside the Explore section (mode + capability changes). */
 export const swap: { enter: Transition; exit: Transition; stagger: number; offset: number } = {

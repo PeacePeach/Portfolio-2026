@@ -34,6 +34,17 @@ export const site = {
       "Product Design Lead with 10+ years across fintech and B2B SaaS, turning ambiguity and complexity into clear product direction for users and businesses.",
   },
 
+  /** Panel right of the headline (Figma 2:31, hover 2:134). */
+  knowMe: {
+    heading: "Get to know me by",
+    options: [
+      { label: "Case Studies", hint: "Traditional way to get started", href: "/?view=project#explore", view: "project" },
+      { label: "Super Powers", hint: "Something different", href: "/?view=capability#explore", view: "capability" },
+      // Placeholder page until HanXGPT exists.
+      { label: "HanXGPT", hint: "Something more different", href: "/hanxgpt", view: null },
+    ],
+  },
+
   explore: {
     title: "Explore my work",
     intro: "Two ways in. Follow a whole project, or follow a skill across projects.",

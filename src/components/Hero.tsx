@@ -5,6 +5,7 @@ import { motion } from "motion/react";
 import { site } from "@/content/site";
 import { intro, introWithoutLoader } from "@/design/motion";
 import { RollText } from "./ui/RollText";
+import { KnowMe } from "./KnowMe";
 import { useIntro } from "./intro/IntroContext";
 
 /**
@@ -81,6 +82,9 @@ export function Hero() {
             </motion.p>
           </div>
         </motion.div>
+
+        {/* Right of the docked headline on desktop (Figma 2:31: x 880, heading centred at y 301.5) */}
+        <KnowMe className="mt-16 md:absolute md:top-[calc(32svh+2.05vw)] md:left-[68.75vw] md:mt-0" />
       </div>
     </section>
   );
