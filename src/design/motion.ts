@@ -55,8 +55,8 @@ export const intro = {
   roll: { at: 2.75, lineStagger: 0.25, charStagger: 0.025, duration: 0.42, ease: ease.inOutQuart },
   copy: { at: 3.3, duration: 0.8, ease: ease.outExpo },
   dock: { at: 4.35, duration: 1.1, ease: ease.inOutQuart },
-  /** "Get to know me by" panel: wiped in top to bottom after the dock settles. */
-  panel: { at: 5.95, withoutLoader: 1.1, duration: 0.7, ease: ease.inOutCubic },
+  /** "Get to know me by" panel: wiped in top to bottom as the dock eases to rest. */
+  panel: { at: 5.15, withoutLoader: 0.6, duration: 0.7, ease: ease.inOutCubic },
 } as const;
 
 /** When the loader is skipped (reduced motion, or disabled), reveals start here. */
