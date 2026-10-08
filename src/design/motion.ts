@@ -56,7 +56,7 @@ export const intro = {
   copy: { at: 3.3, duration: 0.8, ease: ease.outExpo },
   dock: { at: 4.35, duration: 1.1, ease: ease.inOutQuart },
   /** "Get to know me by" panel: wiped in top to bottom as the dock eases to rest. */
-  panel: { at: 5.15, withoutLoader: 0.6, duration: 0.7, ease: ease.inOutCubic },
+  panel: { at: 5.15, withoutLoader: 0.6, duration: 1.2, ease: [0.33, 0, 0.2, 1] },
 } as const;
 
 /** When the loader is skipped (reduced motion, or disabled), reveals start here. */
