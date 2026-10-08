@@ -10,7 +10,6 @@ import { ModeSelector, type ModeOption } from "./ModeSelector";
 import { ProjectGallery } from "./ProjectGallery";
 import { CapabilitySelector } from "./CapabilitySelector";
 import { EvidencePreview } from "./EvidencePreview";
-import { EXPLORE_VIEW_EVENT } from "./KnowMe";
 
 type Mode = "project" | "capability";
 
@@ -52,16 +51,6 @@ export function ExploreSection({
     }
     /* eslint-enable react-hooks/set-state-in-effect */
   }, [capabilities]);
-
-  // In-page links (the hero's Know me by panel) switch the view directly.
-  useEffect(() => {
-    const onView = (e: Event) => {
-      const view = (e as CustomEvent<Mode>).detail;
-      if (view === "project" || view === "capability") setMode(view);
-    };
-    window.addEventListener(EXPLORE_VIEW_EVENT, onView);
-    return () => window.removeEventListener(EXPLORE_VIEW_EVENT, onView);
-  }, []);
 
   const syncUrl = useCallback((m: Mode, cap: string) => {
     const url = new URL(window.location.href);

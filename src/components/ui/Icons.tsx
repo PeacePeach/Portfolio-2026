@@ -16,12 +16,3 @@ export function ArrowUpRight({ className, strokeWidth = 1.25 }: IconProps) {
   );
 }
 
-/** Figma "arrow-right" (18 × 18), drawn in currentColor. */
-export function ArrowRight({ className }: { className?: string }) {
-  return (
-    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" className={className} aria-hidden="true">
-      <path d="M3.75 9H14.25" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M9 3.75L14.25 9L9 14.25" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}

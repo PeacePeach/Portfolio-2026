@@ -19,7 +19,7 @@ export const site = {
   },
 
   nav: [
-    { label: "Work", href: "/#explore" },
+    { label: "Work", href: "/work" },
     { label: "About", href: "/about" },
     // Placeholder until the resume file is added (e.g. /public/resume.pdf).
     { label: "Resume", href: "/resume" },
@@ -38,10 +38,9 @@ export const site = {
   knowMe: {
     heading: "Get to know me by",
     options: [
-      { label: "Case studies", hint: "Traditional way to get started", href: "/?view=project#explore", view: "project" },
-      { label: "Super powers", hint: "Something different", href: "/?view=capability#explore", view: "capability" },
-      // Placeholder page until HanXGPT exists.
-      { label: "HanXGPT", hint: "Something more different", href: "/hanxgpt", view: null },
+      { label: "Case studies", hint: "Traditional way to get started", href: "/work?view=case-studies" },
+      { label: "Super powers", hint: "Something different", href: "/work?view=super-powers" },
+      { label: "HanXGPT", hint: "Something more different", href: "/work?view=hanxgpt" },
     ],
   },
 

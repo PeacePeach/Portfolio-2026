@@ -29,6 +29,12 @@ export type Project = {
   meta: string[];
   year?: string;
   image?: ImageRef;
+  /** One line shown on the Work page tile. */
+  description: string;
+  /** Case study filters (ids from src/content/work.ts), shown as tags on the tile. */
+  tags: string[];
+  /** Super power filters (ids from src/content/work.ts) this project shows. */
+  powers: string[];
   sections: CaseStudySection[];
   status: ContentStatus;
 };

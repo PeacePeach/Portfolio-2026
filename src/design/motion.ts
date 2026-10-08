@@ -10,6 +10,26 @@ export const ease = {
   inOutCubic: [0.65, 0, 0.35, 1],
   curtain: [0.55, 0, 0.3, 1],
   standard: [0.25, 0.1, 0.25, 1],
+  /** Soft start, long settle: the one reveal curve. */
+  reveal: [0.33, 0, 0.2, 1],
+} as const;
+
+/**
+ * The one reveal used everywhere a block of content appears: a soft-edged
+ * mask wipes it in from top to bottom (ui/Reveal). Change it here and every
+ * reveal follows.
+ */
+export const reveal = { duration: 1.2, ease: ease.reveal } as const;
+
+/** Page slide between the homepage and the Work page (mirrors --duration-page in CSS). */
+export const pageSlide = { duration: 0.9 } as const;
+
+/** Work page: when its two columns reveal, with and without the page slide. */
+export const workIntro = {
+  afterSlide: { nav: 0.7, content: 1.2 },
+  direct: { nav: 0.15, content: 0.65 },
+  /** Filter list opening and closing under a category. */
+  filters: { duration: 0.5, ease: ease.outExpo },
 } as const;
 
 export const duration = {
@@ -56,7 +76,7 @@ export const intro = {
   copy: { at: 3.3, duration: 0.8, ease: ease.outExpo },
   dock: { at: 4.35, duration: 1.1, ease: ease.inOutQuart },
   /** "Get to know me by" panel: wiped in top to bottom as the dock eases to rest. */
-  panel: { at: 5.15, withoutLoader: 0.6, duration: 1.2, ease: [0.33, 0, 0.2, 1] },
+  panel: { at: 5.15, withoutLoader: 0.6, ...reveal },
 } as const;
 
 /** When the loader is skipped (reduced motion, or disabled), reveals start here. */
