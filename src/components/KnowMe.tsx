@@ -79,25 +79,27 @@ export function KnowMe({ className = "" }: { className?: string }) {
                       key="hint"
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: "auto", opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
+                      // Collapse after the underline has started retracting, so its exit stays visible.
+                      exit={{ height: 0, opacity: 0, transition: { ...t, delay: reduce ? 0 : 0.2 } }}
                       transition={t}
                       className="block overflow-hidden"
                     >
                       <span aria-hidden="true" className="block pt-2 pb-3">
                         <span className="block type-body-s text-ink/60">{option.hint}</span>
                       </span>
-                      <motion.span
-                        aria-hidden="true"
-                        // Same line as .hover-underline: in from the left, out to the right.
-                        initial={{ scaleX: 0, originX: 0 }}
-                        animate={{ scaleX: 1, originX: 0 }}
-                        exit={{ scaleX: 0, originX: 1 }}
-                        transition={t}
-                        className="block h-(--underline-thickness) rounded-full [background-image:var(--underline-gradient)]"
-                      />
+                      {/* Room for the underline below */}
+                      <span aria-hidden="true" className="block h-(--underline-thickness)" />
                     </motion.span>
                   )}
                 </AnimatePresence>
+                {/* Same line as .hover-underline: draws in from the left, retracts to the right. */}
+                <motion.span
+                  aria-hidden="true"
+                  initial={false}
+                  animate={{ scaleX: open ? 1 : 0, originX: open ? 0 : 1 }}
+                  transition={t}
+                  className="pointer-events-none absolute inset-x-0 bottom-0 block h-(--underline-thickness) rounded-full [background-image:var(--underline-gradient)]"
+                />
               </Link>
             </motion.li>
           );
