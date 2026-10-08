@@ -9,7 +9,7 @@ export default function Home() {
     <>
       <Header />
       <main id="main">
-        <Hero nextSectionId="explore" />
+        <Hero />
         <ExploreSection
           id="explore"
           projects={getProjects()}

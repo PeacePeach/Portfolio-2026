@@ -1,37 +1,25 @@
 /**
- * Typefaces. Swap a family here and every component follows, because
- * components only use the font-display / font-sans / font-mono utilities
- * (defined in globals.css from these CSS variables).
+ * Typefaces (from the Figma file "AI Portfolio"). Swap a family here and
+ * every component follows, because components only use the font-display /
+ * font-sans utilities (defined in globals.css from these CSS variables).
+ *
+ *   display  Archivo Narrow SemiBold: hero statement, HX logo
+ *   sans     Archivo (Light for body/nav, SemiBold for the loader name)
  */
-import { Archivo, Inter_Tight, JetBrains_Mono } from "next/font/google";
+import { Archivo, Archivo_Narrow } from "next/font/google";
 
-export const displayFont = Inter_Tight({
+export const displayFont = Archivo_Narrow({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
+  weight: ["500", "600", "700"],
   variable: "--font-display-family",
   display: "swap",
 });
 
-export const bodyFont = Inter_Tight({
+export const bodyFont = Archivo({
   subsets: ["latin"],
-  weight: ["300", "400", "500"],
+  axes: ["wdth"],
   variable: "--font-body-family",
   display: "swap",
 });
 
-export const monoFont = JetBrains_Mono({
-  subsets: ["latin"],
-  weight: ["400"],
-  variable: "--font-mono-family",
-  display: "swap",
-});
-
-/** Extended face for the loader name and counter (wdth axis, see .font-wide). */
-export const wideFont = Archivo({
-  subsets: ["latin"],
-  axes: ["wdth"],
-  variable: "--font-wide-family",
-  display: "swap",
-});
-
-export const fontVariables = [displayFont.variable, bodyFont.variable, monoFont.variable, wideFont.variable].join(" ");
+export const fontVariables = [displayFont.variable, bodyFont.variable].join(" ");

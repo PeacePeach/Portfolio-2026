@@ -2,40 +2,43 @@
 
 import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
 import { animate, motion } from "motion/react";
+import { usePathname } from "next/navigation";
 import { site } from "@/content/site";
 import { intro } from "@/design/motion";
 import { RollText } from "@/components/ui/RollText";
-import { IntroContext } from "./IntroContext";
+import { IntroContext, type IntroState } from "./IntroContext";
 
 const useIsoLayoutEffect = typeof window === "undefined" ? useEffect : useLayoutEffect;
 
 /**
- * Opening sequence: a light loader with the name and a percentage counter,
- * the name collapsing to initials, then the dark page dropping in on a
- * curved curtain. Provides `ready` so the hero can time its own entrance.
- * Skipped entirely for prefers-reduced-motion (and hidden by CSS before JS).
+ * Opening sequence (Figma frame 1:7): the name and a percentage counter on
+ * the dark page colour, the name rolling down to its initials, the initials
+ * gliding into the header logo, then the home page showing through.
+ * Provides intro state so the header and hero can time their entrances.
+ * Skipped for prefers-reduced-motion (and hidden by CSS before JS runs).
  */
 export function Intro({ children }: { children: ReactNode }) {
-  const [state, setState] = useState<{ ready: boolean; skipped: boolean }>({
-    ready: !site.loader.enabled,
-    skipped: !site.loader.enabled,
-  });
-  const [showLoader, setShowLoader] = useState<boolean>(site.loader.enabled);
+  // The loader opens the home page only; deep links go straight in.
+  const pathname = usePathname();
+  const [enabled] = useState(() => (site.loader.enabled as boolean) && pathname === "/");
+  const [state, setState] = useState<IntroState>({ ready: !enabled, skipped: !enabled, logoShown: !enabled });
+  const [showLoader, setShowLoader] = useState(enabled);
 
   useIsoLayoutEffect(() => {
-    if (!site.loader.enabled) return;
+    if (!enabled) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setState({ ready: true, skipped: true });
+      setState({ ready: true, skipped: true, logoShown: true });
       setShowLoader(false);
     }
-  }, []);
+  }, [enabled]);
 
   return (
     <IntroContext.Provider value={state}>
       {children}
       {showLoader ? (
         <Loader
-          onComplete={() => setState({ ready: true, skipped: false })}
+          onComplete={() => setState((s) => ({ ...s, ready: true }))}
+          onHandoff={() => setState((s) => ({ ...s, logoShown: true }))}
           onDone={() => setShowLoader(false)}
         />
       ) : null}
@@ -43,15 +46,22 @@ export function Intro({ children }: { children: ReactNode }) {
   );
 }
 
-function Loader({ onComplete, onDone }: { onComplete: () => void; onDone: () => void }) {
+function Loader({
+  onComplete,
+  onHandoff,
+  onDone,
+}: {
+  onComplete: () => void;
+  onHandoff: () => void;
+  onDone: () => void;
+}) {
   const [progress, setProgress] = useState(0);
   const [phase, setPhase] = useState<"loading" | "exit">("loading");
-  const overlayRef = useRef<HTMLDivElement>(null);
-  const nameRef = useRef<HTMLSpanElement>(null);
-  const letters = useRef(new Map<number, HTMLSpanElement | null>());
+  const bgRef = useRef<HTMLDivElement>(null);
+  const groupRef = useRef<HTMLDivElement>(null);
+  const initials = useRef<HTMLSpanElement[]>([]);
 
-  const name = site.loader.name;
-  const keep = keptIndices(name);
+  const lines = site.loader.lines;
 
   // Lock scrolling and start at the top while the loader is up.
   useEffect(() => {
@@ -80,8 +90,7 @@ function Loader({ onComplete, onDone }: { onComplete: () => void; onDone: () => 
     const id = window.setInterval(() => {
       const elapsed = (performance.now() - started) / 1000;
       const canFinish = elapsed >= intro.loader.minDuration && loaded && fontsReady;
-      if (canFinish) value = 100;
-      else value = Math.min(99, value + (steps[i++ % steps.length] || 0));
+      value = canFinish ? 100 : Math.min(99, value + (steps[i++ % steps.length] || 0));
       setProgress(value);
       if (value === 100) {
         window.clearInterval(id);
@@ -98,114 +107,115 @@ function Loader({ onComplete, onDone }: { onComplete: () => void; onDone: () => 
     if (phase !== "exit") return;
     const timers: number[] = [];
     const at = (s: number, fn: () => void) => timers.push(window.setTimeout(fn, s * 1000));
+    const letters = () => initials.current.filter(Boolean);
 
-    // Hero entrance is timed from the moment the counter lands on 100%.
+    // Header and hero time their entrances from the moment we hit 100%.
     onComplete();
 
-    // Collapse the remaining initials into a centered monogram.
-    at(intro.collapse.at, () => {
-      const offsets = collapseOffsets(nameRef.current, letters.current, keep);
-      for (const [i, dx] of Object.entries(offsets)) {
-        const el = letters.current.get(Number(i));
-        if (el) animate(el, { x: dx }, { duration: intro.collapse.duration, ease: intro.collapse.ease });
-      }
+    // Rest positions, measured before anything moves.
+    let rest: DOMRect[] = [];
+    at(intro.collapse.at - 0.05, () => {
+      rest = letters().map((el) => el.getBoundingClientRect());
     });
 
-    // Curtain: the overlay is clipped away from the top by a curved edge.
-    at(intro.curtain.at, () => {
-      const el = overlayRef.current;
-      if (!el) return;
-      animate(0, 1, {
-        duration: intro.curtain.duration,
-        ease: intro.curtain.ease,
-        onUpdate: (p) => (el.style.clipPath = curtainPath(p, window.innerWidth, window.innerHeight)),
-        onComplete: onDone,
+    // 1. Initials slide together into one word at the centre.
+    at(intro.collapse.at, () => {
+      const group = groupRef.current?.getBoundingClientRect();
+      if (!group) return;
+      const total = rest.reduce((w, r) => w + r.width, 0);
+      let x = group.left + group.width / 2 - total / 2;
+      const top = group.top + group.height / 2 - rest[0].height / 2;
+      letters().forEach((el, i) => {
+        animate(el, { x: x - rest[i].left, y: top - rest[i].top }, { duration: intro.collapse.duration, ease: intro.collapse.ease });
+        x += rest[i].width;
       });
     });
+
+    // 2. The word glides to the header logo and shrinks to its size.
+    at(intro.logo.at, () => {
+      const logo = document.querySelector<HTMLElement>("[data-logo]");
+      const first = letters()[0];
+      if (!logo || !first) return;
+      const target = logo.getBoundingClientRect();
+      const scale =
+        parseFloat(getComputedStyle(logo).fontSize) / parseFloat(getComputedStyle(first).fontSize);
+      const centerY = target.top + target.height / 2;
+      let x = target.left;
+      letters().forEach((el, i) => {
+        el.style.transformOrigin = "0 0";
+        const h = rest[i].height * scale;
+        animate(
+          el,
+          { x: x - rest[i].left, y: centerY - h / 2 - rest[i].top, scale },
+          { duration: intro.logo.duration, ease: intro.logo.ease },
+        );
+        x += rest[i].width * scale;
+      });
+    });
+
+    // 3. The loader background fades and the page shows through.
+    at(intro.reveal.at, () => {
+      if (bgRef.current) animate(bgRef.current, { opacity: 0 }, { duration: intro.reveal.duration, ease: intro.reveal.ease });
+    });
+
+    // 4. The real header logo takes over; the loader goes away.
+    at(intro.handoff.at, () => {
+      onHandoff();
+      letters().forEach((el) => animate(el, { opacity: 0 }, { duration: intro.handoff.duration }));
+    });
+    at(intro.handoff.at + intro.handoff.duration + 0.05, onDone);
+
     return () => timers.forEach(clearTimeout);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [phase]);
 
   const exiting = phase === "exit";
   const { exit, counterExit } = intro;
+  // Letters roll out left to right across both lines.
+  const starts = lines.map((_, i) => lines.slice(0, i).join("").length);
 
   return (
-    <div
-      ref={overlayRef}
-      data-loader
-      aria-hidden="true"
-      className="fixed inset-0 z-[100] bg-paper text-paper-ink"
-    >
-      <div className="absolute inset-x-0 top-[49%] flex -translate-y-1/2 justify-center">
-        <span ref={nameRef} className="wide relative inline-block text-loader uppercase">
-          <RollText
-            text={name}
-            play={exiting}
-            delay={exit.at}
-            stagger={exit.stagger}
-            duration={exit.duration}
-            ease={exit.ease}
-            next={(c, i) => (keep.has(i) ? c : "")}
-            letterRef={(i) => (el) => {
-              letters.current.set(i, el);
-            }}
-          />
-        </span>
-      </div>
-
-      <div className="wide absolute right-[3.9vw] bottom-[8vh] overflow-hidden text-[clamp(1.75rem,6.3vw,7rem)] leading-none tabular-nums">
-        <motion.span
-          className="block"
-          initial={false}
-          animate={{ y: exiting ? "-110%" : "0%" }}
-          transition={{ duration: counterExit.duration, ease: counterExit.ease, delay: counterExit.at }}
-        >
-          {String(progress).padStart(3, "0")}%
-        </motion.span>
+    <div data-loader aria-hidden="true" className="pointer-events-none fixed inset-0 z-[100]">
+      <div ref={bgRef} className="pointer-events-auto absolute inset-0 bg-canvas" />
+      <div className="absolute inset-0 flex items-center justify-center">
+        <div ref={groupRef} className="relative font-sans text-loader text-ink uppercase">
+          {lines.map((word, li) => {
+            const start = starts[li];
+            const last = li === lines.length - 1;
+            return (
+              <div key={word} className="flex items-baseline">
+                <RollText
+                  text={word}
+                  play={exiting}
+                  delay={exit.at + start * exit.stagger}
+                  stagger={exit.stagger}
+                  duration={exit.duration}
+                  ease={exit.ease}
+                  next={(c, i) => (i === 0 ? c : "")}
+                  letterRef={(i) => (el) => {
+                    if (i === 0 && el) initials.current[li] = el;
+                  }}
+                />
+                {last ? (
+                  <span className="ml-[0.42em] inline-block min-w-[2.6em] overflow-hidden text-counter text-ink-muted tabular-nums">
+                    <motion.span
+                      className="block"
+                      initial={false}
+                      animate={{ y: exiting ? "-110%" : "0%" }}
+                      transition={{ duration: counterExit.duration, ease: counterExit.ease, delay: counterExit.at }}
+                    >
+                      {progress}%
+                    </motion.span>
+                  </span>
+                ) : null}
+              </div>
+            );
+          })}
+        </div>
       </div>
       <span className="sr-only" role="status">
         Loading {progress}%
       </span>
     </div>
   );
-}
-
-/** Initials (first letter of each word) and a trailing period stay. */
-function keptIndices(name: string) {
-  const keep = new Set<number>();
-  const chars = Array.from(name);
-  chars.forEach((c, i) => {
-    if (c !== " " && (i === 0 || chars[i - 1] === " ")) keep.add(i);
-  });
-  if (chars[chars.length - 1] === ".") keep.add(chars.length - 1);
-  return keep;
-}
-
-/** Horizontal offsets that pack the kept letters together, centered on the name. */
-function collapseOffsets(container: HTMLElement | null, letters: Map<number, HTMLSpanElement | null>, keep: Set<number>) {
-  if (!container) return {};
-  const box = container.getBoundingClientRect();
-  const kept = [...keep]
-    .sort((a, b) => a - b)
-    .map((i) => ({ i, rect: letters.get(i)?.getBoundingClientRect() }))
-    .filter((k): k is { i: number; rect: DOMRect } => !!k.rect);
-  const total = kept.reduce((w, k) => w + k.rect.width, 0);
-  let x = box.left + box.width / 2 - total / 2;
-  const out: Record<number, number> = {};
-  for (const k of kept) {
-    out[k.i] = x - k.rect.left;
-    x += k.rect.width;
-  }
-  return out;
-}
-
-/**
- * Visible region of the overlay for curtain progress p (0→1): everything
- * below an edge that travels from top to bottom, bowing downward in the
- * middle mid-way through, flat at both ends.
- */
-function curtainPath(p: number, w: number, h: number) {
-  const y = p * h;
-  const bow = Math.sin(Math.PI * p) * intro.curtain.bulge * h;
-  return `path("M0 ${y} Q ${w / 2} ${y + bow * 2} ${w} ${y} L ${w} ${h} L 0 ${h} Z")`;
 }

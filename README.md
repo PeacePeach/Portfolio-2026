@@ -13,9 +13,9 @@ npm run build && npm start
 | What | Where |
 |---|---|
 | Colors, type scale, spacing, grid, breakpoints, CSS easing/durations | `src/app/globals.css` (`@theme` block) |
-| Fonts | `src/design/fonts.ts` |
-| Motion timing (hero entrance, content swaps, scroll) | `src/design/motion.ts` |
-| Hero copy and line indents, loader name, nav, footer, email | `src/content/site.ts` |
+| Fonts (Archivo Narrow display, Archivo body) | `src/design/fonts.ts` |
+| Motion timing (loader, HX glide, hero roll and dock, content swaps) | `src/design/motion.ts` |
+| Hero copy, loader name, nav (Work / About / Resume), footer, email | `src/content/site.ts` |
 | Projects and case-study sections | `src/content/projects.ts` |
 | Capabilities and evidence snippets | `src/content/capabilities.ts` |
 | Data access (swap in CMS / AI-curated evidence later) | `src/content/index.ts` |
@@ -26,15 +26,17 @@ Evidence snippets carry `capabilityIds`, `projectSlug`, `sectionId` (deep link t
 
 ## Components
 
-`Header`, `Hero`, `ScrollCue`, `ExploreSection`, `ModeSelector`, `ProjectGallery`,
+`Header`, `Hero`, `ExploreSection`, `ModeSelector`, `ProjectGallery`,
 `ProjectTile`, `CapabilitySelector`, `EvidencePreview`, `Footer`, plus `ui/`
-primitives (`MaskReveal`, `FadeIn`, `Media`, `PlaceholderTag`, `Icons`).
+primitives (`RollText`, `Media`, `PlaceholderTag`, `Icons`).
 
 ## Notes
 
-- Opening sequence (loader → initials → curtain → letter roll) is timed from a frame-by-frame
-  read of a reference recording; every value lives in `intro` in `src/design/motion.ts`.
+- Opening sequence follows the Figma frames: loader counts to 100%, the name collapses to
+  "HX", which glides to the header logo; the headline rolls in, then docks to the left.
+  Every value lives in `intro` in `src/design/motion.ts`.
   Turn the loader off with `site.loader.enabled = false`.
+- `/about` and `/resume` are placeholders until content and the resume PDF are supplied.
 - Explore view state is shareable: `/?view=capability&capability=design-systems#explore`.
 - `prefers-reduced-motion` removes movement (Motion `reducedMotion="user"` + CSS guard).
 - Placeholder artwork in `public/placeholders/` is generated, not from any reference site.

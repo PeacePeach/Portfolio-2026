@@ -20,17 +20,18 @@ export const duration = {
 } as const;
 
 /**
- * Opening sequence, measured frame by frame from a screen recording of the
- * reference site (20–30 fps sampling, so values are accurate to ~50 ms).
+ * Opening sequence. Letter timing was measured frame by frame from a
+ * recording of the reference site; the logo glide and the headline dock
+ * follow Han's Figma frames (loader 1:7 → home 1:5 → docked 2:283).
  *
- *   loader   light screen, name + 000→100% counter (~2.25 s), hold ~0.65 s
- *   exit     every letter rolls up out of a mask, left to right; only the
- *            initials and the final period roll back in; counter rolls out
- *   collapse the remaining initials slide together into a monogram
- *   curtain  the dark page drops in from the top with a curved bottom edge
- *   roll     each hero line flips through a duplicate copy of itself,
- *            letter by letter, lines staggered top to bottom
- *   details  meta label, supporting copy and scroll button settle last
+ *   loader   dark screen, two-line name + 0→100% counter, hold at 100%
+ *   exit     every letter rolls up out of its mask, left to right; only
+ *            each word's first letter rolls back in; the counter rolls out
+ *   collapse the initials slide together into "HX" at the centre
+ *   logo     HX glides to the top-left and shrinks into the header logo
+ *   reveal   the loader background fades and the home page shows through
+ *   roll     each headline line flips through a copy of itself
+ *   dock     once the roll ends, the headline block slides to the left
  *
  * Times are seconds after the counter reaches 100%, except `loader`.
  */
@@ -44,21 +45,16 @@ export const intro = {
     hold: 0.65,
   },
   exit: { at: 0.65, duration: 0.45, stagger: 0.045, ease: ease.inOutQuart },
-  counterExit: { at: 0.85, duration: 0.35, ease: ease.inOutQuart },
-  collapse: { at: 1.7, duration: 0.45, ease: ease.inOutQuart },
-  curtain: {
-    at: 1.65,
-    duration: 0.85,
-    ease: ease.curtain,
-    /** depth of the curved edge, as a fraction of viewport height */
-    bulge: 0.06,
-    /** the page drifts down into place as the curtain lands */
-    parallax: { from: "-12vh", duration: 1.4, ease: ease.outExpo },
-  },
-  roll: { at: 2.05, lineStagger: 0.25, charStagger: 0.025, duration: 0.42, ease: ease.inOutQuart },
-  meta: { at: 2.3, duration: 0.7, ease: ease.outExpo },
-  copy: { at: 2.6, duration: 0.8, stagger: 0.06, ease: ease.outExpo },
-  cue: { at: 2.45, duration: 0.9, ease: ease.outExpo },
+  counterExit: { at: 0.75, duration: 0.35, ease: ease.inOutQuart },
+  collapse: { at: 1.3, duration: 0.65, ease: ease.inOutQuart },
+  logo: { at: 2.15, duration: 1.0, ease: ease.inOutQuart },
+  reveal: { at: 2.45, duration: 0.7, ease: ease.standard },
+  /** loader HX hands over to the real header logo */
+  handoff: { at: 3.15, duration: 0.25 },
+  nav: { at: 2.9, duration: 0.7, ease: ease.outExpo },
+  roll: { at: 2.75, lineStagger: 0.25, charStagger: 0.025, duration: 0.42, ease: ease.inOutQuart },
+  copy: { at: 3.3, duration: 0.8, ease: ease.outExpo },
+  dock: { at: 4.35, duration: 1.1, ease: ease.inOutQuart },
 } as const;
 
 /** When the loader is skipped (reduced motion, or disabled), reveals start here. */

@@ -3,35 +3,35 @@
  */
 export const site = {
   name: "Han Xu",
-  /** Header wordmark, e.g. first name + last initial. */
-  shortName: "Han X.",
-  role: "Product Design Leadership",
-  title: "Han Xu — Product Design Leadership",
-  description: "Making complex products and systems understandable, useful, and meaningful.",
+  /** Header logo; the loader collapses the name into it. */
+  shortName: "HX",
+  role: "Product Design Lead",
+  title: "Han Xu — Product Design Lead",
+  description:
+    "Product Design Lead with 10+ years across fintech and B2B SaaS, turning ambiguity and complexity into clear product direction for users and businesses.",
   email: "hello@example.com",
 
-  /** Opening loader. The name collapses to its initials and final period. */
+  /** Opening loader. Each word's first letter stays and forms the logo. */
   loader: {
     enabled: true,
-    name: "Han Xu.",
+    /** One entry per line. */
+    lines: ["Han", "Xu"],
   },
 
-  nav: [{ label: "Work", href: "/#explore" }],
-  cta: { label: "Get in touch", href: "/#contact" },
+  nav: [
+    { label: "Work", href: "/#explore" },
+    { label: "About", href: "/about" },
+    // Placeholder until the resume file is added (e.g. /public/resume.pdf).
+    { label: "Resume", href: "/resume" },
+  ],
 
   hero: {
-    /** One entry per line. `indent` is in em of the headline size. */
-    statement: [
-      { text: "Designing", indent: 0.9 },
-      { text: "for", indent: 0.9 },
-      { text: "complexity.", indent: 0 },
-    ],
+    /** One entry per line. */
+    statement: ["Designing", "for", "complexity"],
     /** Which line the supporting copy sits beside on desktop. */
     asideLine: 1,
-    description: "Making complex products and systems understandable, useful, and meaningful.",
-    index: "01 // 02",
-    scrollLabel: "Scroll",
-    scrollButtonLabel: "Scroll to Explore my work",
+    description:
+      "Product Design Lead with 10+ years across fintech and B2B SaaS, turning ambiguity and complexity into clear product direction for users and businesses.",
   },
 
   explore: {
