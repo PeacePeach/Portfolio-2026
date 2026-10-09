@@ -34,7 +34,7 @@ export function Hero() {
   const aside = useAsidePosition(blockRef, lineRefs, asideLine);
 
   return (
-    <section aria-labelledby="hero-title" className="relative min-h-svh overflow-hidden bg-canvas md:h-svh">
+    <section aria-labelledby="hero-title" className="relative min-h-svh overflow-hidden bg-background md:h-svh">
       <div
         className={`container-page flex min-h-svh flex-col pt-[22svh] pb-4 md:pt-[30.25svh] md:pb-0 ${
           docked ? "md:items-start" : "md:items-center"

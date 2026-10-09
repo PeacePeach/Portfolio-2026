@@ -14,7 +14,7 @@ let navRevealed = false;
 
 /**
  * Fixed header (Figma 1:5, bar from 45:24842): HX logo left, Work / About /
- * Resume right, on a 50 % canvas bar with a background blur, so it stays
+ * Resume right, on a 50 % background bar with a background blur, so it stays
  * readable over whatever scrolls under it. The current section's link is
  * full white, the others 60 % (Figma 41:24828).
  * During the intro the loader's initials glide onto the logo, so the logo
@@ -30,7 +30,7 @@ export function Header() {
 
   return (
     <header
-      className="fixed inset-x-0 top-0 z-40 bg-[rgba(13,13,13,0.5)] backdrop-blur-[25px]"
+      className="fixed inset-x-0 top-0 z-40 bg-background/50 backdrop-blur-[25px]"
       style={{ viewTransitionName: "site-header" }}
     >
       <div className="container-page flex h-header-bar items-center justify-between gap-6">

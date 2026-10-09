@@ -26,7 +26,7 @@ export function ProjectTile({
           ratio={ratio}
           sizes={sizes}
           imageClassName="transition-transform duration-(--duration-image) ease-out-expo group-hover:scale-[1.035]"
-          className="after:pointer-events-none after:absolute after:inset-0 after:bg-canvas/0 after:transition-colors after:duration-(--duration-slow) group-hover:after:bg-canvas/10"
+          className="after:pointer-events-none after:absolute after:inset-0 after:bg-background/0 after:transition-colors after:duration-(--duration-slow) group-hover:after:bg-background/10"
         />
         <div className="mt-5 grid grid-cols-[3rem_1fr_auto] items-baseline gap-x-3">
           <span className="type-label-s text-tertiary">{String(index + 1).padStart(2, "0")}</span>

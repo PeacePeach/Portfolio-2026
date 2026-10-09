@@ -176,7 +176,7 @@ function Loader({
 
   return (
     <div data-loader aria-hidden="true" className="pointer-events-none fixed inset-0 z-[100]">
-      <div ref={bgRef} className="pointer-events-auto absolute inset-0 bg-canvas" />
+      <div ref={bgRef} className="pointer-events-auto absolute inset-0 bg-background" />
       <div className="absolute inset-0 flex translate-x-[1.98vw] translate-y-[2.76svh] items-center justify-center">
         <div ref={groupRef} className="relative type-display-l text-primary uppercase">
           {lines.map((word, li) => {

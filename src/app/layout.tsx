@@ -11,14 +11,14 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0a0a0a",
+  themeColor: "#0e0e0e", // = --color-background (metadata cannot read CSS variables)
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={fontVariables} data-scroll-behavior="smooth">
       <body>
-        <a href="#main" className="type-label-s sr-only z-50 bg-ink px-3 py-2 text-canvas focus:not-sr-only focus:fixed focus:top-3 focus:left-3">
+        <a href="#main" className="type-label-s sr-only z-50 bg-ink px-3 py-2 text-background focus:not-sr-only focus:fixed focus:top-3 focus:left-3">
           Skip to content
         </a>
         <noscript>

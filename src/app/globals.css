@@ -12,7 +12,7 @@
 @theme {
   /* ---- Color -------------------------------------------------------- */
   --color-*: initial;
-  --color-canvas: #0d0d0d;          /* page and loader background */
+  --color-background: #0e0e0e;      /* page background: every page, the loader, the top nav bar (at 50 %) */
   --color-surface: #141414;         /* image placeholders, raised areas */
   --color-surface-2: #1c1c1c;
   /* Text: the only three text colours. Change a value here and every text
@@ -164,12 +164,12 @@
 /* ---- Base ------------------------------------------------------------ */
 @layer base {
   html {
-    background: var(--color-canvas);
+    background: var(--color-background);
     color-scheme: dark;
     -webkit-text-size-adjust: 100%;
   }
   body {
-    background: var(--color-canvas);
+    background: var(--color-background);
     color: var(--color-primary);
     font-family: var(--font-sans);
     font-size: var(--text-body-m);
@@ -181,7 +181,7 @@
   }
   ::selection {
     background: var(--color-ink);
-    color: var(--color-canvas);
+    color: var(--color-background);
   }
   :focus-visible {
     outline: 1px solid var(--color-ink);

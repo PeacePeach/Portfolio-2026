@@ -280,9 +280,9 @@ function FilterBox({
       >
         {checked ? (
           radio ? (
-            <span className="size-1.5 rounded-full bg-canvas" />
+            <span className="size-1.5 rounded-full bg-background" />
           ) : (
-            <Check size={10} strokeWidth={3} className="text-canvas" />
+            <Check size={10} strokeWidth={3} className="text-background" />
           )
         ) : null}
       </span>
