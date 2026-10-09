@@ -8,7 +8,7 @@ import { workCopy } from "@/content/work";
 import { useLike } from "@/lib/likes";
 
 /** Counters keep a fixed width so a like never shifts the pencil beside it. */
-const count = "min-w-[3ch] text-left tabular-nums";
+const count = "min-w-[2ch] text-left tabular-nums";
 
 const kinds = {
   case: { icon: Grid, ...workCopy.fragment.case },
@@ -70,7 +70,7 @@ export function PowerFragmentCard({ fragment }: { fragment: PowerFragment }) {
             <h3 className="line-clamp-2 type-display-xs text-ink">{fragment.title}</h3>
             <p className="line-clamp-6 type-body-s text-ink/60">{fragment.body}</p>
           </div>
-          <div className="flex h-[1.125rem] items-center gap-3 type-body-xs text-ink">
+          <div className="flex h-[1.125rem] items-center gap-1.5 type-body-xs text-ink">
             <button
               type="button"
               onClick={toggle}
