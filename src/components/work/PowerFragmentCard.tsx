@@ -7,6 +7,9 @@ import type { PowerFragment } from "@/content/types";
 import { workCopy } from "@/content/work";
 import { useLike } from "@/lib/likes";
 
+/** Counters keep a fixed width so a like never shifts the pencil beside it. */
+const count = "min-w-[3ch] text-left tabular-nums";
+
 const kinds = {
   case: { icon: Grid, ...workCopy.fragment.case },
   story: { icon: BookOpen, ...workCopy.fragment.story },
@@ -76,12 +79,12 @@ export function PowerFragmentCard({ fragment }: { fragment: PowerFragment }) {
               className="relative z-[2] flex cursor-pointer items-center gap-1 transition-transform duration-(--duration-fast) active:scale-90"
             >
               <Heart size={16} strokeWidth={1.33} fill={liked ? "currentColor" : "none"} aria-hidden />
-              {fragment.likes + (liked ? 1 : 0)}
+              <span className={count}>{fragment.likes + (liked ? 1 : 0)}</span>
             </button>
             {/* Visitor responses, added on the detail page (planned). Display only here. */}
             <span className="flex items-center gap-1" aria-label={`${fragment.notes} responses`}>
               <Edit2 size={16} strokeWidth={1.33} aria-hidden />
-              {fragment.notes}
+              <span className={count}>{fragment.notes}</span>
             </span>
           </div>
         </div>
