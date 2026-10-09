@@ -2,13 +2,17 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Project } from "@/content/types";
 import { caseStudyFilters } from "@/content/work";
+import { SceneStage } from "@/components/scenes/SceneStage";
+import { NEO_TILE } from "@/components/scenes/neo-advance/frames";
+import { NeoAdvanceAnimation } from "@/components/scenes/neo-advance/NeoAdvanceAnimation";
 
 const tagLabel = (id: string) => caseStudyFilters.find((f) => f.id === id)?.label ?? id;
 
 /**
  * Work page tile (Figma 21:196). Shows the project artwork; on hover or
  * keyboard focus a blurred panel rises with the name, description and tags.
- * Touch screens show the panel all the time.
+ * Touch screens show the panel all the time. A project with a `scene`
+ * plays it as a looping live animation in place of the artwork.
  */
 export function ProjectCard({ project }: { project: Project }) {
   const shown =
@@ -20,7 +24,11 @@ export function ProjectCard({ project }: { project: Project }) {
       href={`/work/${project.slug}`}
       className="group relative block aspect-[422/314] overflow-hidden rounded-[10px] bg-tile outline-offset-4"
     >
-      {project.image ? (
+      {project.scene === "neo-advance" ? (
+        <SceneStage width={NEO_TILE.width} height={NEO_TILE.height} className="absolute! inset-0">
+          <NeoAdvanceAnimation rounded={false} />
+        </SceneStage>
+      ) : project.image ? (
         <div className="absolute inset-0 animate-drift">
           <Image
             src={project.image.src}

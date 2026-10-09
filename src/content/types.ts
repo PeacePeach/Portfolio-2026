@@ -29,6 +29,8 @@ export type Project = {
   meta: string[];
   year?: string;
   image?: ImageRef;
+  /** Live animated scene shown on the Work page tile instead of the image. */
+  scene?: "neo-advance";
   /** One line shown on the Work page tile. */
   description: string;
   /** Case study filters (ids from src/content/work.ts), shown as tags on the tile. */

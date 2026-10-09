@@ -111,15 +111,25 @@ function useTrack<T extends number | string = number>(t: MotionValue<number>, ke
   return useTransform(t, times, values, { ease: eases });
 }
 
-export function NeoAdvanceAnimation({ at: still, label = "Neo Advance: a transfer covered by an advance unlocks a higher limit" }: { at?: number; label?: string }) {
+export function NeoAdvanceAnimation({
+  at: still,
+  label = "Neo Advance: a transfer covered by an advance unlocks a higher limit",
+  rounded = true,
+}: {
+  at?: number;
+  label?: string;
+  /** Figma's 15 px tile corners; off when the host already clips the corners. */
+  rounded?: boolean;
+}) {
   const reduce = useReducedMotion();
   // The server can't know the preference; switch only after hydration.
   const hydrated = useSyncExternalStore(noop, () => true, () => false);
-  if (reduce && hydrated && still === undefined) return <ReducedLoop label={label} />;
-  return <Loop still={still} label={label} />;
+  const corners = rounded ? "rounded-[15px]" : "";
+  if (reduce && hydrated && still === undefined) return <ReducedLoop label={label} corners={corners} />;
+  return <Loop still={still} label={label} corners={corners} />;
 }
 
-function Loop({ still, label }: { still?: number; label: string }) {
+function Loop({ still, label, corners }: { still?: number; label: string; corners: string }) {
   const root = useRef<HTMLDivElement>(null);
   const inView = useInView(root, { margin: "100px" });
   const t = useMotionValue(still ?? 0);
@@ -332,7 +342,7 @@ function Loop({ still, label }: { still?: number; label: string }) {
   return (
     <div
       ref={root}
-      className="relative overflow-hidden rounded-[15px] font-sans"
+      className={`relative overflow-hidden font-sans ${corners}`}
       style={{ width: NEO_TILE.width, height: NEO_TILE.height, backgroundImage: neo.tile }}
       role="img"
       aria-label={label}
@@ -592,7 +602,7 @@ function Sparkle({ t, index, x, y, dx, dy, size, fill }: { t: MotionValue<number
 
 const reducedHold = 2000;
 
-function ReducedLoop({ label }: { label: string }) {
+function ReducedLoop({ label, corners }: { label: string; corners: string }) {
   const [index, setIndex] = useState(0);
   useEffect(() => {
     const id = window.setInterval(() => setIndex((i) => (i + 1) % neoFrames.length), reducedHold);
@@ -600,7 +610,7 @@ function ReducedLoop({ label }: { label: string }) {
   }, []);
   return (
     <div
-      className="relative overflow-hidden rounded-[15px]"
+      className={`relative overflow-hidden ${corners}`}
       style={{ width: NEO_TILE.width, height: NEO_TILE.height, backgroundImage: neo.tile }}
       role="img"
       aria-label={label}

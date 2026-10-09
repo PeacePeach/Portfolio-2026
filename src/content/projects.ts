@@ -5,6 +5,7 @@ export const projects: Project[] = [
   {
     slug: "neo-advance",
     image: { src: "/placeholders/neo-advance.svg", alt: "", width: 1600, height: 1200 },
+    scene: "neo-advance",
     title: "Neo Advance",
     description: "Connecting banking, credit, and progression into one experience",
     tags: ["fintech", "insights-analytics"],
