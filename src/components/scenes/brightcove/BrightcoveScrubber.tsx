@@ -13,7 +13,7 @@ export function BrightcoveScrubber() {
       <SceneStage width={TILE.width} height={TILE.height} className="rounded-[15px]">
         <BrightcoveAnimation at={time} />
       </SceneStage>
-      <label className="flex w-full items-center gap-4 type-body-xs text-ink-muted">
+      <label className="flex w-full items-center gap-4 type-body-xs text-tertiary">
         <input
           type="range"
           min={0}

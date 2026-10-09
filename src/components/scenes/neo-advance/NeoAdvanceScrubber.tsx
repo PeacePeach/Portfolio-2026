@@ -13,7 +13,7 @@ export function NeoAdvanceScrubber() {
       <SceneStage width={NEO_TILE.width} height={NEO_TILE.height} className="rounded-[15px]">
         <NeoAdvanceAnimation at={time} />
       </SceneStage>
-      <label className="flex w-full items-center gap-4 type-body-xs text-ink-muted">
+      <label className="flex w-full items-center gap-4 type-body-xs text-tertiary">
         <input
           type="range"
           min={0}

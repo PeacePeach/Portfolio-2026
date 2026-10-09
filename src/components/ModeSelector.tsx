@@ -27,7 +27,7 @@ export function ModeSelector<T extends string>({
 
   return (
     <div className="flex flex-col gap-4 md:flex-row md:items-end md:gap-10">
-      <span className="type-label-s text-ink-faint md:pb-[0.6em]" id={`${idPrefix}-label`}>
+      <span className="type-label-s text-tertiary md:pb-[0.6em]" id={`${idPrefix}-label`}>
         View by
       </span>
       <div
@@ -51,10 +51,10 @@ export function ModeSelector<T extends string>({
               onClick={() => onChange(m.id)}
               className={cn(
                 "group relative cursor-pointer pb-2 text-left type-display-m transition-colors duration-(--duration-base) ease-out-expo",
-                selected ? "text-ink" : "text-ink-faint hover:text-ink-muted",
+                selected ? "text-primary" : "text-secondary hover:text-primary",
               )}
             >
-              <span className="type-label-s absolute -top-4 left-0 text-ink-faint">({String(i + 1).padStart(2, "0")})</span>
+              <span className="type-label-s absolute -top-4 left-0 text-tertiary">({String(i + 1).padStart(2, "0")})</span>
               {m.label}
               {selected ? (
                 <motion.span

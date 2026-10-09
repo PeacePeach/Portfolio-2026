@@ -33,7 +33,7 @@ export function KnowMe({ className = "" }: { className?: string }) {
       className={`w-[14.25rem] type-body-m-tight ${className}`}
     >
       <nav aria-label={heading}>
-        <p className="uppercase text-ink/60">{heading}</p>
+        <p className="uppercase text-secondary">{heading}</p>
         <ul className="mt-9" onMouseLeave={() => setActive(null)}>
           {options.map((option, i) => {
             const open = active === i;
@@ -71,7 +71,7 @@ export function KnowMe({ className = "" }: { className?: string }) {
                         className="block overflow-hidden"
                       >
                         <span aria-hidden="true" className="block pt-2 pb-3">
-                          <span className="block type-body-s text-ink/60">{option.hint}</span>
+                          <span className="block type-body-s text-secondary">{option.hint}</span>
                         </span>
                         {/* Room for the underline below */}
                         <span aria-hidden="true" className="block h-(--underline-thickness)" />

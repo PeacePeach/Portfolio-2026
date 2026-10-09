@@ -20,7 +20,7 @@ export default function NeoAdvanceScenesPage() {
       <Header />
       <main id="main" className="container-page pt-[calc(var(--spacing-header)+3rem)] pb-section">
         <h1 className="type-display-m">Neo Advance scenes</h1>
-        <p className="mt-4 max-w-[60ch] type-body-m text-ink-muted">
+        <p className="mt-4 max-w-[60ch] type-body-m text-secondary">
           Figma 31:6146, “Animation 1”. Five frames joined into one continuous loop, in HTML, CSS and SVG.
         </p>
 
@@ -29,7 +29,7 @@ export default function NeoAdvanceScenesPage() {
             <SceneStage width={NEO_TILE.width} height={NEO_TILE.height} className="rounded-[15px]">
               <NeoAdvanceAnimation />
             </SceneStage>
-            <p className="type-body-xs text-ink-muted">Loop, 9.6s</p>
+            <p className="type-body-xs text-tertiary">Loop, 9.6s</p>
           </div>
           <NeoAdvanceScrubber />
         </div>
@@ -41,7 +41,7 @@ export default function NeoAdvanceScenesPage() {
               <SceneStage width={NEO_TILE.width} height={NEO_TILE.height} className="rounded-[15px]">
                 <NeoAdvanceScene frame={f.id} />
               </SceneStage>
-              <p className="type-body-xs text-ink-muted">
+              <p className="type-body-xs text-tertiary">
                 {i + 1}. {f.label} · Figma {f.figma}
               </p>
             </li>

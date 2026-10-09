@@ -41,7 +41,7 @@ export function CapabilitySelector({
             className={cn(
               "group relative grid cursor-pointer grid-cols-[2.25rem_1fr_auto] items-baseline border-t border-line py-5 text-left md:grid-cols-[3rem_1fr_auto] md:py-6",
               "transition-colors duration-(--duration-base) ease-out-expo",
-              selected ? "text-ink" : "text-ink-faint hover:text-ink-muted",
+              selected ? "text-primary" : "text-secondary hover:text-primary",
             )}
           >
             {selected ? (

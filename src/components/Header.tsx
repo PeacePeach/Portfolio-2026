@@ -39,7 +39,7 @@ export function Header() {
           {...slideBack}
           aria-label={site.name}
           data-logo
-          className="type-brand uppercase text-ink transition-opacity duration-(--duration-fast)"
+          className="type-brand uppercase text-primary transition-opacity duration-(--duration-fast)"
           style={{ opacity: logoShown ? 1 : 0 }}
         >
           {site.shortName}
@@ -69,7 +69,7 @@ export function Header() {
                       if (item.href === "/work" && window.location.pathname !== "/work") markPageSlide();
                     }}
                     className={`hover-underline font-sans text-[0.875rem] leading-[1.3] tracking-[-0.03em] uppercase transition-colors duration-(--duration-base) ${
-                      current ? "text-ink" : "text-ink/60 hover:text-ink"
+                      current ? "text-primary" : "text-secondary hover:text-primary"
                     }`}
                   >
                     {item.label}

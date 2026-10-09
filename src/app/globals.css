@@ -15,9 +15,14 @@
   --color-canvas: #0d0d0d;          /* page and loader background */
   --color-surface: #141414;         /* image placeholders, raised areas */
   --color-surface-2: #1c1c1c;
-  --color-ink: #ffffff;             /* primary text */
-  --color-ink-muted: #898989;       /* secondary text, loader percentage */
-  --color-ink-faint: #4b4b4b;       /* inactive labels, indices */
+  /* Text: the only three text colours. Change a value here and every text
+     using it follows (text-primary / text-secondary / text-tertiary). A
+     future theme overrides these three variables, nothing else. */
+  --color-primary: #f0efec;         /* headings, body, important labels, active nav */
+  --color-secondary: #c3c2b8;       /* supporting copy, secondary content, inactive nav */
+  --color-tertiary: #898782;        /* metadata, indices, timestamps, placeholders */
+  --color-ink: #ffffff;             /* white for non-text: fills, borders, focus ring, selection */
+  --color-ink-muted: #898989;       /* arrow icons */
   --color-line: #262626;            /* hairlines */
   --color-line-strong: #3a3a3a;
   --color-tile: #171717;            /* empty project tile */
@@ -165,7 +170,7 @@
   }
   body {
     background: var(--color-canvas);
-    color: var(--color-ink);
+    color: var(--color-primary);
     font-family: var(--font-sans);
     font-size: var(--text-body-m);
     line-height: var(--text-body-m--line-height);

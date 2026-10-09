@@ -29,13 +29,13 @@ export function ProjectTile({
           className="after:pointer-events-none after:absolute after:inset-0 after:bg-canvas/0 after:transition-colors after:duration-(--duration-slow) group-hover:after:bg-canvas/10"
         />
         <div className="mt-5 grid grid-cols-[3rem_1fr_auto] items-baseline gap-x-3">
-          <span className="type-label-s text-ink-faint">{String(index + 1).padStart(2, "0")}</span>
+          <span className="type-label-s text-tertiary">{String(index + 1).padStart(2, "0")}</span>
           <h3 className="type-heading-l">{project.title}</h3>
           <ArrowUpRight className="size-5 self-center text-ink-muted transition-transform duration-(--duration-base) ease-out-expo group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:text-ink" />
-          <p className="col-start-2 col-end-4 mt-3 max-w-[48ch] text-ink-muted">{project.summary}</p>
+          <p className="col-start-2 col-end-4 mt-3 max-w-[48ch] text-secondary">{project.summary}</p>
           <div className="col-start-2 col-end-4 mt-4 flex flex-wrap items-center gap-x-4 gap-y-2">
-            <span className="type-label-s text-ink-faint">{project.meta.join(" / ")}</span>
-            {project.year ? <span className="type-label-s text-ink-faint">{project.year}</span> : null}
+            <span className="type-label-s text-tertiary">{project.meta.join(" / ")}</span>
+            {project.year ? <span className="type-label-s text-tertiary">{project.year}</span> : null}
             <PlaceholderTag status={project.status} />
           </div>
         </div>

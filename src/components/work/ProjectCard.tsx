@@ -110,7 +110,7 @@ export function ProjectCard({ project }: { project: Project }) {
         ) : null}
 
         <div
-          className={`absolute inset-x-0 bottom-0 flex min-h-[51.3%] translate-y-2 flex-col justify-center text-[#fff] transition-transform duration-(--duration-underline) ease-out-expo group-hover:translate-y-0 group-focus-visible:translate-y-0 [@media(hover:none)]:translate-y-0`}
+          className={`absolute inset-x-0 bottom-0 flex min-h-[51.3%] translate-y-2 flex-col justify-center text-primary transition-transform duration-(--duration-underline) ease-out-expo group-hover:translate-y-0 group-focus-visible:translate-y-0 [@media(hover:none)]:translate-y-0`}
         >
           {/* Frame 35: 70 % black over a 50 px background blur. Explicit colours: the palette has no black.
             The panel runs 1 px past the tile's sides and 20 px past its bottom, and the tile's rounded clip

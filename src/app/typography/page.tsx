@@ -12,7 +12,7 @@ export default function TypographyPage() {
       <Header />
       <main id="main" className="container-page pt-[calc(var(--spacing-header)+3rem)] pb-section">
         <h1 className="type-display-m">Typography</h1>
-        <p className="mt-4 max-w-[60ch] type-body-m text-ink-muted">
+        <p className="mt-4 max-w-[60ch] type-body-m text-secondary">
           Semantic type styles from the Figma type spec. Components use the type-* classes only.
         </p>
         <ul className="mt-16 divide-y divide-line border-y border-line">
@@ -20,9 +20,9 @@ export default function TypographyPage() {
             <li key={s.token} className="grid gap-4 py-8 md:grid-cols-[16rem_1fr]">
               <div className="space-y-1">
                 <p className="type-label-s">{s.token}</p>
-                <p className="type-body-xs text-ink-muted">Figma: {s.figma}</p>
-                <p className="type-body-xs text-ink-muted">{s.spec}</p>
-                <p className="type-body-xs text-ink-faint">{s.use}</p>
+                <p className="type-body-xs text-tertiary">Figma: {s.figma}</p>
+                <p className="type-body-xs text-tertiary">{s.spec}</p>
+                <p className="type-body-xs text-tertiary">{s.use}</p>
               </div>
               <p className={`${s.token} min-w-0 break-words`}>Designing for complexity</p>
             </li>

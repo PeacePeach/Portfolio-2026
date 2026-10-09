@@ -75,10 +75,10 @@ export function ExploreSection({
   return (
     <section id={id} aria-labelledby={`${id}-title`} tabIndex={-1} className="container-page pt-section outline-none">
       <div className="grid-page items-end gap-y-8 border-t border-line pt-6">
-        <p className="type-label-s col-span-4 md:col-span-3 text-ink-muted">
-          02 <span className="text-ink-faint">{"//"}</span> 02
+        <p className="type-label-s col-span-4 md:col-span-3 text-tertiary">
+          02 <span className="text-tertiary">{"//"}</span> 02
         </p>
-        <p className="type-label-s col-span-4 md:col-span-4 md:col-start-9 text-ink-muted">{site.explore.intro}</p>
+        <p className="type-label-s col-span-4 md:col-span-4 md:col-start-9 text-secondary">{site.explore.intro}</p>
       </div>
 
       <h2 id={`${id}-title`} className="mt-10 type-display-l uppercase md:mt-16">

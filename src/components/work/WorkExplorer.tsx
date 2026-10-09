@@ -102,7 +102,7 @@ export function WorkExplorer({
           animate={leaving ? { opacity: 0, x: -20 } : { opacity: 1, x: 0 }}
           transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
         >
-          <p className="type-body-s uppercase text-ink/60">{workCopy.heading}</p>
+          <p className="type-body-s uppercase text-secondary">{workCopy.heading}</p>
           <ul className="mt-5 flex flex-col gap-4">
             {workViews.map((w) => {
               const Icon = icons[w.icon];
@@ -116,7 +116,7 @@ export function WorkExplorer({
                     aria-pressed={active}
                     onClick={() => choose(w.id)}
                     className={`flex cursor-pointer items-center gap-2 type-body-s transition-colors duration-(--duration-base) ${
-                      active ? "text-ink" : "text-ink/60 hover:text-ink"
+                      active ? "text-primary" : "text-secondary hover:text-primary"
                     }`}
                   >
                     <Icon {...iconProps} />
@@ -149,7 +149,7 @@ export function WorkExplorer({
           transition={{ duration: 0.25, ease: "easeOut" }}
         >
           {view === "hanxgpt" ? (
-            <p className="type-body-m text-ink-muted">{workCopy.hanxgpt}</p>
+            <p className="type-body-m text-secondary">{workCopy.hanxgpt}</p>
           ) : view === "super-powers" ? (
             <PowerView power={power} />
           ) : (
@@ -164,10 +164,10 @@ export function WorkExplorer({
 function PowerView({ power }: { power: SuperPower }) {
   return (
     <section aria-labelledby={`power-${power.id}`}>
-      <h2 id={`power-${power.id}`} className="-mt-[0.3125rem] type-display-s uppercase text-ink">
+      <h2 id={`power-${power.id}`} className="-mt-[0.3125rem] type-display-s uppercase text-primary">
         {power.title}
       </h2>
-      <p className="mt-3.5 max-w-[47.8125rem] type-body-m text-ink">{power.description}</p>
+      <p className="mt-3.5 max-w-[47.8125rem] type-body-m text-primary">{power.description}</p>
       <ul className="mt-14 grid gap-4 xl:grid-cols-2">
         {power.fragments.map((f) => (
           <li key={f.id}>
@@ -181,7 +181,7 @@ function PowerView({ power }: { power: SuperPower }) {
 
 function ProjectGrid({ projects }: { projects: Project[] }) {
   const reduce = useReducedMotion();
-  if (!projects.length) return <p className="type-body-m text-ink-muted">{workCopy.empty}</p>;
+  if (!projects.length) return <p className="type-body-m text-secondary">{workCopy.empty}</p>;
   return (
     <ul className="grid gap-4 sm:grid-cols-2">
       <AnimatePresence mode="popLayout" initial={false}>
@@ -287,7 +287,7 @@ function FilterBox({
         ) : null}
       </span>
       <span
-        className={`transition-colors duration-(--duration-base) ${checked ? "text-ink" : "text-ink/60 hover:text-ink"}`}
+        className={`transition-colors duration-(--duration-base) ${checked ? "text-primary" : "text-secondary hover:text-primary"}`}
       >
         {label}
       </span>

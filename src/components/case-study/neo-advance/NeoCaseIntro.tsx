@@ -37,9 +37,9 @@ export function NeoCaseIntro({ children }: { children?: ReactNode }) {
           <dl className="mt-[7.625rem] flex flex-wrap gap-x-12 gap-y-8">
             {intro.facts.map((f) => (
               <div key={f.label} className="flex flex-col gap-1">
-                <dt className="type-label-s text-ink">{f.label}</dt>
+                <dt className="type-label-s text-primary">{f.label}</dt>
                 {f.items.map((item) => (
-                  <dd key={item} className="type-body-s text-ink/60">
+                  <dd key={item} className="type-body-s text-secondary">
                     {item}
                   </dd>
                 ))}

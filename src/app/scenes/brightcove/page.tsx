@@ -18,7 +18,7 @@ export default function BrightcoveScenePage() {
       <Header />
       <main id="main" className="container-page pt-[calc(var(--spacing-header)+3rem)] pb-section">
         <h1 className="type-display-m">Brightcove scene</h1>
-        <p className="mt-4 max-w-[60ch] type-body-m text-ink-muted">
+        <p className="mt-4 max-w-[60ch] type-body-m text-secondary">
           Figma 35:19621, “Animation _ Beacon”. The CMS screenshot shrinks from the zoomed-in first frame to the whole
           screen, rests, then fades back to the first frame.
         </p>
@@ -28,7 +28,7 @@ export default function BrightcoveScenePage() {
             <SceneStage width={TILE.width} height={TILE.height} className="rounded-[15px]">
               <BrightcoveAnimation />
             </SceneStage>
-            <p className="type-body-xs text-ink-muted">Loop</p>
+            <p className="type-body-xs text-tertiary">Loop</p>
           </div>
           <BrightcoveScrubber />
         </div>
@@ -40,7 +40,7 @@ export default function BrightcoveScenePage() {
               <SceneStage width={TILE.width} height={TILE.height} className="rounded-[15px]">
                 <BrightcoveAnimation at={time} />
               </SceneStage>
-              <p className="type-body-xs text-ink-muted">
+              <p className="type-body-xs text-tertiary">
                 Frame {i + 1} · {time.toFixed(1)}s
               </p>
             </li>

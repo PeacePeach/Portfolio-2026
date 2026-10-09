@@ -18,7 +18,7 @@ export default function MutexaScenePage() {
       <Header />
       <main id="main" className="container-page pt-[calc(var(--spacing-header)+3rem)] pb-section">
         <h1 className="type-display-m">Mutexa scene</h1>
-        <p className="mt-4 max-w-[60ch] type-body-m text-ink-muted">
+        <p className="mt-4 max-w-[60ch] type-body-m text-secondary">
           Figma 34:12825, “Animation _ Mutexa”. One rotated card composition on a fixed background, tracked by a camera
           through the five Figma frames, each card animating as it comes into focus.
         </p>
@@ -28,7 +28,7 @@ export default function MutexaScenePage() {
             <SceneStage width={TILE.width} height={TILE.height} className="rounded-[15px]">
               <MutexaAnimation />
             </SceneStage>
-            <p className="type-body-xs text-ink-muted">Loop</p>
+            <p className="type-body-xs text-tertiary">Loop</p>
           </div>
           <MutexaScrubber />
         </div>
@@ -40,7 +40,7 @@ export default function MutexaScenePage() {
               <SceneStage width={TILE.width} height={TILE.height} className="rounded-[15px]">
                 <MutexaAnimation at={time} />
               </SceneStage>
-              <p className="type-body-xs text-ink-muted">
+              <p className="type-body-xs text-tertiary">
                 Frame {i + 1} · {time.toFixed(1)}s
               </p>
             </li>

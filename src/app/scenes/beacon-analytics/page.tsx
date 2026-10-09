@@ -18,7 +18,7 @@ export default function BeaconAnalyticsScenePage() {
       <Header />
       <main id="main" className="container-page pt-[calc(var(--spacing-header)+3rem)] pb-section">
         <h1 className="type-display-m">Beacon Analytics scene</h1>
-        <p className="mt-4 max-w-[60ch] type-body-m text-ink-muted">
+        <p className="mt-4 max-w-[60ch] type-body-m text-secondary">
           Figma 41:23982, “Animation _ Brightcove insights”. The Views card holds still while the total counts up and
           the line draws in, then fades back to empty.
         </p>
@@ -28,7 +28,7 @@ export default function BeaconAnalyticsScenePage() {
             <SceneStage width={TILE.width} height={TILE.height} className="rounded-[15px]">
               <BeaconAnalyticsAnimation />
             </SceneStage>
-            <p className="type-body-xs text-ink-muted">Loop</p>
+            <p className="type-body-xs text-tertiary">Loop</p>
           </div>
           <BeaconAnalyticsScrubber />
         </div>
@@ -38,7 +38,7 @@ export default function BeaconAnalyticsScenePage() {
           <SceneStage width={TILE.width} height={TILE.height} className="rounded-[15px]">
             <BeaconAnalyticsAnimation at={doneAt} />
           </SceneStage>
-          <p className="type-body-xs text-ink-muted">Finished · {doneAt.toFixed(1)}s</p>
+          <p className="type-body-xs text-tertiary">Finished · {doneAt.toFixed(1)}s</p>
         </div>
       </main>
     </>
