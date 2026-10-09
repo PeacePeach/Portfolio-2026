@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRightCircle, BookOpen, Edit2, Grid, Heart } from "react-feather";
+import { ArrowRight, BookOpen, Edit2, Grid, Heart } from "react-feather";
 import type { PowerFragment } from "@/content/types";
 import { workCopy } from "@/content/work";
 import { useLike } from "@/lib/likes";
@@ -16,6 +16,7 @@ const kinds = {
  * Super power fragment (Figma 25:538, wide layout 27:1695). Every card in a
  * breakpoint has the same size: the image box and row height are fixed and
  * the copy is clamped (title 2 lines, body 6). Image size steps up at sm.
+ * Hover lightens the card and turns the call to action white.
  */
 export function PowerFragmentCard({ fragment }: { fragment: PowerFragment }) {
   const kind = kinds[fragment.kind];
@@ -35,10 +36,10 @@ export function PowerFragmentCard({ fragment }: { fragment: PowerFragment }) {
         <Link
           href={`/work/${fragment.project}`}
           aria-label={`${kind.action}: ${fragment.title}`}
-          className="flex items-center gap-1 rounded-[10px] outline-offset-4 after:absolute after:inset-0 after:z-[1] after:rounded-[10px]"
+          className="flex items-center gap-1 rounded-[10px] outline-offset-4 transition-colors duration-(--duration-underline) ease-out-expo group-hover:text-ink group-has-focus-visible:text-ink after:absolute after:inset-0 after:z-[1] after:rounded-[10px]"
         >
-          <span className="hover-underline">{kind.action}</span>
-          <ArrowRightCircle size={20} strokeWidth={1.33} aria-hidden />
+          <span>{kind.action}</span>
+          <ArrowRight size={18} strokeWidth={1.33} aria-hidden />
         </Link>
       </div>
 
