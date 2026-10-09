@@ -1,5 +1,5 @@
 /**
- * Beacon tile (Figma 35:19621, "Animation _ Beacon"): one CMS screenshot that
+ * Brightcove tile (Figma 35:19621, "Animation _ Beacon"): one CMS screenshot that
  * starts zoomed in (Group 21) and settles to the whole screen (Group 22).
  * Both frames pin the screenshot's top-left corner at (26, 53) in the tile.
  */

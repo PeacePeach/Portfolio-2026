@@ -3,15 +3,15 @@
 import { useState } from "react";
 import { SceneStage } from "../SceneStage";
 import { LOOP, TILE } from "./timeline";
-import { BeaconAnimation } from "./BeaconAnimation";
+import { BrightcoveAnimation } from "./BrightcoveAnimation";
 
 /** Review aid: the loop frozen at any moment, picked with a slider. */
-export function BeaconScrubber() {
+export function BrightcoveScrubber() {
   const [time, setTime] = useState(2.4);
   return (
     <div className="flex w-full max-w-[422px] flex-col gap-4">
       <SceneStage width={TILE.width} height={TILE.height} className="rounded-[15px]">
-        <BeaconAnimation at={time} />
+        <BrightcoveAnimation at={time} />
       </SceneStage>
       <label className="flex w-full items-center gap-4 type-body-xs text-ink-muted">
         <input

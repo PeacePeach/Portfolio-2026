@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * Beacon tile as a loop (Figma 35:19621): the CMS screenshot shrinks from the
+ * Brightcove tile as a loop (Figma 35:19621): the CMS screenshot shrinks from the
  * zoomed-in first frame to the whole screen in the second, rests, then fades
  * out and the first frame fades back in to start again.
  *
@@ -51,9 +51,9 @@ function stateAt(t: number) {
 }
 
 const noop = () => () => {};
-const LABEL = "Beacon: a streaming CMS, zooming out from the playlist editor to the whole screen";
+const LABEL = "Brightcove: a streaming CMS, zooming out from the playlist editor to the whole screen";
 
-export function BeaconAnimation({
+export function BrightcoveAnimation({
   at,
   rounded = true,
   label = LABEL,
@@ -136,7 +136,7 @@ function Screenshot({
       style={{ left: ORIGIN.x, top: ORIGIN.y, width, height, boxShadow: shadow }}
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src="/scenes/beacon/cms.webp" alt="" className="block size-full" draggable={false} />
+      <img src="/scenes/brightcove/cms.webp" alt="" className="block size-full" draggable={false} />
     </motion.div>
   );
 }
