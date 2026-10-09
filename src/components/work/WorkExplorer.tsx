@@ -69,9 +69,8 @@ export function WorkExplorer({
 
   const shown = projects.filter((p) => !caseFilters.length || p.tags.some((t) => caseFilters.includes(t)));
   const power = powers.find((p) => p.id === powerId) ?? powers[0];
-  const choosePower = (ids: string[]) => {
-    const next = ids.find((id) => id !== powerId);
-    if (!next) return; // a power stays selected
+  const choosePower = ([next]: string[]) => {
+    if (!next || next === powerId) return;
     setSwitched(true);
     setPowerId(next);
   };
@@ -103,7 +102,7 @@ export function WorkExplorer({
                     open={active && filters.length > 0}
                     label={`${w.label} filters`}
                     filters={filters}
-                    withAll={w.id === "case-studies"}
+                    single={w.id === "super-powers"}
                     selected={w.id === "case-studies" ? caseFilters : [powerId]}
                     onChange={w.id === "case-studies" ? setCaseFilters : choosePower}
                   />
@@ -177,20 +176,22 @@ function FilterList({
   open,
   label,
   filters,
-  withAll,
+  single = false,
   selected,
   onChange,
 }: {
   open: boolean;
   label: string;
   filters: WorkFilter[];
-  withAll: boolean;
+  /** One choice (radios, Super powers) or several with an "All" reset (checkboxes, Case studies). */
+  single?: boolean;
   selected: string[];
   onChange: (next: string[]) => void;
 }) {
   const reduce = useReducedMotion();
   const t = reduce ? { duration: 0 } : workIntro.filters;
-  const toggle = (id: string) => onChange(selected.includes(id) ? selected.filter((s) => s !== id) : [...selected, id]);
+  const toggle = (id: string) =>
+    onChange(single ? [id] : selected.includes(id) ? selected.filter((s) => s !== id) : [...selected, id]);
 
   return (
     <AnimatePresence initial={false}>
@@ -204,9 +205,15 @@ function FilterList({
         >
           <fieldset className="flex flex-col gap-2 pt-4 pl-[1.625rem]">
             <legend className="sr-only">{label}</legend>
-            {withAll ? <FilterBox label="All" checked={!selected.length} onChange={() => onChange([])} /> : null}
+            {single ? null : <FilterBox label="All" checked={!selected.length} onChange={() => onChange([])} />}
             {filters.map((f) => (
-              <FilterBox key={f.id} label={f.label} checked={selected.includes(f.id)} onChange={() => toggle(f.id)} />
+              <FilterBox
+                key={f.id}
+                label={f.label}
+                name={single ? label : undefined}
+                checked={selected.includes(f.id)}
+                onChange={() => toggle(f.id)}
+              />
             ))}
           </fieldset>
         </motion.div>
@@ -215,15 +222,33 @@ function FilterList({
   );
 }
 
-function FilterBox({ label, checked, onChange }: { label: string; checked: boolean; onChange: () => void }) {
+/** Checkbox, or a radio when given a group name; both share the 14 px box style. */
+function FilterBox({
+  label,
+  name,
+  checked,
+  onChange,
+}: {
+  label: string;
+  name?: string;
+  checked: boolean;
+  onChange: () => void;
+}) {
+  const radio = name !== undefined;
   return (
     <label className="flex w-fit cursor-pointer items-center gap-2 type-body-s">
-      <input type="checkbox" className="peer sr-only" checked={checked} onChange={onChange} />
+      <input type={radio ? "radio" : "checkbox"} name={name} className="peer sr-only" checked={checked} onChange={onChange} />
       <span
         aria-hidden="true"
-        className="grid size-3.5 shrink-0 place-items-center rounded-[2px] border border-ink/20 transition-colors duration-(--duration-fast) peer-checked:bg-check peer-focus-visible:outline peer-focus-visible:outline-1 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-ink"
+        className={`grid size-3.5 shrink-0 place-items-center ${radio ? "rounded-full" : "rounded-[2px]"} border border-ink/20 transition-colors duration-(--duration-fast) peer-checked:bg-check peer-focus-visible:outline peer-focus-visible:outline-1 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-ink`}
       >
-        {checked ? <Check size={10} strokeWidth={3} className="text-canvas" /> : null}
+        {checked ? (
+          radio ? (
+            <span className="size-1.5 rounded-full bg-canvas" />
+          ) : (
+            <Check size={10} strokeWidth={3} className="text-canvas" />
+          )
+        ) : null}
       </span>
       <span
         className={`hover-underline transition-colors duration-(--duration-base) ${checked ? "text-ink" : "text-ink/60 hover:text-ink"}`}

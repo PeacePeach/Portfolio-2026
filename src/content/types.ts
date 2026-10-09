@@ -75,8 +75,9 @@ export type PowerFragment = {
   /** Case study slug the fragment links to. */
   project: string;
   image?: ImageRef;
-  /** Small counters under the image (Figma: heart, pencil). */
+  /** Likes so far (heart). Visitors can add theirs; see src/lib/likes.ts. */
   likes: number;
+  /** Visitor responses on the detail page (pencil); the input is planned. */
   notes: number;
 };
 
