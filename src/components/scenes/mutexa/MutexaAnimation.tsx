@@ -37,6 +37,7 @@ import {
   ROTATION,
   TILE,
   camera,
+  cardShadow,
   cards,
   groupOffset,
   keyTimes,
@@ -186,7 +187,13 @@ function Card({
   return (
     <div
       className="absolute"
-      style={{ left: r.x, top: r.y, width: r.w, height: r.h }}
+      style={{
+        left: r.x,
+        top: r.y,
+        width: r.w,
+        height: r.h,
+        filter: cardShadow,
+      }}
     >
       <View phase={phase} />
     </div>

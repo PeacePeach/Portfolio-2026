@@ -25,5 +25,7 @@ export const neo = {
   fill: "linear-gradient(168.65deg, #66a8ff 18.975%, #006eff 80.45%)", // progress fill
   sheetShadow:
     "0 7px 8px -4px rgba(5,28,44,0.06), 0 3px 23px 6px rgba(5,28,44,0.04), 0 12px 17px 2px rgba(5,28,44,0.03)", // shadowXL
-  groupShadow: "drop-shadow(0 4px 20px rgba(0,0,0,0.2))",
+  /** Soft lift under the phone surfaces: a tight contact shadow plus a wide, faint ambient one. */
+  groupShadow:
+    "drop-shadow(0 2px 3px rgba(10,30,90,0.16)) drop-shadow(0 12px 24px rgba(10,30,90,0.26))",
 } as const;

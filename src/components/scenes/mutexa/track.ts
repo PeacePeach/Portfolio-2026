@@ -103,6 +103,21 @@ export function camera(t: number) {
 }
 
 /** Where the group's local origin lands in the tile for a camera point. */
+/**
+ * Soft lift under each card: a tight contact shadow plus a wide, faint ambient
+ * one. The cards sit in the rotated group, so the offsets are turned back by
+ * the group's rotation to make the shadow fall straight down on screen.
+ */
+export const cardShadow = [
+  { y: 2, blur: 3, alpha: 0.16 },
+  { y: 10, blur: 22, alpha: 0.24 },
+]
+  .map(
+    ({ y, blur, alpha }) =>
+      `drop-shadow(${(sin * y).toFixed(2)}px ${(cos * y).toFixed(2)}px ${blur}px rgba(24,22,110,${alpha}))`,
+  )
+  .join(" ");
+
 export function groupOffset(cam: { x: number; y: number }) {
   return {
     x: CENTER.x - (cos * cam.x - sin * cam.y),
