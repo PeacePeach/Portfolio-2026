@@ -22,6 +22,8 @@
   --color-line-strong: #3a3a3a;
   --color-tile: #171717;            /* empty project tile */
   --color-tag: #2c2c2c;             /* tag pill fill */
+  --color-card: #151515;            /* super power fragment card */
+  --color-card-hover: #212121;
   --color-check: #d9d9d9;           /* checked filter box */
   --color-accent: #ffffff;          /* kept monochrome on purpose */
   --color-highlight: #2d54dd;       /* hover underline on the Know me by options */
@@ -53,6 +55,10 @@
   --text-display-s--line-height: 1.2;
   --text-display-s--letter-spacing: -0.03em;
   --text-display-s--font-weight: 600;
+  --text-display-xs: 1.25rem;                               /* 20 */
+  --text-display-xs--line-height: 1.2;
+  --text-display-xs--letter-spacing: -0.03em;
+  --text-display-xs--font-weight: 600;
 
   /* Heading: Geist SemiBold, 120% */
   --text-heading-xl: clamp(1.75rem, 3.125vw, 2.75rem);      /* 40 */
@@ -220,6 +226,14 @@
   line-height: var(--text-display-s--line-height);
   font-weight: var(--text-display-s--font-weight);
   letter-spacing: var(--text-display-s--letter-spacing);
+  font-variation-settings: var(--font-display--font-variation-settings);
+}
+@utility type-display-xs {
+  font-family: var(--font-display);
+  font-size: var(--text-display-xs);
+  line-height: var(--text-display-xs--line-height);
+  font-weight: var(--text-display-xs--font-weight);
+  letter-spacing: var(--text-display-xs--letter-spacing);
   font-variation-settings: var(--font-display--font-variation-settings);
 }
 @utility type-heading-xl {

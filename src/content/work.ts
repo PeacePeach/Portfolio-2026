@@ -39,4 +39,8 @@ export const workCopy = {
   heading: "Get to know me by",
   hanxgpt: "HanXGPT is on its way.",
   empty: "Nothing matches these filters yet.",
+  fragment: {
+    case: { label: "Case Fragments", action: "View case studies" },
+    story: { label: "Story", action: "View full" },
+  },
 };

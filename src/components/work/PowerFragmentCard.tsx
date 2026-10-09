@@ -1,0 +1,73 @@
+import Image from "next/image";
+import Link from "next/link";
+import { ArrowRight, BookOpen, Edit2, Grid, Heart } from "react-feather";
+import type { PowerFragment } from "@/content/types";
+import { workCopy } from "@/content/work";
+
+const kinds = {
+  case: { icon: Grid, ...workCopy.fragment.case },
+  story: { icon: BookOpen, ...workCopy.fragment.story },
+};
+
+/**
+ * Super power fragment (Figma 25:538). Every card in a breakpoint has the same
+ * size: the image box and the copy area are fixed, so longer text never
+ * stretches a card. Sizes step up at sm.
+ */
+export function PowerFragmentCard({ fragment }: { fragment: PowerFragment }) {
+  const kind = kinds[fragment.kind];
+  const Icon = kind.icon;
+
+  return (
+    <Link
+      href={`/work/${fragment.project}`}
+      className="group block rounded-[10px] border border-ink/10 bg-card outline-offset-4 transition-colors duration-(--duration-underline) ease-out-expo hover:bg-card-hover focus-visible:bg-card-hover [--frag-img-h:8.875rem] [--frag-img-w:6.5rem] [--frag-text-h:8.8125rem] sm:[--frag-img-h:11.1875rem] sm:[--frag-img-w:8.1875rem] sm:[--frag-text-h:12.75rem]"
+    >
+      <div className="flex items-start justify-between gap-4 border-b border-ink/10 px-5 pt-5 pb-3 type-body-s text-ink/60">
+        <span className="flex items-center gap-2">
+          <Icon size={18} strokeWidth={1.33} aria-hidden />
+          {kind.label}
+        </span>
+        <span className="flex items-center gap-1">
+          <span className="hover-underline">{kind.action}</span>
+          <ArrowRight size={18} strokeWidth={1.33} aria-hidden />
+        </span>
+      </div>
+
+      <div className="flex gap-5 px-5 pt-[1.375rem] pb-5">
+        <div className="flex shrink-0 flex-col items-center gap-6">
+          <div className="relative h-(--frag-img-h) w-(--frag-img-w) overflow-hidden rounded-[10px] bg-tile">
+            {fragment.image ? (
+              <div className="absolute inset-0 animate-drift">
+                <Image
+                  src={fragment.image.src}
+                  alt={fragment.image.alt}
+                  fill
+                  sizes="8.25rem"
+                  unoptimized={fragment.image.src.endsWith(".svg")}
+                  className="object-cover"
+                />
+              </div>
+            ) : null}
+          </div>
+          <div className="flex h-[1.125rem] items-center gap-3 type-body-xs text-ink">
+            <span className="flex items-center gap-1" aria-label={`${fragment.likes} likes`}>
+              <Heart size={16} strokeWidth={1.33} fill="currentColor" aria-hidden />
+              {fragment.likes}
+            </span>
+            <span className="flex items-center gap-1" aria-label={`${fragment.notes} notes`}>
+              <Edit2 size={16} strokeWidth={1.33} aria-hidden />
+              {fragment.notes}
+            </span>
+          </div>
+        </div>
+
+        {/* Fixed height; copy that runs long fades out rather than growing the card. */}
+        <div className="flex h-(--frag-text-h) min-w-0 flex-1 flex-col gap-3 overflow-hidden [mask-image:linear-gradient(to_bottom,#000_calc(100%-1.5rem),transparent)]">
+          <h3 className="type-display-xs text-ink">{fragment.title}</h3>
+          <p className="type-body-s text-ink/60">{fragment.body}</p>
+        </div>
+      </div>
+    </Link>
+  );
+}

@@ -33,8 +33,6 @@ export type Project = {
   description: string;
   /** Case study filters (ids from src/content/work.ts), shown as tags on the tile. */
   tags: string[];
-  /** Super power filters (ids from src/content/work.ts) this project shows. */
-  powers: string[];
   sections: CaseStudySection[];
   status: ContentStatus;
 };
@@ -65,4 +63,28 @@ export type Evidence = {
   order?: number;
   provenance: Provenance;
   status: ContentStatus;
+};
+
+/** A piece of evidence shown under a super power (Figma 25:538). */
+export type PowerFragment = {
+  id: string;
+  /** "case" links into a case study; "story" is a standalone write-up. */
+  kind: "case" | "story";
+  title: string;
+  body: string;
+  /** Case study slug the fragment links to. */
+  project: string;
+  image?: ImageRef;
+  /** Small counters under the image (Figma: heart, pencil). */
+  likes: number;
+  notes: number;
+};
+
+/** One of the super powers listed as filters on the Work page. */
+export type SuperPower = {
+  /** Filter id from src/content/work.ts */
+  id: string;
+  title: string;
+  description: string;
+  fragments: PowerFragment[];
 };

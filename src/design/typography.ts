@@ -8,7 +8,8 @@
 export const typeStyles = [
   { token: "type-display-l", figma: "Display_L", spec: "Fraunces SemiBold 110 / 120%, -3%", use: "Hero statement, loader name, page titles" },
   { token: "type-display-m", figma: "Display_M", spec: "Fraunces SemiBold 64 / 120%, -3%", use: "Case study titles, mode labels" },
-  { token: "type-display-s", figma: "Display_S", spec: "Fraunces SemiBold 48 / 120%, -3%", use: "Loader percentage, case study sections" },
+  { token: "type-display-s", figma: "Display_S", spec: "Fraunces SemiBold 48 / 120%, -3%", use: "Loader percentage, case study sections, super power titles" },
+  { token: "type-display-xs", figma: "Display_XS", spec: "Fraunces SemiBold 20 / 120%, -3%", use: "Super power fragment titles" },
   { token: "type-heading-xl", figma: "Heading_XL", spec: "Geist SemiBold 40 / 120%", use: "Capability labels (desktop)" },
   { token: "type-heading-l", figma: "Heading_L", spec: "Geist SemiBold 32 / 120%", use: "Project titles" },
   { token: "type-heading-m", figma: "Heading_M", spec: "Geist SemiBold 20 / 120%", use: "Evidence titles" },

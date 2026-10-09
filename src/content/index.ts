@@ -4,13 +4,18 @@
  * curated AI pipeline later) can change in one place.
  */
 import { capabilities, evidence } from "./capabilities";
+import { powers } from "./powers";
 import { projects } from "./projects";
-import type { Capability, Evidence, Project } from "./types";
+import type { Capability, Evidence, Project, SuperPower } from "./types";
 
-export type { Capability, Evidence, Project } from "./types";
+export type { Capability, Evidence, PowerFragment, Project, SuperPower } from "./types";
 
 export function getProjects(): Project[] {
   return projects;
+}
+
+export function getSuperPowers(): SuperPower[] {
+  return powers;
 }
 
 export function getProject(slug: string): Project | undefined {

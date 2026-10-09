@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { Check, Grid, MessageCircle, Radio } from "react-feather";
-import type { Project } from "@/content/types";
+import type { Project, SuperPower } from "@/content/types";
 import {
   caseStudyFilters,
   defaultWorkView,
@@ -18,19 +18,22 @@ import {
 import { workIntro } from "@/design/motion";
 import { cameBySlide } from "@/lib/pageTransition";
 import { Reveal } from "../ui/Reveal";
+import { PowerFragmentCard } from "./PowerFragmentCard";
 import { ProjectCard } from "./ProjectCard";
 
 const icons = { grid: Grid, radio: Radio, "message-circle": MessageCircle };
 /** Feather icons are drawn on a 24 grid; this gives the Figma 1 px line at 18 px. */
 const iconProps = { size: 18, strokeWidth: 1.33, "aria-hidden": true } as const;
 
-export function WorkExplorerFromUrl({ projects }: { projects: Project[] }) {
+type Content = { projects: Project[]; powers: SuperPower[] };
+
+export function WorkExplorerFromUrl(content: Content) {
   const param = useSearchParams().get("view");
   const view = isWorkView(param) ? param : defaultWorkView;
   // The router keeps visited pages alive (Activity). Arriving from a link must
   // start fresh: the chosen view, no filters, and the entrance replayed.
   const { bfcacheId } = useRouter();
-  return <WorkExplorer key={`${bfcacheId}-${view}`} view={view} projects={projects} />;
+  return <WorkExplorer key={`${bfcacheId}-${view}`} view={view} {...content} />;
 }
 
 /**
@@ -41,19 +44,17 @@ export function WorkExplorerFromUrl({ projects }: { projects: Project[] }) {
 export function WorkExplorer({
   view: initialView,
   projects,
+  powers,
   idle = false,
-}: {
+}: Content & {
   view: WorkView;
-  projects: Project[];
   /** Static shell shown while the URL is read: held hidden so the wrong view never flashes. */
   idle?: boolean;
 }) {
   const [view, setView] = useState(initialView);
   const [caseFilters, setCaseFilters] = useState<string[]>([]); // empty = All
-  // Arriving on Super powers starts on its first power so the grid has a focus.
-  const [powerFilters, setPowerFilters] = useState<string[]>(() =>
-    initialView === "super-powers" ? [superPowerFilters[0].id] : [],
-  ); // empty = no filter
+  // One super power at a time (Figma 25:538); the first is shown on arrival.
+  const [powerId, setPowerId] = useState(superPowerFilters[0].id);
   const [timing] = useState(() => (cameBySlide() ? workIntro.afterSlide : workIntro.direct));
   const [switched, setSwitched] = useState(false);
 
@@ -66,10 +67,14 @@ export function WorkExplorer({
     window.history.replaceState(null, "", url);
   };
 
-  const shown =
-    view === "case-studies"
-      ? projects.filter((p) => !caseFilters.length || p.tags.some((t) => caseFilters.includes(t)))
-      : projects.filter((p) => !powerFilters.length || p.powers.some((t) => powerFilters.includes(t)));
+  const shown = projects.filter((p) => !caseFilters.length || p.tags.some((t) => caseFilters.includes(t)));
+  const power = powers.find((p) => p.id === powerId) ?? powers[0];
+  const choosePower = (ids: string[]) => {
+    const next = ids.find((id) => id !== powerId);
+    if (!next) return; // a power stays selected
+    setSwitched(true);
+    setPowerId(next);
+  };
 
   return (
     <div className="container-page grid gap-y-12 pt-[calc(var(--spacing-header)+1.875rem)] pb-section md:grid-cols-[14.25rem_minmax(0,1fr)] md:gap-x-(--spacing-margin)">
@@ -99,8 +104,8 @@ export function WorkExplorer({
                     label={`${w.label} filters`}
                     filters={filters}
                     withAll={w.id === "case-studies"}
-                    selected={w.id === "case-studies" ? caseFilters : powerFilters}
-                    onChange={w.id === "case-studies" ? setCaseFilters : setPowerFilters}
+                    selected={w.id === "case-studies" ? caseFilters : [powerId]}
+                    onChange={w.id === "case-studies" ? setCaseFilters : choosePower}
                   />
                 </li>
               );
@@ -109,14 +114,39 @@ export function WorkExplorer({
         </nav>
       </Reveal>
 
-      <Reveal key={view} play={!idle} delay={switched ? 0 : timing.content} className="min-w-0">
+      <Reveal
+        key={view === "super-powers" ? `${view}-${power.id}` : view}
+        play={!idle}
+        delay={switched ? 0 : timing.content}
+        className="min-w-0"
+      >
         {view === "hanxgpt" ? (
           <p className="type-body-m text-ink-muted">{workCopy.hanxgpt}</p>
+        ) : view === "super-powers" ? (
+          <PowerView power={power} />
         ) : (
           <ProjectGrid projects={shown} />
         )}
       </Reveal>
     </div>
+  );
+}
+
+function PowerView({ power }: { power: SuperPower }) {
+  return (
+    <section aria-labelledby={`power-${power.id}`}>
+      <h2 id={`power-${power.id}`} className="-mt-[0.3125rem] type-display-s uppercase text-ink">
+        {power.title}
+      </h2>
+      <p className="mt-3.5 max-w-[47.8125rem] type-body-m text-ink">{power.description}</p>
+      <ul className="mt-14 grid gap-4 xl:grid-cols-2">
+        {power.fragments.map((f) => (
+          <li key={f.id}>
+            <PowerFragmentCard fragment={f} />
+          </li>
+        ))}
+      </ul>
+    </section>
   );
 }
 

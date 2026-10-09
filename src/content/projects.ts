@@ -8,7 +8,6 @@ export const projects: Project[] = [
     title: "Neo Advance",
     description: "Connecting banking, credit, and progression into one experience",
     tags: ["fintech", "insights-analytics"],
-    powers: ["untangle-complexity", "navigate-ambiguity"], // placeholder mapping
     summary: "Placeholder summary. One or two sentences on the problem, your role and why the work mattered.",
     meta: ["Fintech", "0→1"],
     year: "20XX",
@@ -26,7 +25,6 @@ export const projects: Project[] = [
     title: "Banking Platform",
     description: "Placeholder description. One line on the platform and its users.",
     tags: ["fintech", "design-system"],
-    powers: ["untangle-complexity", "set-people-up"], // placeholder mapping
     summary: "Placeholder summary. Describe the platform, the journeys it covered and the scope of your leadership.",
     meta: ["Banking", "Platform"],
     year: "20XX",
@@ -44,7 +42,6 @@ export const projects: Project[] = [
     title: "AI / Experimental Work",
     description: "Placeholder description. One line on the explorations.",
     tags: ["ai"],
-    powers: ["ai-assisted-design", "smart-research"], // placeholder mapping
     summary: "Placeholder summary. A home for explorations, prototypes and AI-native product thinking.",
     meta: ["AI", "Prototyping"],
     year: "20XX",
@@ -61,7 +58,6 @@ export const projects: Project[] = [
     title: "Placeholder Project",
     description: "Placeholder description. Swap in a real B2B SaaS project.",
     tags: ["b2b-saas", "insights-analytics"],
-    powers: ["navigate-ambiguity", "smart-research"], // placeholder mapping
     summary: "Placeholder summary.",
     meta: ["B2B SaaS"],
     year: "20XX",
