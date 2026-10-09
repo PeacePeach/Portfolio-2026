@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Media } from "@/components/ui/Media";
+import { NeoCaseIntro } from "@/components/case-study/neo-advance/NeoCaseIntro";
 import { getProject, getProjects } from "@/content";
 import { site } from "@/content/site";
 
@@ -26,9 +26,48 @@ export default async function CaseStudyPage({ params }: PageProps<"/work/[slug]"
   const project = getProject(slug);
   if (!project) notFound();
 
+  const sections = (
+    <>
+      <nav aria-label="Case study sections" className="mt-16 border-t border-line pt-6">
+        <ol className="flex flex-wrap gap-x-8 gap-y-3">
+          {project.sections.map((s, i) => (
+            <li key={s.id}>
+              <a href={`#${s.id}`} className="hover-underline type-label-s text-ink-muted hover:text-ink">
+                {String(i + 1).padStart(2, "0")} {s.title}
+              </a>
+            </li>
+          ))}
+        </ol>
+      </nav>
+
+      {project.sections.map((s, i) => (
+        <section key={s.id} id={s.id} className="grid-page min-h-[70vh] border-t border-line py-16 target:border-ink">
+          <p className="type-label-s col-span-4 md:col-span-3 text-ink-faint">{String(i + 1).padStart(2, "0")}</p>
+          <div className="col-span-4 md:col-span-6">
+            <h2 className="type-display-s">{s.title}</h2>
+            <p className="mt-6 text-ink-muted">Case study content to come. This section is a deep-link target.</p>
+          </div>
+        </section>
+      ))}
+    </>
+  );
+
+  // The top nav lives in the /work layout, so it stays put when a Work tile opens its case study.
+  if (project.slug === "neo-advance") {
+    return (
+      <>
+        <main id="main">
+          <NeoCaseIntro>
+            <div className="mt-24">{sections}</div>
+          </NeoCaseIntro>
+        </main>
+        <Footer />
+      </>
+    );
+  }
+
   return (
     <>
-      <Header />
       <main id="main" className="container-page pt-[calc(var(--spacing-header)+4rem)]">
         <Link href="/#explore" className="hover-underline type-label-s text-ink-muted hover:text-ink">
           ← All work
@@ -36,28 +75,7 @@ export default async function CaseStudyPage({ params }: PageProps<"/work/[slug]"
         <h1 className="mt-10 type-display-m uppercase">{project.title}</h1>
         <p className="mt-8 max-w-[52ch] type-body-l text-ink-muted">{project.summary}</p>
         <Media image={project.image} ratio="16 / 9" sizes="100vw" className="mt-16" />
-
-        <nav aria-label="Case study sections" className="mt-16 border-t border-line pt-6">
-          <ol className="flex flex-wrap gap-x-8 gap-y-3">
-            {project.sections.map((s, i) => (
-              <li key={s.id}>
-                <a href={`#${s.id}`} className="hover-underline type-label-s text-ink-muted hover:text-ink">
-                  {String(i + 1).padStart(2, "0")} {s.title}
-                </a>
-              </li>
-            ))}
-          </ol>
-        </nav>
-
-        {project.sections.map((s, i) => (
-          <section key={s.id} id={s.id} className="grid-page min-h-[70vh] border-t border-line py-16 target:border-ink">
-            <p className="type-label-s col-span-4 md:col-span-3 text-ink-faint">{String(i + 1).padStart(2, "0")}</p>
-            <div className="col-span-4 md:col-span-6">
-              <h2 className="type-display-s">{s.title}</h2>
-              <p className="mt-6 text-ink-muted">Case study content to come. This section is a deep-link target.</p>
-            </div>
-          </section>
-        ))}
+        {sections}
       </main>
       <Footer />
     </>

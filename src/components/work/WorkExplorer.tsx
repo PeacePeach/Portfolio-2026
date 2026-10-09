@@ -17,6 +17,7 @@ import {
 } from "@/content/work";
 import { workIntro } from "@/design/motion";
 import { cameBySlide } from "@/lib/pageTransition";
+import { useCaseMorph } from "@/lib/caseMorph";
 import { Reveal } from "../ui/Reveal";
 import { PowerFragmentCard } from "./PowerFragmentCard";
 import { ProjectCard } from "./ProjectCard";
@@ -59,6 +60,8 @@ export function WorkExplorer({
   const [powerId, setPowerId] = useState(superPowerFilters[0].id);
   const [timing] = useState(() => (cameBySlide() ? workIntro.afterSlide : workIntro.direct));
   const [switched, setSwitched] = useState(false);
+  // A tile is opening its case study: the nav steps out to the left and the other tiles fade.
+  const leaving = useCaseMorph() !== null;
   // Follow the URL when something else changes ?view (a link to /work?view=…).
   const [urlView, setUrlView] = useState(initialView);
   if (initialView !== urlView) {
@@ -88,14 +91,24 @@ export function WorkExplorer({
 
   return (
     <div className="container-page grid gap-y-12 pt-[calc(var(--spacing-header)+1.875rem)] pb-section md:grid-cols-[14.25rem_minmax(0,1fr)] md:gap-x-(--spacing-margin)">
-      <Reveal play={!idle} delay={timing.nav} className="self-start md:sticky md:top-[calc(var(--spacing-header)+1.875rem)]">
-        <nav aria-label={workCopy.heading}>
+      <Reveal
+        play={!idle}
+        delay={timing.nav}
+        className="self-start md:sticky md:top-[calc(var(--spacing-header)+1.875rem)]"
+      >
+        <motion.nav
+          aria-label={workCopy.heading}
+          initial={false}
+          animate={leaving ? { opacity: 0, x: -20 } : { opacity: 1, x: 0 }}
+          transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+        >
           <p className="type-body-s uppercase text-ink/60">{workCopy.heading}</p>
           <ul className="mt-5 flex flex-col gap-4">
             {workViews.map((w) => {
               const Icon = icons[w.icon];
               const active = w.id === view;
-              const filters = w.id === "case-studies" ? caseStudyFilters : w.id === "super-powers" ? superPowerFilters : [];
+              const filters =
+                w.id === "case-studies" ? caseStudyFilters : w.id === "super-powers" ? superPowerFilters : [];
               return (
                 <li key={w.id}>
                   <button
@@ -121,7 +134,7 @@ export function WorkExplorer({
               );
             })}
           </ul>
-        </nav>
+        </motion.nav>
       </Reveal>
 
       <Reveal
@@ -130,13 +143,19 @@ export function WorkExplorer({
         delay={switched ? 0 : timing.content}
         className="min-w-0"
       >
-        {view === "hanxgpt" ? (
-          <p className="type-body-m text-ink-muted">{workCopy.hanxgpt}</p>
-        ) : view === "super-powers" ? (
-          <PowerView power={power} />
-        ) : (
-          <ProjectGrid projects={shown} />
-        )}
+        <motion.div
+          initial={false}
+          animate={{ opacity: leaving ? 0 : 1 }}
+          transition={{ duration: 0.25, ease: "easeOut" }}
+        >
+          {view === "hanxgpt" ? (
+            <p className="type-body-m text-ink-muted">{workCopy.hanxgpt}</p>
+          ) : view === "super-powers" ? (
+            <PowerView power={power} />
+          ) : (
+            <ProjectGrid projects={shown} />
+          )}
+        </motion.div>
       </Reveal>
     </div>
   );
@@ -248,7 +267,13 @@ function FilterBox({
   const radio = name !== undefined;
   return (
     <label className="flex w-fit cursor-pointer items-center gap-2 type-body-s">
-      <input type={radio ? "radio" : "checkbox"} name={name} className="peer sr-only" checked={checked} onChange={onChange} />
+      <input
+        type={radio ? "radio" : "checkbox"}
+        name={name}
+        className="peer sr-only"
+        checked={checked}
+        onChange={onChange}
+      />
       <span
         aria-hidden="true"
         className={`grid size-3.5 shrink-0 place-items-center ${radio ? "rounded-full" : "rounded-[2px]"} border border-ink/20 transition-colors duration-(--duration-fast) peer-checked:bg-check peer-focus-visible:outline peer-focus-visible:outline-1 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-ink`}

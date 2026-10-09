@@ -28,9 +28,7 @@ export function PowerFragmentCard({ fragment }: { fragment: PowerFragment }) {
 
   // The whole card is clickable through the stretched link; the like button sits above it.
   return (
-    <article
-      className="group relative rounded-[10px] border border-ink/10 bg-card transition-colors duration-(--duration-underline) ease-out-expo hover:bg-card-hover has-focus-visible:bg-card-hover [--frag-body-h:13.75rem] [--frag-img-h:8.875rem] [--frag-img-w:6.5rem] sm:[--frag-img-h:11.1875rem] sm:[--frag-img-w:8.1875rem]"
-    >
+    <article className="group relative rounded-[10px] border border-ink/10 bg-card transition-colors duration-(--duration-underline) ease-out-expo hover:bg-card-hover has-focus-visible:bg-card-hover [--frag-body-h:13.75rem] [--frag-img-h:8.875rem] [--frag-img-w:6.5rem] sm:[--frag-img-h:11.1875rem] sm:[--frag-img-w:8.1875rem]">
       <div className="flex items-start justify-between gap-4 border-b border-ink/10 px-5 pt-5 pb-3 type-body-s text-ink/60">
         <span className="flex items-center gap-2">
           <Icon size={18} strokeWidth={1.33} aria-hidden />

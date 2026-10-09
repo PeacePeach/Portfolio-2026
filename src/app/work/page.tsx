@@ -1,6 +1,5 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
-import { Header } from "@/components/Header";
 import { PageSlide } from "@/components/PageSlide";
 import { WorkExplorer, WorkExplorerFromUrl } from "@/components/work/WorkExplorer";
 import { getProjects, getSuperPowers } from "@/content";
@@ -14,7 +13,6 @@ export default function WorkPage() {
   const content = { projects: getProjects(), powers: getSuperPowers() };
   return (
     <PageSlide>
-      <Header />
       <main id="main">
         <Suspense fallback={<WorkExplorer view={defaultWorkView} {...content} idle />}>
           <WorkExplorerFromUrl {...content} />

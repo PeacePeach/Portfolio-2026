@@ -1,6 +1,6 @@
 "use client";
 
-import { useLayoutEffect, useRef, useState, type ReactNode } from "react";
+import { useImperativeHandle, useLayoutEffect, useRef, useState, type ReactNode, type Ref } from "react";
 
 /**
  * A fixed-size design canvas (e.g. a 422 × 314 Figma tile) scaled to fit the
@@ -12,13 +12,16 @@ export function SceneStage({
   height,
   className = "",
   children,
+  ref,
 }: {
   width: number;
   height: number;
   className?: string;
   children: ReactNode;
+  ref?: Ref<HTMLDivElement>;
 }) {
   const box = useRef<HTMLDivElement>(null);
+  useImperativeHandle(ref, () => box.current!);
   const [scale, setScale] = useState(1);
 
   useLayoutEffect(() => {
