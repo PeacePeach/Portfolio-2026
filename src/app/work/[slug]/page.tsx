@@ -69,7 +69,7 @@ export default async function CaseStudyPage({ params }: PageProps<"/work/[slug]"
   return (
     <>
       <main id="main" className="container-page pt-[calc(var(--spacing-header)+4rem)]">
-        <Link href="/#explore" className="hover-underline type-label-s text-secondary hover:text-primary">
+        <Link href="/work" className="hover-underline type-label-s text-secondary hover:text-primary">
           ← All work
         </Link>
         <h1 className="mt-10 type-display-m uppercase">{project.title}</h1>
