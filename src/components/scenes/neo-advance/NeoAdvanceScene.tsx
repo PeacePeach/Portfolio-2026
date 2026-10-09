@@ -49,7 +49,20 @@ export function NeoAdvanceScene({ frame }: { frame: NeoFrame }) {
 
 /* ---- Frames 1 & 2: transfer bottom sheet ------------------------------ */
 
-export function CoverSheet({ top, style, buttonStyle }: { top: number; style?: MotionStyle; buttonStyle?: MotionStyle }) {
+export function CoverSheet({
+  top,
+  style,
+  shield = <ShieldImage />,
+  buttonStyle,
+  buttonDecor,
+}: {
+  top: number;
+  style?: MotionStyle;
+  shield?: ReactNode;
+  buttonStyle?: MotionStyle;
+  /** drawn inside the Continue button, e.g. a touch and ripple */
+  buttonDecor?: ReactNode;
+}) {
   return (
     <motion.div
       className="absolute left-[23px] flex h-[458px] w-[375px] flex-col overflow-hidden rounded-[15px]"
@@ -57,8 +70,7 @@ export function CoverSheet({ top, style, buttonStyle }: { top: number; style?: M
     >
       <div className="flex flex-col items-center gap-8 py-6">
         <div className="flex flex-col items-center gap-3">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/scenes/neo-advance/shield.svg" alt="" width={56} height={56} />
+          {shield}
           <div className="flex w-[335px] flex-col gap-3 text-center">
             <p className="text-[20px] leading-[25px] font-semibold tracking-[-0.4px]" style={{ color: "#000" }}>
               Neo Advance will cover you
@@ -79,9 +91,10 @@ export function CoverSheet({ top, style, buttonStyle }: { top: number; style?: M
       <div className="mt-auto">
         <div className="p-5">
           <motion.div
-            className="flex min-h-[48px] items-center justify-center gap-2 rounded-[12px] p-4 text-[16px] leading-5 font-semibold text-white"
+            className="relative flex min-h-[48px] items-center justify-center gap-2 overflow-hidden rounded-[12px] p-4 text-[16px] leading-5 font-semibold text-white"
             style={{ background: neo.ink, ...buttonStyle }}
           >
+            {buttonDecor}
             Continue
             <ArrowLongForward />
           </motion.div>
@@ -92,6 +105,11 @@ export function CoverSheet({ top, style, buttonStyle }: { top: number; style?: M
       </div>
     </motion.div>
   );
+}
+
+export function ShieldImage() {
+  // eslint-disable-next-line @next/next/no-img-element
+  return <img src="/scenes/neo-advance/shield.svg" alt="" width={56} height={56} />;
 }
 
 function Metric({ label, value, strong = false }: { label: string; value: string; strong?: boolean }) {
