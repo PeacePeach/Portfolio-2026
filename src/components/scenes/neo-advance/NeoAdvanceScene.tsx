@@ -1,3 +1,5 @@
+"use client";
+
 /**
  * Neo Advance tile animation (Figma 31:6146, "Animation 1"), reproduced as
  * static frames in HTML/CSS/SVG. All values are in the 422 × 314 tile's own
@@ -13,35 +15,14 @@
  * The product UI uses Neo's own type (TT Commons Pro, not licensed here), so
  * text is set in the site's Geist at Neo's sizes and weights. Colours mirror
  * Neo's tokens and stay local to this scene.
+ *
+ * The surfaces take optional Motion styles so NeoAdvanceAnimation can drive
+ * the same markup through one continuous loop.
  */
 
-export const NEO_TILE = { width: 422, height: 314 } as const;
-
-export type NeoFrame = "cover" | "continue" | "unlocked" | "limit-75" | "limit-200";
-
-export const neoFrames: { id: NeoFrame; figma: string; label: string }[] = [
-  { id: "cover", figma: "31:6485", label: "Cover sheet" },
-  { id: "continue", figma: "31:6567", label: "Sheet scrolled to Continue" },
-  { id: "unlocked", figma: "31:11841", label: "Higher limit unlocked" },
-  { id: "limit-75", figma: "31:11648", label: "Current limit $75" },
-  { id: "limit-200", figma: "31:11818", label: "Current limit $200" },
-];
-
-/** Neo design tokens used by the scene. */
-const neo = {
-  bg: "#f1f3f3", // structure/backgroundDefault
-  surface: "#ffffff", // structure/surfaceDefault
-  track: "#e7e8e9", // structure/surfaceStrong
-  border: "#e1e4e5", // content/borderDefault
-  ink: "#111111", // content/contentDefault
-  subdued: "#697780", // content/contentSubdued
-  info: "#006eff", // content/contentInfo
-  tile: "linear-gradient(-42.32deg, #2d53d8 37.188%, #66a8ff 97.31%)", // Gradients/Blue
-  fill: "linear-gradient(168.65deg, #66a8ff 18.975%, #006eff 80.45%)", // progress fill
-  sheetShadow:
-    "0 7px 8px -4px rgba(5,28,44,0.06), 0 3px 23px 6px rgba(5,28,44,0.04), 0 12px 17px 2px rgba(5,28,44,0.03)", // shadowXL
-  groupShadow: "drop-shadow(0 4px 20px rgba(0,0,0,0.2))",
-} as const;
+import type { ReactNode } from "react";
+import { motion, type MotionStyle } from "motion/react";
+import { neo, neoFrames, NEO_TILE, type NeoFrame } from "./frames";
 
 const limits = {
   "limit-75": { amount: "$75", progress: 0.25 },
@@ -68,11 +49,11 @@ export function NeoAdvanceScene({ frame }: { frame: NeoFrame }) {
 
 /* ---- Frames 1 & 2: transfer bottom sheet ------------------------------ */
 
-function CoverSheet({ top }: { top: number }) {
+export function CoverSheet({ top, style, buttonStyle }: { top: number; style?: MotionStyle; buttonStyle?: MotionStyle }) {
   return (
-    <div
+    <motion.div
       className="absolute left-[23px] flex h-[458px] w-[375px] flex-col overflow-hidden rounded-[15px]"
-      style={{ top, background: neo.bg, boxShadow: neo.sheetShadow }}
+      style={{ top, background: neo.bg, boxShadow: neo.sheetShadow, ...style }}
     >
       <div className="flex flex-col items-center gap-8 py-6">
         <div className="flex flex-col items-center gap-3">
@@ -97,19 +78,19 @@ function CoverSheet({ top }: { top: number }) {
 
       <div className="mt-auto">
         <div className="p-5">
-          <div
+          <motion.div
             className="flex min-h-[48px] items-center justify-center gap-2 rounded-[12px] p-4 text-[16px] leading-5 font-semibold text-white"
-            style={{ background: neo.ink }}
+            style={{ background: neo.ink, ...buttonStyle }}
           >
             Continue
             <ArrowLongForward />
-          </div>
+          </motion.div>
         </div>
         <div className="relative h-[34px]" style={{ background: neo.bg }}>
           <div className="absolute bottom-2 left-1/2 h-[5px] w-[134px] -translate-x-1/2 rounded-full" style={{ background: "#000" }} />
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
 
@@ -146,51 +127,77 @@ function UnlockedScreen() {
       className="absolute top-[26px] left-[22.5px] h-[1000px] w-[376px] overflow-hidden rounded-[20px]"
       style={{ background: neo.bg }}
     >
-      <div className="absolute top-[38px] left-5 flex w-[335px] flex-col items-center gap-10">
-        <div className="flex flex-col items-center gap-6">
-          <div className="flex w-[335px] flex-col items-center gap-8">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/scenes/neo-advance/gift.svg" alt="" width={112} height={112} />
-            <p className="text-center text-[28px] leading-[35px] font-semibold tracking-[-0.56px]" style={{ color: "#000" }}>
-              You’ve unlocked a higher limit!
-            </p>
-          </div>
-          <span
-            className="rounded-full px-3 py-2 text-[14px] leading-[17.5px]"
-            style={{ background: neo.surface, color: neo.ink }}
-          >
-            Expires April 15, 2026
-          </span>
-        </div>
-
-        <div className="flex w-[335px] flex-col gap-4">
-          <p className="text-[16px] leading-5 font-semibold tracking-[-0.32px]" style={{ color: "#000" }}>
-            Neo Advance
-          </p>
-          <div className="overflow-hidden rounded-[12px]" style={{ background: neo.surface }}>
-            <div className="flex items-center pl-5">
-              <div className="py-5 pr-4">
-                <div
-                  className="grid size-10 place-items-center rounded-[8px] border-[0.5px]"
-                  style={{ background: neo.bg, borderColor: neo.border }}
-                >
-                  <MoneyIcon />
-                </div>
-              </div>
-              <p className="py-5 pr-5 text-[16px] leading-5" style={{ color: neo.ink }}>
-                Neo Chequing
-              </p>
-            </div>
-            <div className="pl-5">
-              <div className="h-px" style={{ background: neo.border }} />
-            </div>
-            <LimitRow label="Current limit" value="$50" divider />
-            <LimitRow label="New limit" value="$60" action="Edit" />
-          </div>
-        </div>
-      </div>
+      <UnlockedBody />
     </div>
   );
+}
+
+/** Contents of the unlocked screen, laid out from the screen's top-left. */
+export function UnlockedBody({
+  gift = <GiftImage />,
+  giftStyle,
+  headlineStyle,
+  restStyle,
+}: {
+  gift?: ReactNode;
+  giftStyle?: MotionStyle;
+  headlineStyle?: MotionStyle;
+  restStyle?: MotionStyle;
+}) {
+  return (
+    <div className="absolute top-[38px] left-5 flex w-[335px] flex-col items-center gap-10">
+      <div className="flex flex-col items-center gap-6">
+        <div className="flex w-[335px] flex-col items-center gap-8">
+          <motion.div className="size-[112px]" style={giftStyle}>
+            {gift}
+          </motion.div>
+          <motion.p
+            className="text-center text-[28px] leading-[35px] font-semibold tracking-[-0.56px]"
+            style={{ color: "#000", ...headlineStyle }}
+          >
+            You’ve unlocked a higher limit!
+          </motion.p>
+        </div>
+        <motion.span
+          className="rounded-full px-3 py-2 text-[14px] leading-[17.5px]"
+          style={{ background: neo.surface, color: neo.ink, ...restStyle }}
+        >
+          Expires April 15, 2026
+        </motion.span>
+      </div>
+
+      <motion.div className="flex w-[335px] flex-col gap-4" style={restStyle}>
+        <p className="text-[16px] leading-5 font-semibold tracking-[-0.32px]" style={{ color: "#000" }}>
+          Neo Advance
+        </p>
+        <div className="overflow-hidden rounded-[12px]" style={{ background: neo.surface }}>
+          <div className="flex items-center pl-5">
+            <div className="py-5 pr-4">
+              <div
+                className="grid size-10 place-items-center rounded-[8px] border-[0.5px]"
+                style={{ background: neo.bg, borderColor: neo.border }}
+              >
+                <MoneyIcon />
+              </div>
+            </div>
+            <p className="py-5 pr-5 text-[16px] leading-5" style={{ color: neo.ink }}>
+              Neo Chequing
+            </p>
+          </div>
+          <div className="pl-5">
+            <div className="h-px" style={{ background: neo.border }} />
+          </div>
+          <LimitRow label="Current limit" value="$50" divider />
+          <LimitRow label="New limit" value="$60" action="Edit" />
+        </div>
+      </motion.div>
+    </div>
+  );
+}
+
+function GiftImage() {
+  // eslint-disable-next-line @next/next/no-img-element
+  return <img src="/scenes/neo-advance/gift.svg" alt="" width={112} height={112} />;
 }
 
 function LimitRow({ label, value, action, divider = false }: { label: string; value: string; action?: string; divider?: boolean }) {
@@ -241,25 +248,50 @@ function MoneyIcon() {
 
 function LimitCard({ amount, progress }: { amount: string; progress: number }) {
   return (
-    <div
-      className="absolute top-[88px] left-[43px] flex w-[336px] flex-col gap-5 rounded-[12px] p-5"
-      style={{ background: neo.surface }}
-    >
+    <div className="absolute top-[88px] left-[43px] w-[336px] rounded-[12px]" style={{ background: neo.surface }}>
+      <LimitBody amount={amount} progress={`${progress * 100}%`} />
+    </div>
+  );
+}
+
+/** Current limit card contents: 336 × 137 with the card's 20 px padding. */
+export function LimitBody({
+  amount,
+  progress,
+  enter = [],
+}: {
+  amount: ReactNode;
+  /** fill width, e.g. "25%" */
+  progress: MotionStyle["width"];
+  /** styles for label, amount, bar and predicted limit, in that order */
+  enter?: (MotionStyle | undefined)[];
+}) {
+  return (
+    <div className="flex w-[336px] flex-col gap-5 p-5">
       <div className="flex flex-col gap-2">
-        <span className="text-[16px] leading-5" style={{ color: neo.subdued }}>
+        <motion.span className="text-[16px] leading-5" style={{ color: neo.subdued, ...enter[0] }}>
           Current limit
-        </span>
-        <span className="text-[20px] leading-[25px] font-semibold tracking-[-0.4px]" style={{ color: "#000" }}>
+        </motion.span>
+        <motion.span
+          className="text-[20px] leading-[25px] font-semibold tracking-[-0.4px] tabular-nums"
+          style={{ color: "#000", ...enter[1] }}
+        >
           {amount}
-        </span>
+        </motion.span>
       </div>
       <div className="flex flex-col items-end gap-1">
-        <div className="relative h-[5px] w-full overflow-hidden rounded-full" style={{ background: neo.track }}>
-          <div className="absolute inset-y-0 left-0" style={{ width: `${progress * 100}%`, backgroundImage: neo.fill }} />
-        </div>
-        <span className="w-full text-right text-[12px] leading-[15px] font-medium" style={{ color: neo.subdued }}>
+        <motion.div
+          className="relative h-[5px] w-full overflow-hidden rounded-full"
+          style={{ background: neo.track, ...enter[2] }}
+        >
+          <motion.div className="absolute inset-y-0 left-0" style={{ width: progress, backgroundImage: neo.fill }} />
+        </motion.div>
+        <motion.span
+          className="w-full text-right text-[12px] leading-[15px] font-medium"
+          style={{ color: neo.subdued, ...enter[3] }}
+        >
           Predicted limit: $300
-        </span>
+        </motion.span>
       </div>
     </div>
   );
