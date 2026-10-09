@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { motion } from "motion/react";
 import { site } from "@/content/site";
 import { intro } from "@/design/motion";
@@ -14,7 +15,8 @@ let navRevealed = false;
 /**
  * Fixed header (Figma 1:5, bar from 45:24842): HX logo left, Work / About /
  * Resume right, on a 50 % canvas bar with a background blur, so it stays
- * readable over whatever scrolls under it.
+ * readable over whatever scrolls under it. The current section's link is
+ * full white, the others 60 % (Figma 41:24828).
  * During the intro the loader's initials glide onto the logo, so the logo
  * stays hidden until that hand-off and the links fade in alongside.
  */
@@ -23,6 +25,8 @@ export function Header() {
   // Kept in state so a page restored from the router cache doesn't replay the fade.
   const [instant, setInstant] = useState(() => skipped || navRevealed);
   const navDelay = instant ? 0 : intro.nav.at;
+  const pathname = usePathname();
+  const isCurrent = (href: string) => pathname === href || pathname.startsWith(`${href}/`);
 
   return (
     <header
@@ -53,20 +57,26 @@ export function Header() {
           transition={{ duration: intro.nav.duration, ease: intro.nav.ease, delay: navDelay }}
         >
           <ul className="flex gap-[clamp(1.25rem,3.125vw,3.5rem)]">
-            {site.nav.map((item) => (
-              <li key={item.href}>
-                <Link
-                  href={item.href}
-                  {...(item.href === "/work" ? slideForward : {})}
-                  onClick={() => {
-                    if (item.href === "/work" && window.location.pathname !== "/work") markPageSlide();
-                  }}
-                  className="hover-underline type-body-m uppercase text-ink"
-                >
-                  {item.label}
-                </Link>
-              </li>
-            ))}
+            {site.nav.map((item) => {
+              const current = isCurrent(item.href);
+              return (
+                <li key={item.href}>
+                  <Link
+                    href={item.href}
+                    aria-current={current ? "page" : undefined}
+                    {...(item.href === "/work" ? slideForward : {})}
+                    onClick={() => {
+                      if (item.href === "/work" && window.location.pathname !== "/work") markPageSlide();
+                    }}
+                    className={`hover-underline font-sans text-[0.875rem] leading-[1.3] tracking-[-0.03em] uppercase transition-colors duration-(--duration-base) ${
+                      current ? "text-ink" : "text-ink/60 hover:text-ink"
+                    }`}
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+              );
+            })}
           </ul>
         </motion.nav>
       </div>
