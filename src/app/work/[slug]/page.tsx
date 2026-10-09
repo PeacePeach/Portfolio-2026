@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
+import { Fragment } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Footer } from "@/components/Footer";
 import { Media } from "@/components/ui/Media";
 import { NeoCaseIntro } from "@/components/case-study/neo-advance/NeoCaseIntro";
+import { NeoImpact } from "@/components/case-study/neo-advance/NeoImpact";
+import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { getProject, getProjects } from "@/content";
 import { site } from "@/content/site";
 
@@ -26,28 +29,35 @@ export default async function CaseStudyPage({ params }: PageProps<"/work/[slug]"
   const project = getProject(slug);
   if (!project) notFound();
 
+  // Neo Advance reveals each section below the fold on first scroll into view.
+  const Wrap = project.slug === "neo-advance" ? ScrollReveal : Fragment;
+
   const sections = (
     <>
-      <nav aria-label="Case study sections" className="mt-16 border-t border-line pt-6">
-        <ol className="flex flex-wrap gap-x-8 gap-y-3">
-          {project.sections.map((s, i) => (
-            <li key={s.id}>
-              <a href={`#${s.id}`} className="hover-underline type-label-s text-secondary hover:text-primary">
-                {String(i + 1).padStart(2, "0")} {s.title}
-              </a>
-            </li>
-          ))}
-        </ol>
-      </nav>
+      <Wrap>
+        <nav aria-label="Case study sections" className="mt-16 border-t border-line pt-6">
+          <ol className="flex flex-wrap gap-x-8 gap-y-3">
+            {project.sections.map((s, i) => (
+              <li key={s.id}>
+                <a href={`#${s.id}`} className="hover-underline type-label-s text-secondary hover:text-primary">
+                  {String(i + 1).padStart(2, "0")} {s.title}
+                </a>
+              </li>
+            ))}
+          </ol>
+        </nav>
+      </Wrap>
 
       {project.sections.map((s, i) => (
-        <section key={s.id} id={s.id} className="grid-page min-h-[70vh] border-t border-line py-16 target:border-ink">
-          <p className="type-label-s col-span-4 md:col-span-3 text-tertiary">{String(i + 1).padStart(2, "0")}</p>
-          <div className="col-span-4 md:col-span-6">
-            <h2 className="type-display-s">{s.title}</h2>
-            <p className="mt-6 text-secondary">Case study content to come. This section is a deep-link target.</p>
-          </div>
-        </section>
+        <Wrap key={s.id}>
+          <section id={s.id} className="grid-page min-h-[70vh] border-t border-line py-16 target:border-ink">
+            <p className="type-label-s col-span-4 md:col-span-3 text-tertiary">{String(i + 1).padStart(2, "0")}</p>
+            <div className="col-span-4 md:col-span-6">
+              <h2 className="type-display-s">{s.title}</h2>
+              <p className="mt-6 text-secondary">Case study content to come. This section is a deep-link target.</p>
+            </div>
+          </section>
+        </Wrap>
       ))}
     </>
   );
@@ -58,7 +68,12 @@ export default async function CaseStudyPage({ params }: PageProps<"/work/[slug]"
       <>
         <main id="main">
           <NeoCaseIntro>
-            <div className="mt-24">{sections}</div>
+            <hr className="mt-24 border-line" />
+            <ScrollReveal className="mt-24">
+              <NeoImpact />
+            </ScrollReveal>
+            {/* The section nav's top rule closes the impact block, 96 px below it as in Figma. */}
+            <div className="mt-8">{sections}</div>
           </NeoCaseIntro>
         </main>
         <Footer />
