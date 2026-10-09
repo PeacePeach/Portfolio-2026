@@ -12,7 +12,9 @@ import { markPageSlide, slideBack, slideForward } from "@/lib/pageTransition";
 let navRevealed = false;
 
 /**
- * Fixed header (Figma 1:5): HX logo left, Work / About / Resume right.
+ * Fixed header (Figma 1:5, bar from 45:24842): HX logo left, Work / About /
+ * Resume right, on a 50 % canvas bar with a background blur, so it stays
+ * readable over whatever scrolls under it.
  * During the intro the loader's initials glide onto the logo, so the logo
  * stays hidden until that hand-off and the links fade in alongside.
  */
@@ -23,8 +25,11 @@ export function Header() {
   const navDelay = instant ? 0 : intro.nav.at;
 
   return (
-    <header className="fixed inset-x-0 top-0 z-40 mix-blend-difference" style={{ viewTransitionName: "site-header" }}>
-      <div className="container-page flex h-header items-center justify-between gap-6">
+    <header
+      className="fixed inset-x-0 top-0 z-40 bg-[rgba(13,13,13,0.5)] backdrop-blur-[25px]"
+      style={{ viewTransitionName: "site-header" }}
+    >
+      <div className="container-page flex h-header-bar items-center justify-between gap-6">
         <Link
           href="/"
           {...slideBack}

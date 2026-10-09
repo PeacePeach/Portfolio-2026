@@ -113,7 +113,8 @@
   --spacing-gutter: clamp(0.75rem, 1.4vw, 1.5rem);  /* grid column gap */
   --spacing-margin: clamp(1.25rem, 5vw, 6rem);      /* page side margin: 64 px */
   --spacing-section: clamp(6rem, 14vw, 13rem);      /* vertical rhythm between sections */
-  --spacing-header: clamp(4.5rem, 8.75vw, 9rem);    /* logo centered 56 px from top */
+  --spacing-header: clamp(4.5rem, 8.75vw, 9rem);    /* content offset below the header */
+  --spacing-header-bar: clamp(4.5rem, 6.8vw, 5.4375rem); /* fixed bar, 87 px at 1280 (Figma 45:24842) */
 
   /* ---- Breakpoints -------------------------------------------------- */
   --breakpoint-sm: 40rem;   /* 640  */
