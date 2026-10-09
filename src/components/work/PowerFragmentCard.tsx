@@ -44,7 +44,7 @@ export function PowerFragmentCard({ fragment }: { fragment: PowerFragment }) {
 
       <div className="flex gap-5 px-5 pt-[1.375rem] pb-5">
         <div className="flex shrink-0 flex-col items-center gap-6">
-          <div className="relative h-(--frag-img-h) w-(--frag-img-w) overflow-hidden rounded-[10px] bg-art">
+          <div className="relative h-(--frag-img-h) w-(--frag-img-w)">
             {fragment.image ? (
               <div className="absolute inset-0 animate-float">
                 <Image

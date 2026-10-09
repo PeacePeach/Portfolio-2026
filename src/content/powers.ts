@@ -4,8 +4,9 @@ import type { ImageRef, PowerFragment, SuperPower } from "./types";
 /**
  * Placeholder super powers (Figma 25:538). Titles follow the filters; the
  * descriptions, fragment titles, copy and counts are stand-ins to replace.
- * Each fragment has its own drawing in public/illustrations (hand-drawn
- * style, black/grey/white with a touch of the highlight blue).
+ * Each fragment has its own drawing in public/illustrations: chalkboard
+ * style, white and grey lines with dots of the highlight blue, no backdrop,
+ * each turned at its own angle.
  */
 const art = (name: string, alt: string): ImageRef => ({
   src: `/illustrations/${name}.svg`,
