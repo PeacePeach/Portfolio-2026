@@ -44,11 +44,12 @@ export function PowerFragmentCard({ fragment }: { fragment: PowerFragment }) {
         </Link>
       </div>
 
-      {/* Image and copy sit centred side by side. The row height fits the longest
-          allowed copy (two-line title, six-line body, counters), so every card
-          in a breakpoint is the same size whatever the text. */}
-      <div className="flex h-[calc(var(--frag-body-h)+2.625rem)] items-center gap-5 px-5 pt-[1.375rem] pb-5">
-        <div className="relative h-(--frag-img-h) w-(--frag-img-w) shrink-0">
+      {/* Image and copy sit centred side by side. One card per row, the row fits
+          its copy with 32 px above and below, and the image scales to that height.
+          Two per row (xl), the row fits the longest allowed copy (two-line title,
+          six-line body, counters), so side-by-side cards match whatever the text. */}
+      <div className="flex items-center gap-5 px-5 py-8 xl:h-[calc(var(--frag-body-h)+2.625rem)] xl:pt-[1.375rem] xl:pb-5">
+        <div className="relative w-(--frag-img-w) shrink-0 self-stretch xl:h-(--frag-img-h) xl:self-auto">
           {fragment.image ? (
             <div className="absolute inset-0 animate-float">
               <Image
