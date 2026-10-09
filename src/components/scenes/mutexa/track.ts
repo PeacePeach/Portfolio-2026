@@ -109,8 +109,8 @@ export function camera(t: number) {
  * the group's rotation to make the shadow fall straight down on screen.
  */
 export const cardShadow = [
-  { y: 2, blur: 3, alpha: 0.16 },
-  { y: 10, blur: 22, alpha: 0.24 },
+  { y: 2, blur: 4, alpha: 0.22 },
+  { y: 14, blur: 30, alpha: 0.34 },
 ]
   .map(
     ({ y, blur, alpha }) =>

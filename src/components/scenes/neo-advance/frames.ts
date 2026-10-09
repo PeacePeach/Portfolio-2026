@@ -27,5 +27,5 @@ export const neo = {
     "0 7px 8px -4px rgba(5,28,44,0.06), 0 3px 23px 6px rgba(5,28,44,0.04), 0 12px 17px 2px rgba(5,28,44,0.03)", // shadowXL
   /** Soft lift under the phone surfaces: a tight contact shadow plus a wide, faint ambient one. */
   groupShadow:
-    "drop-shadow(0 2px 3px rgba(10,30,90,0.16)) drop-shadow(0 12px 24px rgba(10,30,90,0.26))",
+    "drop-shadow(0 2px 4px rgba(10,30,90,0.22)) drop-shadow(0 16px 32px rgba(10,30,90,0.36))",
 } as const;
