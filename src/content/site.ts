@@ -8,7 +8,7 @@ export const site = {
   role: "Product Design Lead",
   title: "Han Xu — Product Design Lead",
   description:
-    "Product Design Lead with 10+ years across fintech and B2B SaaS, turning ambiguity and complexity into clear product direction for users and businesses.",
+    "Product Design Lead with 10+ years across fintech and B2B SaaS. I turn ambiguity into momentum through clarity, alignment, and evidence.",
   email: "hello@example.com",
 
   /** Opening loader. Each word's first letter stays and forms the logo. */
