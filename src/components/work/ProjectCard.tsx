@@ -72,10 +72,12 @@ export function ProjectCard({ project }: { project: Project }) {
           {/* Frame 35: 70 % black over a 50 px background blur. Explicit colours: the palette has no black.
             A backdrop blur fades out at its own edges, which showed as a light rim around the tile's
             corners, so the panel is 20 px larger than it looks and clipped back to shape: its real edges
-            sit outside the tile, and the tile's own rounded clip makes the bottom corners. */}
+            sit outside the tile, and the tile's own rounded clip makes the bottom corners. The side
+            and bottom clips sit 1 px outside the tile too, so on a fractional tile edge the panel fully covers
+            the scene where the tile's edge pixel is antialiased. */}
           <div
             aria-hidden="true"
-            className={`absolute -inset-x-5 top-0 -bottom-5 bg-[rgba(0,0,0,0.7)] [clip-path:inset(0_20px_20px_20px_round_10px_10px_0_0)] backdrop-blur-[25px] ${shown} ${fade}`}
+            className={`absolute -inset-x-5 top-0 -bottom-5 bg-[rgba(0,0,0,0.7)] [clip-path:inset(0_19px_19px_19px_round_11px_11px_0_0)] backdrop-blur-[25px] ${shown} ${fade}`}
           />
           <div className={`relative flex flex-col gap-4 px-5 pt-8 pb-5 ${shown} ${fade}`}>
             <div className="flex flex-col gap-2">
