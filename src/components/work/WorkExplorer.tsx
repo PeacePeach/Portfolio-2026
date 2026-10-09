@@ -107,7 +107,7 @@ export function WorkExplorer({
                     }`}
                   >
                     <Icon {...iconProps} />
-                    <span className="hover-underline">{w.label}</span>
+                    <span>{w.label}</span>
                   </button>
                   <FilterList
                     open={active && filters.length > 0}
@@ -262,7 +262,7 @@ function FilterBox({
         ) : null}
       </span>
       <span
-        className={`hover-underline transition-colors duration-(--duration-base) ${checked ? "text-ink" : "text-ink/60 hover:text-ink"}`}
+        className={`transition-colors duration-(--duration-base) ${checked ? "text-ink" : "text-ink/60 hover:text-ink"}`}
       >
         {label}
       </span>

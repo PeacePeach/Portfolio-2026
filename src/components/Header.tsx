@@ -16,7 +16,7 @@ let navRevealed = false;
  * Fixed header (Figma 1:5, bar from 45:24842): HX logo left, Work / About /
  * Resume right, on a 50 % canvas bar with a background blur, so it stays
  * readable over whatever scrolls under it. The current section's link is
- * full white, the others 60 % (Figma 41:24828), with no hover state.
+ * full white, the others 60 % (Figma 41:24828).
  * During the intro the loader's initials glide onto the logo, so the logo
  * stays hidden until that hand-off and the links fade in alongside.
  */
@@ -68,8 +68,8 @@ export function Header() {
                     onClick={() => {
                       if (item.href === "/work" && window.location.pathname !== "/work") markPageSlide();
                     }}
-                    className={`font-sans text-[0.875rem] leading-[1.3] tracking-[-0.03em] uppercase transition-colors duration-(--duration-base) ${
-                      current ? "text-ink" : "text-ink/60"
+                    className={`hover-underline font-sans text-[0.875rem] leading-[1.3] tracking-[-0.03em] uppercase transition-colors duration-(--duration-base) ${
+                      current ? "text-ink" : "text-ink/60 hover:text-ink"
                     }`}
                   >
                     {item.label}
