@@ -30,7 +30,7 @@ export const evidence: Evidence[] = [
     id: "banking-shared-patterns",
     image: { src: "/placeholders/banking-platform.svg", alt: "", width: 1200, height: 1500 },
     capabilityIds: ["design-systems"],
-    projectSlug: "banking-platform",
+    projectSlug: "brightcove-beacon",
     sectionId: "system",
     title: "One set of patterns across many banking journeys",
     body: "Sample snippet. Describe how recurring needs such as forms, confirmations and errors were consolidated into shared patterns so separate journeys behaved alike.",
@@ -41,7 +41,7 @@ export const evidence: Evidence[] = [
   {
     id: "banking-governance",
     capabilityIds: ["design-systems", "design-strategy"],
-    projectSlug: "banking-platform",
+    projectSlug: "brightcove-beacon",
     sectionId: "governance",
     title: "A contribution model teams actually used",
     body: "Sample snippet. Explain how the system was governed, who could contribute, and how decisions about new components were made.",
@@ -77,7 +77,7 @@ export const evidence: Evidence[] = [
   {
     id: "ai-principles",
     capabilityIds: ["design-strategy"],
-    projectSlug: "ai-experimental",
+    projectSlug: "mutexa",
     sectionId: "principles",
     title: "Principles for designing with AI",
     body: "Sample snippet. Summarise the principles that guided AI-assisted features and how they were used to evaluate ideas.",
@@ -102,7 +102,7 @@ export const evidence: Evidence[] = [
   {
     id: "ai-explorations",
     capabilityIds: ["unlocking-ambiguity"],
-    projectSlug: "ai-experimental",
+    projectSlug: "mutexa",
     sectionId: "explorations",
     title: "Prototyping to find the question worth answering",
     body: "Sample snippet. Explain how quick prototypes were used to learn where AI genuinely helped before committing to a direction.",

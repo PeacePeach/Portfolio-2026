@@ -21,12 +21,12 @@ const body =
 const pool = {
   dashboard: { kind: "case", title: "Build live dashboard", project: "neo-advance", image: art("dashboard", "A hand-drawn dashboard with a rising blue line") },
   journey: { kind: "case", title: "Map the credit journey", project: "neo-advance", image: art("journey", "A dotted path between stops, ending at a blue flag") },
-  align: { kind: "case", title: "Get three teams on one plan", project: "banking-platform", image: art("align", "Three arrows meeting at one blue point") },
-  research: { kind: "story", title: "Listen before designing", project: "banking-platform", image: art("research", "A magnifying glass over two speech bubbles") },
-  spark: { kind: "case", title: "Prototype with AI", project: "ai-experimental", image: art("spark", "A pencil line ending in a blue star") },
-  untangle: { kind: "case", title: "Untangle the rules engine", project: "b2b-platform", image: art("untangle", "A tangled line straightening into three, one blue") },
+  align: { kind: "case", title: "Get three teams on one plan", project: "brightcove-beacon", image: art("align", "Three arrows meeting at one blue point") },
+  research: { kind: "story", title: "Listen before designing", project: "brightcove-beacon", image: art("research", "A magnifying glass over two speech bubbles") },
+  spark: { kind: "case", title: "Prototype with AI", project: "mutexa", image: art("spark", "A pencil line ending in a blue star") },
+  untangle: { kind: "case", title: "Untangle the rules engine", project: "reimagining-analytics", image: art("untangle", "A tangled line straightening into three, one blue") },
   ambiguity: { kind: "story", title: "Find a way through", project: "neo-advance", image: art("ambiguity", "A path through grey fog and a compass with a blue needle") },
-  steps: { kind: "story", title: "Onboard new designers", project: "banking-platform", image: art("steps", "A figure on top of steps holding a blue flag") },
+  steps: { kind: "story", title: "Onboard new designers", project: "brightcove-beacon", image: art("steps", "A figure on top of steps holding a blue flag") },
 } satisfies Record<string, Omit<PowerFragment, "id" | "body" | "likes" | "notes">>;
 
 type FragmentId = keyof typeof pool;
