@@ -33,6 +33,7 @@ import {
   type EasingFunction,
   type MotionValue,
 } from "motion/react";
+import { useScenePaused } from "../ScenePause";
 import { neo, neoFrames, NEO_TILE } from "./frames";
 import { CoverSheet, LimitBody, NeoAdvanceScene, ShieldImage, UnlockedBody } from "./NeoAdvanceScene";
 import { giftBox, giftConfetti } from "./giftPaths";
@@ -132,6 +133,7 @@ export function NeoAdvanceAnimation({
 function Loop({ still, label, corners }: { still?: number; label: string; corners: string }) {
   const root = useRef<HTMLDivElement>(null);
   const inView = useInView(root, { margin: "100px" });
+  const paused = useScenePaused();
   const t = useMotionValue(still ?? 0);
 
   useEffect(() => {
@@ -139,7 +141,7 @@ function Loop({ still, label, corners }: { still?: number; label: string; corner
       t.set(still);
       return;
     }
-    if (!inView) return;
+    if (!inView || paused) return;
     // Resume from wherever the loop was paused.
     const from = t.get() % NEO_LOOP;
     const first = animate(t, NEO_LOOP, { duration: NEO_LOOP - from, ease: "linear" });
@@ -152,7 +154,7 @@ function Loop({ still, label, corners }: { still?: number; label: string; corner
       first.stop();
       rest?.stop();
     };
-  }, [still, inView, t]);
+  }, [still, inView, paused, t]);
 
   /* Cover sheet: drag up, sink and fade, return from below off-screen. */
   const sheetY = useTrack(t, [

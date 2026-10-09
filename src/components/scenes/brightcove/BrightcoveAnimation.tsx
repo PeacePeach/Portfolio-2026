@@ -21,6 +21,7 @@ import {
   useTransform,
   type MotionValue,
 } from "motion/react";
+import { useScenePaused } from "../ScenePause";
 import { ASPECT, LOOP, ORIGIN, TILE, WIDTH, beats } from "./timeline";
 
 /** Rectangle 7: the tile background. */
@@ -72,6 +73,7 @@ export function BrightcoveAnimation({
 
   const root = useRef<HTMLDivElement>(null);
   const inView = useInView(root, { margin: "100px" });
+  const paused = useScenePaused();
   const t = useMotionValue(still ?? 0);
 
   useEffect(() => {
@@ -79,7 +81,7 @@ export function BrightcoveAnimation({
       t.set(still);
       return;
     }
-    if (!inView) return;
+    if (!inView || paused) return;
     const from = t.get() % LOOP;
     const first = animate(t, LOOP, { duration: LOOP - from, ease: "linear" });
     let rest: ReturnType<typeof animate> | undefined;
@@ -96,7 +98,7 @@ export function BrightcoveAnimation({
       first.stop();
       rest?.stop();
     };
-  }, [still, inView, t]);
+  }, [still, inView, paused, t]);
 
   const width = useTransform(t, (v) => stateAt(v).width);
   const height = useTransform(width, (w) => w * ASPECT);

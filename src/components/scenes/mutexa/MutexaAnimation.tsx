@@ -31,6 +31,7 @@ import {
   useTransform,
   type MotionValue,
 } from "motion/react";
+import { useScenePaused } from "../ScenePause";
 import {
   CardId,
   LOOP,
@@ -116,6 +117,7 @@ function Stage({
 }) {
   const root = useRef<HTMLDivElement>(null);
   const inView = useInView(root, { margin: "100px" });
+  const paused = useScenePaused();
   const t = useMotionValue(still ?? 0);
 
   useEffect(() => {
@@ -123,7 +125,7 @@ function Stage({
       t.set(still);
       return;
     }
-    if (!inView) return;
+    if (!inView || paused) return;
     const from = t.get() % LOOP;
     const first = animate(t, LOOP, { duration: LOOP - from, ease: "linear" });
     let rest: ReturnType<typeof animate> | undefined;
@@ -140,7 +142,7 @@ function Stage({
       first.stop();
       rest?.stop();
     };
-  }, [still, inView, t]);
+  }, [still, inView, paused, t]);
 
   const x = useTransform(t, (v) => groupOffset(camera(v)).x);
   const y = useTransform(t, (v) => groupOffset(camera(v)).y);

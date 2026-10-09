@@ -20,6 +20,7 @@ import {
   useReducedMotion,
   useTransform,
 } from "motion/react";
+import { useScenePaused } from "../ScenePause";
 import { LOOP, TILE, beats, doneAt } from "./timeline";
 
 const publicSans = Public_Sans({
@@ -100,6 +101,7 @@ export function BeaconAnalyticsAnimation({
   const root = useRef<HTMLDivElement>(null);
   const path = useRef<SVGPathElement>(null);
   const inView = useInView(root, { margin: "100px" });
+  const paused = useScenePaused();
   const t = useMotionValue(still ?? 0);
 
   useEffect(() => {
@@ -107,7 +109,7 @@ export function BeaconAnalyticsAnimation({
       t.set(still);
       return;
     }
-    if (!inView) return;
+    if (!inView || paused) return;
     const from = t.get() % LOOP;
     const first = animate(t, LOOP, { duration: LOOP - from, ease: "linear" });
     let rest: ReturnType<typeof animate> | undefined;
@@ -124,7 +126,7 @@ export function BeaconAnalyticsAnimation({
       first.stop();
       rest?.stop();
     };
-  }, [still, inView, t]);
+  }, [still, inView, paused, t]);
 
   const progress = useTransform(t, (v) => stateAt(v).progress);
   const shown = useTransform(t, (v) => stateAt(v).shown);

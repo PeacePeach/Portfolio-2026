@@ -32,8 +32,10 @@ export function WorkExplorerFromUrl(content: Content) {
   const view = isWorkView(param) ? param : defaultWorkView;
   // The router keeps visited pages alive (Activity). Arriving from a link must
   // start fresh: the chosen view, no filters, and the entrance replayed.
+  // Switching views on the page only updates the URL, so it is not keyed on
+  // the view: the nav stays put and only the content on the right changes.
   const { bfcacheId } = useRouter();
-  return <WorkExplorer key={`${bfcacheId}-${view}`} view={view} {...content} />;
+  return <WorkExplorer key={bfcacheId} view={view} {...content} />;
 }
 
 /**
@@ -57,6 +59,15 @@ export function WorkExplorer({
   const [powerId, setPowerId] = useState(superPowerFilters[0].id);
   const [timing] = useState(() => (cameBySlide() ? workIntro.afterSlide : workIntro.direct));
   const [switched, setSwitched] = useState(false);
+  // Follow the URL when something else changes ?view (a link to /work?view=…).
+  const [urlView, setUrlView] = useState(initialView);
+  if (initialView !== urlView) {
+    setUrlView(initialView);
+    if (initialView !== view) {
+      setSwitched(true);
+      setView(initialView);
+    }
+  }
 
   const choose = (v: WorkView) => {
     if (v === view) return;
