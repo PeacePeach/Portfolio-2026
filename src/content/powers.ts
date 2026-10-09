@@ -16,7 +16,7 @@ const art = (name: string, alt: string): ImageRef => ({
 });
 
 const body =
-  "Placeholder. A few sentences on the problem, what made it hard, the call I made and what changed because of it. Real write-up to come.";
+  "Placeholder. A few sentences on the problem, what made it hard, the call I made and what changed because of it. Longer write-ups are cut at six lines on the card; the full story lives on the detail page. Real write-up to come.";
 
 const pool = {
   dashboard: { kind: "case", title: "Build live dashboard", project: "neo-advance", image: art("dashboard", "A hand-drawn dashboard with a rising blue line") },
