@@ -79,7 +79,7 @@ export function ProjectCard({ project }: { project: Project }) {
           />
           <div className={`relative flex flex-col gap-4 px-5 pt-8 pb-5 ${shown} ${fade}`}>
             <div className="flex flex-col gap-2">
-              <h3 className="type-label-l">{project.title}</h3>
+              <h3 className="type-display-xs">{project.title}</h3>
               <p className="type-body-s">{project.description}</p>
             </div>
             {project.tags.length ? (
