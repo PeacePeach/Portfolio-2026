@@ -28,7 +28,7 @@ export function PowerFragmentCard({ fragment }: { fragment: PowerFragment }) {
 
   // The whole card is clickable through the stretched link; the like button sits above it.
   return (
-    <article className="group relative rounded-[10px] border border-ink/10 bg-card transition-colors duration-(--duration-underline) ease-out-expo hover:bg-card-hover has-focus-visible:bg-card-hover [--frag-body-h:13.75rem] [--frag-img-h:8.875rem] [--frag-img-w:6.5rem] sm:[--frag-img-h:11.1875rem] sm:[--frag-img-w:8.1875rem]">
+    <article className="group relative flex flex-col rounded-[10px] border border-ink/10 bg-card transition-colors duration-(--duration-underline) ease-out-expo hover:bg-card-hover has-focus-visible:bg-card-hover [--frag-img-w:6.5rem] sm:[--frag-img-w:8.1875rem]">
       <div className="flex items-start justify-between gap-4 border-b border-ink/10 px-5 pt-5 pb-3 type-body-s text-secondary">
         <span className="flex items-center gap-2">
           <Icon size={18} strokeWidth={1.33} aria-hidden />
@@ -44,12 +44,11 @@ export function PowerFragmentCard({ fragment }: { fragment: PowerFragment }) {
         </Link>
       </div>
 
-      {/* Image and copy sit centred side by side. One card per row, the row fits
-          its copy with 32 px above and below, and the image scales to that height.
-          Two per row (xl), the row fits the longest allowed copy (two-line title,
-          six-line body, counters), so side-by-side cards match whatever the text. */}
-      <div className="flex items-center gap-5 px-5 py-8 xl:h-[calc(var(--frag-body-h)+2.625rem)] xl:pt-[1.375rem] xl:pb-5">
-        <div className="relative w-(--frag-img-w) shrink-0 self-stretch xl:h-(--frag-img-h) xl:self-auto">
+      {/* Image and copy sit centred side by side. The row fits its copy with 32 px
+          above and below, and the image scales to that height. Side-by-side cards
+          stretch to the taller one and keep their content centred. */}
+      <div className="flex flex-1 items-center gap-5 px-5 py-8">
+        <div className="relative w-(--frag-img-w) shrink-0 self-stretch">
           {fragment.image ? (
             <div className="absolute inset-0 animate-float">
               <Image
