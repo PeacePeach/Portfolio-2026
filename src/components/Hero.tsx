@@ -36,7 +36,7 @@ export function Hero() {
   return (
     <section aria-labelledby="hero-title" className="relative min-h-svh overflow-hidden bg-canvas md:h-svh">
       <div
-        className={`container-page flex min-h-svh flex-col pt-[22svh] pb-4 md:pt-[23.125svh] md:pb-0 ${
+        className={`container-page flex min-h-svh flex-col pt-[22svh] pb-4 md:pt-[30.25svh] md:pb-0 ${
           docked ? "md:items-start" : "md:items-center"
         }`}
       >
@@ -83,9 +83,9 @@ export function Hero() {
           </div>
         </motion.div>
 
-        {/* Right of the docked headline on desktop, its heading level with the top of the headline's
-            first line (Figma 10:2 at 1280 × 800: x 988, headline lines 100 px apart from y 185, heading box at y 198) */}
-        <KnowMe className="mt-16 md:absolute md:top-[calc(23.125svh+var(--display-l-size)*0.118)] md:left-[77.1875vw] md:mt-0" />
+        {/* Right of the docked headline on desktop, roughly centred on it
+            (Figma 10:2 at 1280 × 800: x 988, headline lines 92 px apart from y 242, panel top at y 342) */}
+        <KnowMe className="mt-16 md:absolute md:top-[calc(30.25svh+var(--display-l-size)*0.9091)] md:left-[77.1875vw] md:mt-0" />
       </div>
     </section>
   );

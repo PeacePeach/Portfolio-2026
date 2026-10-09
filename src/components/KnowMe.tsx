@@ -34,7 +34,7 @@ export function KnowMe({ className = "" }: { className?: string }) {
     >
       <nav aria-label={heading}>
         <p className="uppercase text-secondary">{heading}</p>
-        <ul className="mt-9" onMouseLeave={() => setActive(null)}>
+        <ul className="mt-6" onMouseLeave={() => setActive(null)}>
           {options.map((option, i) => {
             const open = active === i;
             return (

@@ -51,7 +51,7 @@
   --text-display-l--line-height: 1.2;
   --text-display-l--letter-spacing: -0.03em;
   --text-display-l--font-weight: 600;
-  --display-l-stack: 0.9091; /* hero lines stacked 100 px apart (Figma 10:2, 10:101) */
+  --display-l-stack: 0.83636; /* hero lines stacked 92 px apart (Figma 10:2) */
   --text-display-m: clamp(2.5rem, 5vw, 4.5rem);             /* 64 */
   --text-display-m--line-height: 1.2;
   --text-display-m--letter-spacing: -0.03em;
