@@ -64,7 +64,7 @@ export function PowerFragmentCard({ fragment }: { fragment: PowerFragment }) {
         </div>
 
         <div className="flex min-w-0 flex-1 flex-col gap-4">
-          <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-2">
             <h3 className="line-clamp-2 type-display-xs text-primary">{fragment.title}</h3>
             <p className="line-clamp-6 type-body-s text-secondary">{fragment.body}</p>
           </div>

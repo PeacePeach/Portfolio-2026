@@ -124,12 +124,12 @@ export function ProjectCard({ project }: { project: Project }) {
           <div className={`relative flex flex-col gap-4 px-5 pt-8 pb-5 ${shown} ${fade}`}>
             <div className="flex flex-col gap-2">
               <h3 className="type-display-xs">{project.title}</h3>
-              <p className="type-body-s">{project.description}</p>
+              <p className="type-body-s text-secondary">{project.description}</p>
             </div>
             {project.tags.length ? (
               <ul className="flex flex-wrap gap-1" aria-label="Tags">
                 {project.tags.map((t) => (
-                  <li key={t} className="type-body-xs rounded-full border border-[#fff] bg-tag px-2.5 py-1">
+                  <li key={t} className="type-body-xs rounded-full border border-secondary bg-tag text-secondary px-2.5 py-1">
                     {tagLabel(t)}
                   </li>
                 ))}
