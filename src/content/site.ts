@@ -27,11 +27,11 @@ export const site = {
 
   hero: {
     /** One entry per line. */
-    statement: ["Designing", "for", "complexity"],
+    statement: ["From", "ambiguity", "to", "momentum"],
     /** Which line the supporting copy sits beside on desktop. */
-    asideLine: 1,
+    asideLine: 2,
     description:
-      "Product Design Lead with 10+ years across fintech and B2B SaaS, turning ambiguity and complexity into clear product direction for users and businesses.",
+      "Product Design Lead with 10+ years across fintech and B2B SaaS. I turn ambiguity into momentum through clarity, alignment, and evidence.",
   },
 
   /** Panel right of the headline (Figma 2:31, hover 2:134). */

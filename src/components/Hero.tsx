@@ -9,7 +9,7 @@ import { KnowMe } from "./KnowMe";
 import { useIntro } from "./intro/IntroContext";
 
 /**
- * Full-screen hero (Figma 1:5 → 2:283). The headline block starts centred,
+ * Full-screen hero (Figma 10:101 → 10:2). The headline block starts centred,
  * each line flips through a copy of itself, then the block docks to the
  * left margin. The supporting copy sits beside the shortest line and moves
  * with the block. Copy comes from site.hero.
@@ -36,7 +36,7 @@ export function Hero() {
   return (
     <section aria-labelledby="hero-title" className="relative min-h-svh overflow-hidden bg-canvas">
       <div
-        className={`container-page flex min-h-svh flex-col pt-[30svh] pb-[20svh] md:pt-[32.65svh] ${
+        className={`container-page flex min-h-svh flex-col pt-[30svh] pb-[20svh] md:pt-[30.41svh] ${
           docked ? "md:items-start" : "md:items-center"
         }`}
       >
@@ -83,8 +83,9 @@ export function Hero() {
           </div>
         </motion.div>
 
-        {/* Right of the docked headline on desktop (Figma 10:2: x 988, heading centred at y 290.5) */}
-        <KnowMe className="mt-16 md:absolute md:top-[calc(32svh+1.19vw)] md:left-[77.1875vw] md:mt-0" />
+        {/* Right of the docked headline on desktop, its heading level with the top of the headline's
+            first line (Figma 10:2: x 988, headline lines 100 px apart from y 253, heading box at y 266) */}
+        <KnowMe className="mt-16 md:absolute md:top-[calc(30.41svh+var(--display-l-size)*0.118)] md:left-[77.1875vw] md:mt-0" />
       </div>
     </section>
   );
@@ -92,7 +93,7 @@ export function Hero() {
 
 /**
  * Places the supporting copy just right of the chosen headline line,
- * vertically centred on it (Figma 10:2: about 16 px gap at 110 px type). Desktop only.
+ * vertically centred on it (Figma 10:2: about 23 px gap at 110 px type). Desktop only.
  */
 function useAsidePosition(
   blockRef: React.RefObject<HTMLDivElement | null>,
@@ -111,7 +112,7 @@ function useAsidePosition(
       // offsetLeft/Top ignore transforms, so the dock animation does not skew this.
       const size = parseFloat(getComputedStyle(line).fontSize);
       setPos({
-        left: line.offsetLeft + line.offsetWidth + size * 0.15,
+        left: line.offsetLeft + line.offsetWidth + size * 0.21,
         top: line.offsetTop + line.offsetHeight / 2 + size * 0.02,
       });
     };

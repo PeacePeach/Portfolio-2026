@@ -51,7 +51,7 @@
   --text-display-l--line-height: 1.2;
   --text-display-l--letter-spacing: -0.03em;
   --text-display-l--font-weight: 600;
-  --display-l-stack: 0.8545; /* hero lines stacked 94 px apart (Figma 10:2, 10:41) */
+  --display-l-stack: 0.9091; /* hero lines stacked 100 px apart (Figma 10:2, 10:101) */
   --text-display-m: clamp(2.5rem, 5vw, 4.5rem);             /* 64 */
   --text-display-m--line-height: 1.2;
   --text-display-m--letter-spacing: -0.03em;
@@ -155,7 +155,7 @@
 
 /* ---- Responsive token values ----------------------------------------- */
 :root {
-  --display-l-size: 13.5vw;        /* mobile: "COMPLEXITY" fits the width */
+  --display-l-size: 13.5vw;        /* mobile: the longest hero line fits the width */
 }
 @media (width >= 48rem) {
   :root { --display-l-size: min(8.59375vw, 10.5rem); } /* 110 px at 1280 */
