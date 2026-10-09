@@ -8,9 +8,9 @@
  * sits at the centre of the 422 × 314 tile; the stage translates the group so
  * that point lands at the centre.
  *
- * The composition repeats every PERIOD local pixels down the columns, so the
- * camera keeps travelling "up" the cards and the loop closes without
- * rewinding.
+ * The loop opens with the cards rising a little into frame 1 as they fade
+ * in over the background, and closes by letting them drift on past frame 5
+ * as they fade out, so it returns to frame 1 without rewinding.
  */
 
 export const TILE = { width: 422, height: 314 } as const;
@@ -22,13 +22,20 @@ const rad = (ROTATION * Math.PI) / 180;
 const cos = Math.cos(rad);
 const sin = Math.sin(rad);
 
-/** One repeat of the composition: tallest column (1346) + the 8 px gap. */
-export const PERIOD = 1354;
-
-export type CardId = "planner" | "progress" | "gui" | "metrics" | "insights" | "efield" | "files";
+export type CardId =
+  | "planner"
+  | "progress"
+  | "gui"
+  | "metrics"
+  | "insights"
+  | "efield"
+  | "files";
 
 /** Card rectangles in local pixels (from the Figma group's own axes). */
-export const cards: Record<CardId, { x: number; y: number; w: number; h: number }> = {
+export const cards: Record<
+  CardId,
+  { x: number; y: number; w: number; h: number }
+> = {
   planner: { x: 0, y: 0, w: 260, h: 704 },
   efield: { x: 0, y: 712, w: 260, h: 257 },
   files: { x: 0, y: 977, w: 260, h: 277 },
@@ -38,10 +45,7 @@ export const cards: Record<CardId, { x: number; y: number; w: number; h: number 
   insights: { x: 268, y: 819, w: 260, h: 527 },
 };
 
-/**
- * Camera keyframes: the local point at the tile centre in each Figma frame
- * (Groups 16–20), then frame 1 again one period further on.
- */
+/** Camera keyframes: the local point at the tile centre in each Figma frame (Groups 16–20). */
 const keys = [
   { x: 136.0, y: 38.4 }, // 1 AI Planner
   { x: 382.2, y: 311.2 }, // 2 GUI view
@@ -49,28 +53,49 @@ const keys = [
   { x: 179.2, y: 911.8 }, // 4 Electric field
   { x: 157.2, y: 1171.5 }, // 5 Downloadable files
 ];
-const path = [...keys, { x: keys[0].x, y: keys[0].y + PERIOD }];
+/** How far the cards travel while fading in before frame 1 and out after frame 5. */
+const lead = { in: 60, out: 70 };
+const path = [
+  { x: keys[0].x, y: keys[0].y - lead.in },
+  ...keys,
+  { x: keys[4].x, y: keys[4].y + lead.out },
+];
 
-/** Seconds spent travelling into each next keyframe (longer legs get more time). */
-const legs = [2.1, 2.1, 1.8, 1.7, 1.6];
+/** Seconds spent travelling into each next point (longer legs get more time). */
+const legs = [0.8, 2.0, 2.0, 1.7, 1.6, 1.0];
 export const LOOP = legs.reduce((a, b) => a + b, 0);
 
-/** When the camera is centred on each keyframe. */
-export const keyTimes = legs.reduce<number[]>((acc, d, i) => [...acc, acc[i] + d], [0]).slice(0, keys.length);
+/** When the camera is centred on each Figma keyframe. */
+export const keyTimes = legs
+  .reduce<number[]>((acc, d, i) => [...acc, acc[i] + d], [0])
+  .slice(1, keys.length + 1);
+
+/** Card group opacity: fades in at the start of the loop and out at the end. */
+export const fade = { in: 0.45, out: 0.5 };
+export function trackOpacity(t: number) {
+  const time = ((t % LOOP) + LOOP) % LOOP;
+  return Math.min(1, time / fade.in, Math.max(0, (LOOP - time) / fade.out));
+}
 
 /**
  * Hermite blend between keyframes with a small (not zero) speed at each end:
  * the camera eases down around a focal card and carries on, never stopping.
  */
 const k = 0.3;
-const blend = (u: number) => (u ** 3 - 2 * u ** 2 + u) * k + (-2 * u ** 3 + 3 * u ** 2) + (u ** 3 - u ** 2) * k;
+const blend = (u: number) =>
+  (u ** 3 - 2 * u ** 2 + u) * k +
+  (-2 * u ** 3 + 3 * u ** 2) +
+  (u ** 3 - u ** 2) * k;
 
 export function camera(t: number) {
   let time = ((t % LOOP) + LOOP) % LOOP;
   for (let i = 0; i < legs.length; i++) {
     if (time <= legs[i] || i === legs.length - 1) {
       const e = blend(Math.min(time / legs[i], 1));
-      return { x: path[i].x + (path[i + 1].x - path[i].x) * e, y: path[i].y + (path[i + 1].y - path[i].y) * e };
+      return {
+        x: path[i].x + (path[i + 1].x - path[i].x) * e,
+        y: path[i].y + (path[i + 1].y - path[i].y) * e,
+      };
     }
     time -= legs[i];
   }
@@ -79,7 +104,10 @@ export function camera(t: number) {
 
 /** Where the group's local origin lands in the tile for a camera point. */
 export function groupOffset(cam: { x: number; y: number }) {
-  return { x: CENTER.x - (cos * cam.x - sin * cam.y), y: CENTER.y - (sin * cam.x + cos * cam.y) };
+  return {
+    x: CENTER.x - (cos * cam.x - sin * cam.y),
+    y: CENTER.y - (sin * cam.x + cos * cam.y),
+  };
 }
 
 /* ---- Focus ---------------------------------------------------------------- */
@@ -89,35 +117,39 @@ export function groupOffset(cam: { x: number; y: number }) {
  * cards the camera actually centres on use 0 (the camera is over the card);
  * the two it only passes use a wider zone.
  */
-const zones: Record<CardId, number> = { planner: 0, gui: 0, metrics: 0, efield: 0, files: 0, progress: 60, insights: 60 };
+const zones: Record<CardId, number> = {
+  planner: 0,
+  gui: 0,
+  metrics: 0,
+  efield: 0,
+  files: 0,
+  progress: 60,
+  insights: 60,
+};
 
 /** Start a card's animation a little before the camera arrives. */
 const LEAD = 0.15;
 
-const shifts = [-PERIOD, 0, PERIOD];
-
 function distance(id: CardId, cam: { x: number; y: number }) {
   const r = cards[id];
-  return Math.min(
-    ...shifts.map((s) => {
-      const dx = Math.max(r.x - cam.x, 0, cam.x - (r.x + r.w));
-      const dy = Math.max(r.y + s - cam.y, 0, cam.y - (r.y + s + r.h));
-      return Math.hypot(dx, dy);
-    }),
-  );
+  const dx = Math.max(r.x - cam.x, 0, cam.x - (r.x + r.w));
+  const dy = Math.max(r.y - cam.y, 0, cam.y - (r.y + r.h));
+  return Math.hypot(dx, dy);
 }
 
-function onScreen(id: CardId, cam: { x: number; y: number }) {
+function onScreen(id: CardId, t: number) {
+  if (trackOpacity(t) === 0) return false;
   const r = cards[id];
-  for (const s of shifts)
-    for (let i = 0; i <= 8; i++)
-      for (let j = 0; j <= 8; j++) {
-        const dx = r.x + (r.w * i) / 8 - cam.x;
-        const dy = r.y + s + (r.h * j) / 8 - cam.y;
-        const x = CENTER.x + cos * dx - sin * dy;
-        const y = CENTER.y + sin * dx + cos * dy;
-        if (x >= -4 && x <= TILE.width + 4 && y >= -4 && y <= TILE.height + 4) return true;
-      }
+  const cam = camera(t);
+  for (let i = 0; i <= 8; i++)
+    for (let j = 0; j <= 8; j++) {
+      const dx = r.x + (r.w * i) / 8 - cam.x;
+      const dy = r.y + (r.h * j) / 8 - cam.y;
+      const x = CENTER.x + cos * dx - sin * dy;
+      const y = CENTER.y + sin * dx + cos * dy;
+      if (x >= -4 && x <= TILE.width + 4 && y >= -4 && y <= TILE.height + 4)
+        return true;
+    }
   return false;
 }
 
@@ -133,12 +165,13 @@ export const schedule = Object.fromEntries(
     const n = Math.round(LOOP / STEP);
     const inZone = (i: number) => distance(id, camera(i * STEP)) <= zones[id];
     let enter = 0;
-    for (let i = 0; i < n; i++) if (inZone(i) && !inZone(i - 1)) enter = i * STEP;
+    for (let i = 0; i < n; i++)
+      if (inZone(i) && !inZone(i - 1)) enter = i * STEP;
     const start = wrap(enter - LEAD);
     // Walk back from the start to the last moment the card was off-screen.
     let hold = LOOP;
     for (let back = 0; back < LOOP; back += STEP) {
-      if (!onScreen(id, camera(start - back))) {
+      if (!onScreen(id, start - back)) {
         hold = LOOP - back;
         break;
       }

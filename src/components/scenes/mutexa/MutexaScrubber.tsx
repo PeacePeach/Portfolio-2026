@@ -10,7 +10,11 @@ export function MutexaScrubber() {
   const [time, setTime] = useState(2.1);
   return (
     <div className="flex w-full max-w-[422px] flex-col gap-4">
-      <SceneStage width={TILE.width} height={TILE.height} className="rounded-[15px]">
+      <SceneStage
+        width={TILE.width}
+        height={TILE.height}
+        className="rounded-[15px]"
+      >
         <MutexaAnimation at={time} />
       </SceneStage>
       <label className="flex w-full items-center gap-4 type-body-xs text-ink-muted">
@@ -24,7 +28,9 @@ export function MutexaScrubber() {
           className="flex-1 accent-current"
           aria-label="Time in the loop"
         />
-        <span className="w-[5ch] text-right tabular-nums">{time.toFixed(2)}s</span>
+        <span className="w-[5ch] text-right tabular-nums">
+          {time.toFixed(2)}s
+        </span>
       </label>
     </div>
   );

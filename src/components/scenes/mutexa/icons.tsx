@@ -5,11 +5,36 @@
 
 import type { CSSProperties } from "react";
 
-type Vec = { d: string; at: [number, number]; fill?: string; stroke?: string; width?: number; transform?: string };
+type Vec = {
+  d: string;
+  at: [number, number];
+  fill?: string;
+  stroke?: string;
+  width?: number;
+  transform?: string;
+};
 
-function Glyph({ vecs, size = 16, view = 16, style }: { vecs: Vec[]; size?: number; view?: number; style?: CSSProperties }) {
+function Glyph({
+  vecs,
+  size = 16,
+  view = 16,
+  style,
+}: {
+  vecs: Vec[];
+  size?: number;
+  view?: number;
+  style?: CSSProperties;
+}) {
   return (
-    <svg width={size} height={size} viewBox={`0 0 ${view} ${view}`} fill="none" aria-hidden style={style} className="shrink-0">
+    <svg
+      width={size}
+      height={size}
+      viewBox={`0 0 ${view} ${view}`}
+      fill="none"
+      aria-hidden
+      style={style}
+      className="shrink-0"
+    >
       {vecs.map((v, i) => (
         <path
           key={i}
@@ -31,7 +56,11 @@ const dot = "M1.333 .667A.667.667 0 1 1 0 .667a.667.667 0 0 1 1.333 0Z";
 export const ShareIcon = () => (
   <Glyph
     vecs={[
-      { d: "M0 0V5.333C0 5.687.14 6.026.39 6.276S.98 6.667 1.333 6.667H9.333C9.687 6.667 10.026 6.526 10.276 6.276S10.667 5.687 10.667 5.333V0", at: [2.667, 8], stroke: "#000" },
+      {
+        d: "M0 0V5.333C0 5.687.14 6.026.39 6.276S.98 6.667 1.333 6.667H9.333C9.687 6.667 10.026 6.526 10.276 6.276S10.667 5.687 10.667 5.333V0",
+        at: [2.667, 8],
+        stroke: "#000",
+      },
       { d: "M5.333 2.667L2.667 0 0 2.667", at: [5.333, 1.333], stroke: "#000" },
       { d: "M0 0V8.667", at: [8, 1.333], stroke: "#000" },
     ]}
@@ -48,20 +77,35 @@ export const MoreIcon = () => (
   />
 );
 
-export const ChevronDownIcon = () => <Glyph vecs={[{ d: "M0 0L4 4 8 0", at: [4, 6], stroke: "#000", width: 1.5 }]} />;
+export const ChevronDownIcon = () => (
+  <Glyph
+    vecs={[{ d: "M0 0L4 4 8 0", at: [4, 6], stroke: "#000", width: 1.5 }]}
+  />
+);
 
 /** Carbon chevron--down, turned to point right (Figma rotates it -90°). */
 export const ChevronRightIcon = () => (
   <Glyph
     style={{ transform: "rotate(-90deg)" }}
-    vecs={[{ d: "M5 5.7L0 .7.7 0 5 4.3 9.3 0 10 .7 5 5.7Z", at: [3, 5.3], fill: "#525252" }]}
+    vecs={[
+      {
+        d: "M5 5.7L0 .7.7 0 5 4.3 9.3 0 10 .7 5 5.7Z",
+        at: [3, 5.3],
+        fill: "#525252",
+      },
+    ]}
   />
 );
 
 export const InfoIcon = () => (
   <Glyph
     vecs={[
-      { d: "M13.333 6.667A6.667 6.667 0 1 1 0 6.667a6.667 6.667 0 0 1 13.333 0Z", at: [1.333, 1.333], stroke: "#393939", width: 1.5 },
+      {
+        d: "M13.333 6.667A6.667 6.667 0 1 1 0 6.667a6.667 6.667 0 0 1 13.333 0Z",
+        at: [1.333, 1.333],
+        stroke: "#393939",
+        width: 1.5,
+      },
       { d: "M0 2.667V0", at: [8, 8], stroke: "#393939", width: 1.5 },
       { d: "M0 0H.007", at: [8, 5.333], stroke: "#393939", width: 1.5 },
     ]}
@@ -71,7 +115,11 @@ export const InfoIcon = () => (
 export const FileTextIcon = () => (
   <Glyph
     vecs={[
-      { d: "M6.667 0H1.333C.98 0 .641.14.391.391S0 .98 0 1.333V12C0 12.354.14 12.693.391 12.943S.98 13.333 1.333 13.333H9.333C9.687 13.333 10.026 13.193 10.276 12.943S10.667 12.354 10.667 12V4L6.667 0Z", at: [2.667, 1.333], stroke: "#357dfb" },
+      {
+        d: "M6.667 0H1.333C.98 0 .641.14.391.391S0 .98 0 1.333V12C0 12.354.14 12.693.391 12.943S.98 13.333 1.333 13.333H9.333C9.687 13.333 10.026 13.193 10.276 12.943S10.667 12.354 10.667 12V4L6.667 0Z",
+        at: [2.667, 1.333],
+        stroke: "#357dfb",
+      },
       { d: "M0 0V4H4", at: [9.333, 1.333], stroke: "#357dfb" },
       { d: "M5.333 0H0", at: [5.333, 8.667], stroke: "#357dfb" },
       { d: "M5.333 0H0", at: [5.333, 11.333], stroke: "#357dfb" },
@@ -80,7 +128,8 @@ export const FileTextIcon = () => (
   />
 );
 
-export const downloadTray = "M12 0V2.667C12 3.02 11.86 3.359 11.609 3.609S11.02 4 10.667 4H1.333C.98 4 .641 3.86.391 3.609S0 3.02 0 2.667V0";
+export const downloadTray =
+  "M12 0V2.667C12 3.02 11.86 3.359 11.609 3.609S11.02 4 10.667 4H1.333C.98 4 .641 3.86.391 3.609S0 3.02 0 2.667V0";
 export const downloadArrow = [
   { d: "M0 0L3.333 3.333 6.667 0", at: [4.667, 6.667] as [number, number] },
   { d: "M0 8V0", at: [8, 2] as [number, number] },
@@ -89,8 +138,16 @@ export const downloadArrow = [
 export const AiIcon = () => (
   <Glyph
     vecs={[
-      { d: "M2.934 5.516L3.912 2.582H5.177L6.155 5.516 9.088 6.494V7.759L6.155 8.737 5.177 11.671H3.912L2.934 8.737 0 7.759V6.494L2.934 5.516Z", at: [1.789, 1.874], fill: "#357dfb" },
-      { d: "M8.978 1.56L9.498 0H10.257L10.777 1.56 12.337 2.08V2.839L10.777 3.359 10.257 4.92H9.498L8.978 3.359 7.418 2.839V2.08L8.978 1.56Z", at: [1.789, 1.874], fill: "#357dfb" },
+      {
+        d: "M2.934 5.516L3.912 2.582H5.177L6.155 5.516 9.088 6.494V7.759L6.155 8.737 5.177 11.671H3.912L2.934 8.737 0 7.759V6.494L2.934 5.516Z",
+        at: [1.789, 1.874],
+        fill: "#357dfb",
+      },
+      {
+        d: "M8.978 1.56L9.498 0H10.257L10.777 1.56 12.337 2.08V2.839L10.777 3.359 10.257 4.92H9.498L8.978 3.359 7.418 2.839V2.08L8.978 1.56Z",
+        at: [1.789, 1.874],
+        fill: "#357dfb",
+      },
     ]}
   />
 );
@@ -100,8 +157,16 @@ export const UserIcon = () => (
     size={14}
     view={14}
     vecs={[
-      { d: "M9.333 3.5V2.333C9.333 1.714 9.088 1.121 8.65.683S7.619 0 7 0H2.333C1.714 0 1.121.246.683.683S0 1.714 0 2.333V3.5", at: [2.333, 8.75], stroke: "#0f62fe" },
-      { d: "M4.667 2.333A2.333 2.333 0 1 1 0 2.333a2.333 2.333 0 0 1 4.667 0Z", at: [4.667, 1.75], stroke: "#0f62fe" },
+      {
+        d: "M9.333 3.5V2.333C9.333 1.714 9.088 1.121 8.65.683S7.619 0 7 0H2.333C1.714 0 1.121.246.683.683S0 1.714 0 2.333V3.5",
+        at: [2.333, 8.75],
+        stroke: "#0f62fe",
+      },
+      {
+        d: "M4.667 2.333A2.333 2.333 0 1 1 0 2.333a2.333 2.333 0 0 1 4.667 0Z",
+        at: [4.667, 1.75],
+        stroke: "#0f62fe",
+      },
     ]}
   />
 );
@@ -110,8 +175,18 @@ export const SendIcon = () => (
   <Glyph
     view={16.43}
     vecs={[
-      { d: "M6.389 0L0 6.389", at: [0, 0], transform: "matrix(.707 .707 -.707 .707 11.91 3.696)", stroke: "#fff" },
-      { d: "M11.616 0L7.551 11.616 5.227 6.389 0 4.066 11.616 0Z", at: [0, 0], transform: "matrix(.707 .707 -.707 .707 8.214 0)", stroke: "#fff" },
+      {
+        d: "M6.389 0L0 6.389",
+        at: [0, 0],
+        transform: "matrix(.707 .707 -.707 .707 11.91 3.696)",
+        stroke: "#fff",
+      },
+      {
+        d: "M11.616 0L7.551 11.616 5.227 6.389 0 4.066 11.616 0Z",
+        at: [0, 0],
+        transform: "matrix(.707 .707 -.707 .707 8.214 0)",
+        stroke: "#fff",
+      },
     ]}
   />
 );
