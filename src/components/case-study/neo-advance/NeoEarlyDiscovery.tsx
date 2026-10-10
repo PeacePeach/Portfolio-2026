@@ -91,7 +91,7 @@ export function NeoEarlyDiscovery() {
                       aria-describedby="neo-response-privacy"
                       rows={5}
                       placeholder="Share your thoughts…"
-                      className="block w-full resize-y bg-transparent type-body-m text-primary placeholder:text-tertiary"
+                      className="block w-full resize-y border-0 bg-transparent type-body-m text-primary placeholder:text-tertiary focus-visible:outline-none"
                     />
                     <div className="mt-4 flex items-center justify-end gap-6">
                       <button
