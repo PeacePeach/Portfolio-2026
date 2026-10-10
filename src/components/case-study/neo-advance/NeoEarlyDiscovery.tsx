@@ -8,8 +8,9 @@ import { duration, swap } from "@/design/motion";
 
 type Stage = "prompt" | "loading" | "resolved";
 
-// This outline trace is specific to the story's thinking indicator.
-const hOutline = "M12 8H28V32H52V8H68V72H52V48H28V72H12Z";
+// Seven dots form the H; the blue dot follows its two stems and crossbar.
+const hTrace = "M10 10V42V26H42V42V10V26H10V10";
+const hDots = [[10, 10], [42, 10], [10, 26], [26, 26], [42, 26], [10, 42], [42, 42]];
 const thinkingDuration = duration.image + duration.base;
 
 export function NeoEarlyDiscovery() {
@@ -120,7 +121,7 @@ export function NeoEarlyDiscovery() {
                   ref={loading}
                   role="status"
                   tabIndex={-1}
-                  className="flex min-h-[26rem] flex-col items-center justify-center gap-6"
+                  className="flex min-h-[26rem] items-center justify-center gap-4 sm:gap-6"
                   initial={{ opacity: 0, y: offset }}
                   animate={{ opacity: 1, y: 0, transition: enter }}
                   exit={{ opacity: 0, y: -offset, transition: exit }}
@@ -128,17 +129,17 @@ export function NeoEarlyDiscovery() {
                     if (stage === "loading") loading.current?.focus({ preventScroll: true });
                   }}
                 >
-                  <p className="type-display-xs text-primary">Here’s what I did ...</p>
-                  <svg viewBox="0 0 80 80" className="size-20 text-line-strong" fill="none" aria-hidden="true">
-                    <path d={hOutline} stroke="currentColor" strokeWidth="1.5" />
+                  <svg viewBox="0 0 52 52" className="size-10 shrink-0 text-primary sm:size-12" aria-hidden="true">
+                    {hDots.map(([cx, cy]) => <circle key={`${cx}-${cy}`} cx={cx} cy={cy} r="5.5" fill="currentColor" />)}
                     {reduce ? (
-                      <circle cx="12" cy="8" r="3" fill="var(--color-highlight)" />
+                      <circle cx="10" cy="10" r="5.5" fill="var(--color-highlight)" />
                     ) : (
-                      <circle r="3" fill="var(--color-highlight)" className="motion-reduce:hidden">
-                        <animateMotion path={hOutline} dur={`${thinkingDuration}s`} repeatCount="indefinite" calcMode="paced" />
+                      <circle r="5.5" fill="var(--color-highlight)" className="motion-reduce:hidden">
+                        <animateMotion path={hTrace} dur={`${thinkingDuration}s`} repeatCount="indefinite" calcMode="paced" />
                       </circle>
                     )}
                   </svg>
+                  <p className="border-b border-highlight type-heading-l font-normal! text-secondary">Here’s what I did ...</p>
                 </motion.div>
               ) : (
                 <motion.div
