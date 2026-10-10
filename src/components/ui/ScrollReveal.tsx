@@ -1,6 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
+import { duration } from "@/design/motion";
 import { motion, useReducedMotion } from "motion/react";
 
 const tags = { div: motion.div, li: motion.li, hr: motion.hr };
@@ -17,27 +18,29 @@ const tags = { div: motion.div, li: motion.li, hr: motion.hr };
 export function ScrollReveal({
   as = "div",
   delay = 0,
+  variant = "default",
   className,
   children,
 }: {
   as?: keyof typeof tags;
   delay?: number;
+  variant?: "default" | "chapter";
   className?: string;
   children?: ReactNode;
 }) {
   const reduce = useReducedMotion();
-  if (reduce) {
-    const Plain = as;
-    return <Plain className={className}>{children}</Plain>;
-  }
   const M = tags[as];
   return (
     <M
       className={`motion-reduce:transform-none! motion-reduce:opacity-100! ${className ?? ""}`}
-      initial={{ opacity: 0, y: 16 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.15, margin: "0px 0px -10% 0px" }}
-      transition={{ duration: 0.4, ease: "easeOut", delay }}
+      data-reveal={variant}
+      initial="hidden"
+      whileInView="shown"
+      variants={{ hidden: { opacity: 0, y: 16 }, shown: { opacity: 1, y: 0 } }}
+      viewport={variant === "chapter"
+        ? { once: true, amount: 0, margin: "0px 0px -15% 0px" }
+        : { once: true, amount: 0.15, margin: "0px 0px -10% 0px" }}
+      transition={{ duration: reduce ? 0 : variant === "chapter" ? duration.base : 0.4, ease: "easeOut", delay: reduce ? 0 : delay }}
     >
       {children}
     </M>
