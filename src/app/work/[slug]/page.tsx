@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Fragment } from "react";
+import { Fragment, Suspense } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Footer } from "@/components/Footer";
@@ -25,7 +25,21 @@ export async function generateMetadata({ params }: PageProps<"/work/[slug]">): P
   return { title: project ? `${project.title} — ${site.name}` : site.title };
 }
 
-export default async function CaseStudyPage({ params }: PageProps<"/work/[slug]">) {
+export default function CaseStudyPage(props: PageProps<"/work/[slug]">) {
+  return (
+    <Suspense
+      fallback={
+        <main id="main" className="container-page pt-[calc(var(--spacing-header)+4rem)]">
+          <p role="status" className="type-body-l text-secondary">Loading case study…</p>
+        </main>
+      }
+    >
+      <CaseStudyContent {...props} />
+    </Suspense>
+  );
+}
+
+async function CaseStudyContent({ params }: PageProps<"/work/[slug]">) {
   const { slug } = await params;
   const project = getProject(slug);
   if (!project) notFound();
@@ -74,11 +88,8 @@ export default async function CaseStudyPage({ params }: PageProps<"/work/[slug]"
             <NeoHowItWorks className="mt-24" />
             <ScrollReveal as="hr" className="mt-24 border-line" />
             <NeoImpact className="mt-24" />
-            {/* The section nav's top rule closes the impact block, 96 px below it as in Figma. */}
-            <div className="mt-8">{sections}</div>
           </NeoCaseIntro>
         </main>
-        <Footer />
       </>
     );
   }
