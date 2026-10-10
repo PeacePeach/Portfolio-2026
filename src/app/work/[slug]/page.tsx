@@ -69,14 +69,11 @@ export default async function CaseStudyPage({ params }: PageProps<"/work/[slug]"
       <>
         <main id="main">
           <NeoCaseIntro>
-            <hr className="mt-24 border-line" />
-            <ScrollReveal className="mt-24">
-              <NeoHowItWorks />
-            </ScrollReveal>
-            <hr className="mt-24 border-line" />
-            <ScrollReveal className="mt-24">
-              <NeoImpact />
-            </ScrollReveal>
+            {/* Each piece reveals on its own: divider, then heading, then each card. */}
+            <ScrollReveal as="hr" className="mt-24 border-line" />
+            <NeoHowItWorks className="mt-24" />
+            <ScrollReveal as="hr" className="mt-24 border-line" />
+            <NeoImpact className="mt-24" />
             {/* The section nav's top rule closes the impact block, 96 px below it as in Figma. */}
             <div className="mt-8">{sections}</div>
           </NeoCaseIntro>
