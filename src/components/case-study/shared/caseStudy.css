@@ -59,3 +59,15 @@
 @media (min-width: 901px) {
   .cs-panel[data-layout="grouped-before-after"][data-grouped-side="after"] .cs-evidence-columns { grid-template-columns: var(--cs-image-width) calc(var(--cs-pair-image-width) * 2 + var(--cs-image-pair-gap)); }
 }
+
+/* Shared story text rules, used by text templates. */
+.cs-text-columns { display: grid; grid-template-columns: repeat(2, minmax(0, var(--cs-text-column-width))); justify-content: center; gap: var(--cs-text-column-gap); padding-block: var(--cs-text-section-padding); }
+.cs-text-column { min-width: 0; }
+.cs-story-text { display: flex; flex-direction: column; gap: var(--cs-story-body-gap); overflow-wrap: anywhere; }
+.cs-story-text-header { display: flex; flex-direction: column; gap: var(--cs-title-description-gap); }
+.cs-story-text .cs-story-title { color: var(--cs-bullet-text); white-space: pre-line; }
+.cs-story-text-body { color: var(--cs-secondary); white-space: pre-line; }
+.cs-text-template-preview { max-width: 1280px; margin-inline: auto; padding-inline: var(--page-gutter, 5%); }
+@media (max-width: 767px) {
+  .cs-text-columns { grid-template-columns: minmax(0, var(--cs-text-column-width)); gap: var(--cs-column-gap); }
+}

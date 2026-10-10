@@ -2,6 +2,7 @@
 
 import type { ReactNode } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { Reveal } from "@/components/ui/Reveal";
 import { caseStudyMotion } from "./caseStudyMotion";
 
@@ -25,4 +26,10 @@ export function EvidenceStagger({ children }: { children: ReactNode }) {
 export function EvidenceReveal({ children }: { children: ReactNode }) {
   const timing = caseStudyMotion(useReducedMotion());
   return <motion.div className="cs-evidence-item" variants={{ hidden: timing.hidden, shown: { ...timing.shown, transition: timing.enter } }}>{children}</motion.div>;
+}
+
+/** Text templates share the site's scroll reveal and case-study stagger. */
+export function CaseStudyTextReveal({ children, index = 0 }: { children: ReactNode; index?: number }) {
+  const timing = caseStudyMotion(useReducedMotion());
+  return <ScrollReveal className="cs-text-column" delay={index * timing.stagger}>{children}</ScrollReveal>;
 }

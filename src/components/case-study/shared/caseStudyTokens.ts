@@ -37,6 +37,10 @@ export const caseStudyTokens: CSSProperties & Record<`--cs-${string}`, string> =
   "--cs-pill-padding-y": "var(--spacing)",
   "--cs-pill-radius": "999px",
   "--cs-small-line-height": "1.4",
+  "--cs-text-column-width": "400px",
+  "--cs-text-column-gap": "calc(var(--spacing) * 24)",
+  "--cs-text-section-padding": "calc(var(--spacing) * 24)",
+  "--cs-story-body-gap": "calc(var(--spacing) * 4)",
   "--cs-story-title-size": "32px",
   "--cs-content-gutter": "calc(var(--spacing) * 6)",
 };

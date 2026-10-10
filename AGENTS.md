@@ -7,3 +7,7 @@ This version has breaking changes — APIs, conventions, and file structure may 
 This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
 
 <!-- END:nextjs-agent-rules -->
+
+## Case-study system
+
+Before creating or editing case-study sections, read [docs/case-study-templates.md](docs/case-study-templates.md). Reuse the templates and shared rules in `src/components/case-study/`; change content configuration first. Keep the system documentation in that single file.

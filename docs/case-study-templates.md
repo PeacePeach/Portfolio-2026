@@ -1,6 +1,15 @@
 # Case-study templates
 
-One renderer: `src/components/case-study/templates/BeforeAfterTemplate.tsx`.
+Central system: `src/components/case-study/`. Preview catalog: `/case-study-templates`.
+
+| Template | Content contract | Preview |
+| --- | --- | --- |
+| `BeforeAfterTemplate` | `title`, `description`, evidence groups below | `/case-study-templates/before-after` |
+| `TwoColumnTextTemplate` | `columns: [{ label?, title, body }, { label?, title, body }]` | `/case-study-templates/two-column-text` |
+
+Both live in `templates/`; all layout values, typography and motion live in `shared/`. Text blocks reuse `StoryTextBlock` and the site scroll reveal. Two-column text follows Figma `83:3445`, stacks on mobile, and omits the label gap when no label is provided. Example content lives in `src/content/case-study/templateExamples.ts`.
+
+Before / After variations:
 
 | `variant` | Structure | Config |
 | --- | --- | --- |
