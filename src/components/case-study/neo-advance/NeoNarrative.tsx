@@ -89,7 +89,7 @@ export function NeoNarrative() {
             </AnimatePresence>
           </ScrollReveal>
         </div>
-        <div ref={stack} className="min-w-0" data-neo-panels>
+        <div ref={stack} className="min-w-0 lg:rounded-[20px] lg:bg-surface" data-neo-panels>
           {panels.map(panel => (
             <VisualPanel key={panel.id} panel={panel} scaleEnabled={desktop && !reduce} onOpen={button => {
               trigger.current = button;
@@ -119,29 +119,33 @@ function VisualPanel({ panel, scaleEnabled, onOpen }: {
 }) {
   const target = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target, offset: ["start center", "end center"] });
-  const scale = useTransform(scrollYProgress, [0, 0.15, 1], [1, 1, 0.97]);
+  const scale = useTransform(scrollYProgress, [0, 0.5, 1], [0.98, 1, 0.98]);
   return (
     <div ref={target} data-neo-panel={panel.id} className="mb-12 lg:mb-0">
       <ScrollReveal variant="mask" className="mb-6 lg:hidden">
         <Narrative panel={panel} />
       </ScrollReveal>
-      <motion.button
+      <button
         type="button"
         aria-label={`View ${panel.title} in high resolution`}
         aria-haspopup="dialog"
         onClick={event => onOpen(event.currentTarget)}
-        style={{ scale: scaleEnabled ? scale : 1 }}
-        className={`block w-full cursor-zoom-in overflow-hidden bg-surface text-left motion-reduce:transform-none! ${panel.id === panels[0].id ? "rounded-t-[20px]" : panel.id === panels[panels.length - 1].id ? "rounded-b-[20px]" : ""}`}
+        className={`relative block w-full cursor-zoom-in appearance-none overflow-hidden border-0 bg-transparent p-0 text-left outline-none focus-visible:outline-1 focus-visible:outline-solid focus-visible:outline-[color:rgba(255,255,255,0.18)] focus-visible:outline-offset-[-1px] ${panel.id === panels[0].id ? "rounded-t-[20px]" : panel.id === panels[panels.length - 1].id ? "rounded-b-[20px]" : ""}`}
       >
-        <Image
-          src={`/images/neo/${panel.id}.webp`}
-          alt={panel.alt}
-          width={panel.width}
-          height={panel.height}
-          unoptimized
-          className="block h-auto w-full"
-        />
-      </motion.button>
+        {panel.id !== panels[0].id && <span aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 z-10 hidden h-px bg-ink/10 lg:block" />}
+        <div className="overflow-hidden">
+          <motion.div style={{ scale: scaleEnabled ? scale : 1 }} className="origin-center motion-reduce:transform-none!">
+            <Image
+              src={`/images/neo/${panel.id}.webp`}
+              alt={panel.alt}
+              width={panel.width}
+              height={panel.height}
+              unoptimized
+              className="block h-auto w-full"
+            />
+          </motion.div>
+        </div>
+      </button>
     </div>
   );
 }
