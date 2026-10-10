@@ -12,17 +12,20 @@ import { reveal } from "@/design/motion";
 export function Reveal({
   play = true,
   delay = 0,
+  direction = "vertical",
   className,
   children,
 }: {
   play?: boolean;
   delay?: number;
+  direction?: "vertical" | "horizontal";
   className?: string;
   children: React.ReactNode;
 }) {
   const reduce = useReducedMotion();
-  const edge = useMotionValue(reduce ? 130 : -30);
-  const mask = useMotionTemplate`linear-gradient(to bottom, #000 ${edge}%, transparent calc(${edge}% + 30%))`;
+  const edge = useMotionValue(-30);
+  const axis = direction === "horizontal" ? "to right" : "to bottom";
+  const mask = useMotionTemplate`linear-gradient(${axis}, #000 ${edge}%, transparent calc(${edge}% + 30%))`;
 
   useEffect(() => {
     if (reduce) return edge.set(130);
@@ -32,7 +35,7 @@ export function Reveal({
   }, [play, reduce, delay, edge]);
 
   return (
-    <motion.div data-mask-reveal style={{ maskImage: mask, WebkitMaskImage: mask }} className={className}>
+    <motion.div data-mask-reveal style={{ maskImage: mask, WebkitMaskImage: mask }} className={`motion-reduce:[mask-image:none]! ${className ?? ""}`}>
       {children}
     </motion.div>
   );

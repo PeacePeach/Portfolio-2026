@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { Send } from "react-feather";
+import { PenTool, Send } from "react-feather";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
-import { duration, swap } from "@/design/motion";
+import { Reveal } from "@/components/ui/Reveal";
+import { duration, reveal as revealMotion, swap } from "@/design/motion";
 
 type Stage = "prompt" | "loading" | "resolved";
 
@@ -13,8 +14,21 @@ const hTrace = "M10 10V42V26H42V42V10V26H10V10";
 const hDots = [[10, 10], [42, 10], [10, 26], [26, 26], [42, 26], [10, 42], [42, 42]];
 const thinkingDuration = duration.image + duration.base;
 
+// Scope the supplied Figma values to this section; reuse the semantic styles.
+const sectionTokens = {
+  "--color-primary": "#F9F9F9",
+  "--color-secondary": "#A3A3A3",
+  "--color-tertiary": "#A3A3A3",
+  "--text-display-s": "32px",
+  "--text-display-s--font-weight": "400",
+  "--text-label-s--font-weight": "400",
+} as CSSProperties;
+const dividerDelay = revealMotion.duration + swap.stagger;
+const storyDelay = dividerDelay + revealMotion.duration + swap.stagger;
+
 export function NeoEarlyDiscovery() {
   const reduce = useReducedMotion();
+  const [entered, setEntered] = useState(false);
   const [response, setResponse] = useState("");
   const [stage, setStage] = useState<Stage>("prompt");
   const resolution = useRef<HTMLHeadingElement>(null);
@@ -38,30 +52,32 @@ export function NeoEarlyDiscovery() {
   }
 
   return (
-    <section aria-labelledby="neo-discovery" className="mt-(--spacing-section) pb-24">
-      <ScrollReveal>
-        <h2 id="neo-discovery" className="type-label-l text-secondary">01 _ EARLY DISCOVERY</h2>
+    <section aria-labelledby="neo-discovery" style={sectionTokens} className="mx-auto mt-[172px] w-full max-w-[1152px] pb-24">
+      <ScrollReveal variant="mask" onReveal={() => setEntered(true)}>
+        <h2 id="neo-discovery" className="type-label-s text-secondary">01 _ EARLY DISCOVERY</h2>
       </ScrollReveal>
-      <ScrollReveal as="hr" delay={0.12} className="mt-6 border-0 border-t border-dotted border-line-strong" />
+      <Reveal play={entered} delay={dividerDelay} direction="horizontal" className="mt-3">
+        <hr className="border-0 border-t border-dotted border-line-strong" />
+      </Reveal>
 
-      <div className="mx-auto mt-16 grid max-w-[59.1875rem] grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-24">
-        <div>
-          <ScrollReveal>
-            <p className="type-label-s text-tertiary">WHERE WE WERE STUCK</p>
+      <div className="mx-auto mt-12 grid w-full max-w-[400px] grid-cols-1 gap-12 lg:mt-[83.6px] lg:max-w-[881px] lg:grid-cols-[400px_400px] lg:gap-[81px] xl:ml-[131px] xl:mr-0">
+        <div className="flex flex-col gap-2.5">
+          <ScrollReveal variant="mask" delay={storyDelay}>
+            <p className="type-label-s text-secondary">WHERE WE WERE STUCK</p>
           </ScrollReveal>
-          <ScrollReveal delay={0.12}>
-            <h3 className="mt-4 type-display-s text-primary">The Chicken-and-Egg Problem</h3>
+          <ScrollReveal variant="mask" delay={storyDelay + swap.stagger}>
+            <h3 className="type-display-s text-primary">The Chicken-and-Egg Problem</h3>
           </ScrollReveal>
-          <ScrollReveal delay={0.24}>
-            <p className="mt-6 type-body-m text-secondary">
+          <ScrollReveal variant="mask" delay={storyDelay + swap.stagger * 2}>
+            <p className="type-body-m text-secondary">
               Neo Advance was intended to set the pattern for future lending products, but those products were still undefined. During early concept exploration, the team was split between optimizing for launch and designing for the future, blocking decisions on entry points, account IA, and shared patterns.
             </p>
           </ScrollReveal>
         </div>
 
-        <ScrollReveal delay={0.36} className="min-w-0">
+        <ScrollReveal variant="mask" delay={storyDelay + swap.stagger * 3} className="min-w-0">
           {/* The same slot holds the prompt, thinking state and resolution. */}
-          <div className="min-h-[26rem]">
+          <div className="min-h-[20rem]">
             <AnimatePresence mode="wait" initial={false}>
               {stage === "prompt" ? (
                 <motion.form
@@ -73,11 +89,14 @@ export function NeoEarlyDiscovery() {
                     if (response.trim()) reveal();
                   }}
                 >
-                  <p className="type-label-s text-tertiary">TELL ME ABOUT IT</p>
-                  <label htmlFor="neo-discovery-response" className="mt-4 block type-display-xs text-primary">
+                  <p className="flex items-center gap-1 type-label-s text-secondary">
+                    <PenTool size={16} strokeWidth={1.33} aria-hidden />
+                    TELL ME ABOUT IT
+                  </p>
+                  <label htmlFor="neo-discovery-response" className="mt-3 block type-display-s text-primary">
                     What would you do if you were me?
                   </label>
-                  <div className="mt-6 rounded-[10px] border border-line bg-card p-4 transition-colors duration-(--duration-base) ease-out-expo hover:border-line-strong focus-within:border-ink">
+                  <div className="relative mt-6 h-[120px] w-full rounded-[15px] border border-ink/10 bg-ink/[0.02] transition-colors duration-(--duration-base) ease-out-expo focus-within:border-secondary">
                     <textarea
                       id="neo-discovery-response"
                       value={response}
@@ -88,16 +107,14 @@ export function NeoEarlyDiscovery() {
                           if (response.trim()) reveal();
                         }
                       }}
-                      aria-describedby="neo-response-privacy"
-                      rows={5}
                       placeholder="Share your thoughts…"
-                      className="block w-full resize-y border-0 bg-transparent type-body-m text-primary placeholder:text-tertiary focus-visible:outline-none"
+                      className="block h-full w-full resize-none rounded-[15px] border-0 bg-transparent px-4 pt-[18px] pb-[52px] type-body-s text-primary placeholder:text-secondary focus-visible:outline-none"
                     />
-                    <div className="mt-4 flex items-center justify-end gap-6">
+                    <div className="absolute right-3 bottom-3 flex items-center justify-end gap-4">
                       <button
                         type="button"
                         onClick={reveal}
-                        className="hover-underline cursor-pointer type-body-s text-secondary transition-colors duration-(--duration-base) ease-out-expo hover:text-primary"
+                        className="hover-underline cursor-pointer type-body-s text-ink/60 transition-colors duration-(--duration-base) ease-out-expo hover:text-primary"
                       >
                         Skip and reveal
                       </button>
@@ -105,15 +122,12 @@ export function NeoEarlyDiscovery() {
                         type="submit"
                         disabled={!response.trim()}
                         aria-label="Send response and reveal the story"
-                        className="flex size-10 cursor-pointer items-center justify-center rounded-[10px] border border-line bg-card text-secondary transition-colors duration-(--duration-base) ease-out-expo hover:bg-card-hover hover:text-primary active:scale-90 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-card disabled:hover:text-secondary"
+                        className={`flex size-8 cursor-pointer items-center justify-center rounded-[5px] text-ink/60 transition-colors duration-(--duration-base) ease-out-expo hover:text-primary active:scale-90 disabled:cursor-not-allowed ${response.trim() ? "bg-line-strong" : "bg-[#323232]"}`}
                       >
                         <Send size={18} strokeWidth={1.33} aria-hidden />
                       </button>
                     </div>
                   </div>
-                  <p id="neo-response-privacy" className="mt-3 type-body-xs text-tertiary">
-                    Just for reflection. Your response stays on this page and isn’t saved or sent.
-                  </p>
                 </motion.form>
               ) : stage === "loading" ? (
                 <motion.div
@@ -121,7 +135,7 @@ export function NeoEarlyDiscovery() {
                   ref={loading}
                   role="status"
                   tabIndex={-1}
-                  className="flex min-h-[26rem] items-center justify-center gap-4 sm:gap-6"
+                  className="flex items-center gap-2 focus:outline-none"
                   initial={{ opacity: 0, y: offset }}
                   animate={{ opacity: 1, y: 0, transition: enter }}
                   exit={{ opacity: 0, y: -offset, transition: exit }}
@@ -129,7 +143,7 @@ export function NeoEarlyDiscovery() {
                     if (stage === "loading") loading.current?.focus({ preventScroll: true });
                   }}
                 >
-                  <svg viewBox="0 0 52 52" className="size-10 shrink-0 text-primary sm:size-12" aria-hidden="true">
+                  <svg viewBox="0 0 52 52" className="size-4 shrink-0 text-primary" aria-hidden="true">
                     {hDots.map(([cx, cy]) => <circle key={`${cx}-${cy}`} cx={cx} cy={cy} r="5.5" fill="currentColor" />)}
                     {reduce ? (
                       <circle cx="10" cy="10" r="5.5" fill="var(--color-highlight)" />
@@ -139,35 +153,29 @@ export function NeoEarlyDiscovery() {
                       </circle>
                     )}
                   </svg>
-                  <p className="border-b border-highlight type-heading-l font-normal! text-secondary">Here’s what I did ...</p>
+                  <p className="type-body-m-tight text-secondary">Here’s what I did ...</p>
                 </motion.div>
               ) : (
                 <motion.div
                   key="resolved"
-                  initial="hidden"
-                  animate="shown"
-                  variants={{ shown: { transition: { staggerChildren: reduce ? 0 : swap.stagger } } }}
+                  className="flex flex-col gap-2.5"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1, transition: enter }}
                   onAnimationComplete={() => resolution.current?.focus({ preventScroll: true })}
                 >
-                  {[
-                    <p key="eyebrow" className="type-label-s text-tertiary">HOW I UNBLOCKED</p>,
-                    <h3 key="title" ref={resolution} tabIndex={-1} className="mt-4 type-display-s text-primary">
+                  <Reveal>
+                    <p className="type-label-s text-secondary">HOW I UNBLOCKED</p>
+                  </Reveal>
+                  <Reveal delay={swap.stagger}>
+                    <h3 ref={resolution} tabIndex={-1} className="type-display-s text-primary focus:outline-none">
                       Defined the Lending Platform Template
-                    </h3>,
-                    <p key="body" className="mt-6 type-body-m text-secondary">
+                    </h3>
+                  </Reveal>
+                  <Reveal delay={swap.stagger * 2}>
+                    <p className="type-body-m text-secondary">
                       In 2 days, I benchmarked Neo Advance alongside future lending products—term loans, HELOCs, and mortgages—to identify the common platform patterns they would all need. I then translated those patterns into a reusable template for Neo Advance, aligning 3 product leads and 2 founders on account IA, entry points, and core lending experiences.
-                    </p>,
-                  ].map((content) => (
-                    <motion.div
-                      key={content.key}
-                      variants={{
-                        hidden: { opacity: 0, y: offset },
-                        shown: { opacity: 1, y: 0, transition: enter },
-                      }}
-                    >
-                      {content}
-                    </motion.div>
-                  ))}
+                    </p>
+                  </Reveal>
                 </motion.div>
               )}
             </AnimatePresence>
