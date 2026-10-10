@@ -12,19 +12,15 @@ export function NeoHowItWorks() {
         {how.steps.map((step) => (
           <li key={step.caption} className="flex w-[14.375rem] flex-col items-center gap-8">
             <p className="type-body-m text-center text-primary">{step.caption}</p>
-            {step.src ? (
-              // Animated GIFs: next/image serves them as is, and lazy-loads below the fold.
-              <Image
-                src={step.src}
-                alt={step.alt}
-                width={230}
-                height={475}
-                unoptimized
-                className="h-auto w-full rounded-[2.1875rem]"
-              />
-            ) : (
-              <div aria-hidden className="aspect-[230/475] w-full rounded-[2.1875rem] bg-tile" />
-            )}
+            {/* Animated GIFs: next/image serves them as is, and lazy-loads below the fold. */}
+            <Image
+              src={step.src}
+              alt={step.alt}
+              width={230}
+              height={475}
+              unoptimized
+              className="h-auto w-full rounded-[2.1875rem]"
+            />
           </li>
         ))}
       </ol>
