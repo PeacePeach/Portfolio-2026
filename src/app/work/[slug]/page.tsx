@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { Footer } from "@/components/Footer";
 import { Media } from "@/components/ui/Media";
 import { NeoCaseIntro } from "@/components/case-study/neo-advance/NeoCaseIntro";
+import { NeoHowItWorks } from "@/components/case-study/neo-advance/NeoHowItWorks";
 import { NeoImpact } from "@/components/case-study/neo-advance/NeoImpact";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { getProject, getProjects } from "@/content";
@@ -68,6 +69,10 @@ export default async function CaseStudyPage({ params }: PageProps<"/work/[slug]"
       <>
         <main id="main">
           <NeoCaseIntro>
+            <hr className="mt-24 border-line" />
+            <ScrollReveal className="mt-24">
+              <NeoHowItWorks />
+            </ScrollReveal>
             <hr className="mt-24 border-line" />
             <ScrollReveal className="mt-24">
               <NeoImpact />

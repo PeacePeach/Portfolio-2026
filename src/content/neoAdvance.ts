@@ -17,6 +17,31 @@ export const neoAdvanceIntro = {
   ],
 } as const;
 
+/**
+ * "How Neo Advance Works?" (Figma 68:712): three steps, each a caption over a
+ * flow recording. `src` stays empty until the recording is exported.
+ */
+export const neoAdvanceHow: {
+  title: string;
+  steps: { caption: string; alt: string; src?: string }[];
+} = {
+  title: "How Neo Advance Works?",
+  steps: [
+    {
+      caption: "Use Advance when a chequing balance falls short.",
+      alt: "Neo app flow: drawing an advance when the chequing balance runs short",
+    },
+    {
+      caption: "Pay Advance when balance is due, with payment options.",
+      alt: "Neo app flow: repaying an advance and choosing a payment option",
+    },
+    {
+      caption: "Build credit when use, repay, and grow with Advance.",
+      alt: "Neo app flow: building credit by using, repaying and growing the advance limit",
+    },
+  ],
+};
+
 /** "What the new model made possible" (Figma 67:703), Han's own beta and projection figures. */
 export const neoAdvanceImpact = {
   title: "What the new model made possible",
