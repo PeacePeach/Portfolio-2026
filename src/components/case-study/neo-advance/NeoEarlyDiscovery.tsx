@@ -12,7 +12,8 @@ type Stage = "prompt" | "loading" | "resolved";
 // Seven dots form the H; the blue dot follows its two stems and crossbar.
 const hTrace = "M10 10V42V26H42V42V10V26H10V10";
 const hDots = [[10, 10], [42, 10], [10, 26], [26, 26], [42, 26], [10, 42], [42, 42]];
-const thinkingDuration = duration.image + duration.base;
+const hTraceDuration = duration.image * 2;
+const thinkingDuration = duration.image * 2.5;
 
 // Scope the supplied Figma values to this section; reuse the semantic styles.
 const sectionTokens = {
@@ -38,7 +39,7 @@ export function NeoEarlyDiscovery() {
     if (stage !== "loading") return;
     const timer = window.setTimeout(
       () => setStage("resolved"),
-      (reduce ? duration.fast * 3 : thinkingDuration) * 1000,
+      (reduce ? duration.image + duration.fast : thinkingDuration) * 1000,
     );
     return () => window.clearTimeout(timer);
   }, [stage, reduce]);
@@ -122,9 +123,9 @@ export function NeoEarlyDiscovery() {
                         type="submit"
                         disabled={!response.trim()}
                         aria-label="Send response and reveal the story"
-                        className={`flex size-8 cursor-pointer items-center justify-center rounded-[5px] text-ink/60 transition-colors duration-(--duration-base) ease-out-expo hover:text-primary active:scale-90 disabled:cursor-not-allowed ${response.trim() ? "bg-line-strong" : "bg-[#323232]"}`}
+                        className={`flex size-8 cursor-pointer items-center justify-center rounded-[5px] text-ink/60 transition-colors duration-(--duration-base) ease-out-expo hover:bg-line-strong hover:text-primary focus-visible:bg-line-strong active:scale-90 disabled:cursor-not-allowed ${response.trim() ? "bg-line-strong" : "bg-[#323232]"}`}
                       >
-                        <Send size={18} strokeWidth={1.33} aria-hidden />
+                        <Send size={18} strokeWidth={1.33} className="translate-y-px" aria-hidden />
                       </button>
                     </div>
                   </div>
@@ -144,12 +145,12 @@ export function NeoEarlyDiscovery() {
                   }}
                 >
                   <svg viewBox="0 0 52 52" className="size-4 shrink-0 text-primary" aria-hidden="true">
-                    {hDots.map(([cx, cy]) => <circle key={`${cx}-${cy}`} cx={cx} cy={cy} r="5.5" fill="currentColor" />)}
+                    {hDots.map(([cx, cy]) => <circle key={`${cx}-${cy}`} cx={cx} cy={cy} r="5.5" fill="rgba(255,255,255,0.4)" />)}
                     {reduce ? (
                       <circle cx="10" cy="10" r="5.5" fill="var(--color-highlight)" />
                     ) : (
                       <circle r="5.5" fill="var(--color-highlight)" className="motion-reduce:hidden">
-                        <animateMotion path={hTrace} dur={`${thinkingDuration}s`} repeatCount="indefinite" calcMode="paced" />
+                        <animateMotion path={hTrace} dur={`${hTraceDuration}s`} repeatCount="indefinite" calcMode="paced" />
                       </circle>
                     )}
                   </svg>
