@@ -7,6 +7,7 @@ import { Media } from "@/components/ui/Media";
 import { NeoCaseIntro } from "@/components/case-study/neo-advance/NeoCaseIntro";
 import { NeoHowItWorks } from "@/components/case-study/neo-advance/NeoHowItWorks";
 import { NeoImpact } from "@/components/case-study/neo-advance/NeoImpact";
+import { NeoEarlyDiscovery } from "@/components/case-study/neo-advance/NeoEarlyDiscovery";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { getProject, getProjects } from "@/content";
 import { site } from "@/content/site";
@@ -88,6 +89,7 @@ async function CaseStudyContent({ params }: PageProps<"/work/[slug]">) {
             <NeoHowItWorks className="mt-24" />
             <ScrollReveal as="hr" className="mt-24 border-line" />
             <NeoImpact className="mt-24" />
+            <NeoEarlyDiscovery />
           </NeoCaseIntro>
         </main>
       </>

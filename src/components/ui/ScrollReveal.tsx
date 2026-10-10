@@ -26,10 +26,6 @@ export function ScrollReveal({
   children?: ReactNode;
 }) {
   const reduce = useReducedMotion();
-  if (reduce) {
-    const Plain = as;
-    return <Plain className={className}>{children}</Plain>;
-  }
   const M = tags[as];
   return (
     <M
@@ -37,7 +33,7 @@ export function ScrollReveal({
       initial={{ opacity: 0, y: 16 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.15, margin: "0px 0px -10% 0px" }}
-      transition={{ duration: 0.4, ease: "easeOut", delay }}
+      transition={{ duration: reduce ? 0 : 0.4, ease: "easeOut", delay: reduce ? 0 : delay }}
     >
       {children}
     </M>
