@@ -9,6 +9,13 @@ Central system: `src/components/case-study/`. Preview catalog: `/case-study-temp
 | Templates | `templates/` | Structure only |
 | Content | `src/content/case-study/` | Copy and config (`neoAdvance.ts`, `templateExamples.ts`) |
 
+## Evidence primitives
+
+Figma `89:3670`. Desktop width is `--cs-content-width-desktop` (Figma variable `Case study / Content width / Desktop`, 1174px).
+
+- `EvidencePanelShell` draws no background, border or radius; the tab bar's top and bottom dividers are the only rules.
+- `EvidenceBullet` owns the one 16px check/x icon: `--cs-positive` / `--cs-negative` circle, white centred mark. The icon is centred on the first line box, so it sits centred beside a one-line bullet and level with the first line of a longer one. Do not offset individual bullets.
+
 Shared tokens alias the site foundation in `src/app/globals.css` and the design system in `src/design-system/` (see [design-system.md](design-system.md)); motion composes the existing site primitives.
 
 ## Chapters

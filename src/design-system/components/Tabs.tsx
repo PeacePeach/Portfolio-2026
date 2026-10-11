@@ -46,7 +46,10 @@ export type TabsProps = {
 /** Existing theme-tab presentation; other selectors retain their own visuals. */
 export function Tabs({ tabs, active, onChange, idPrefix, panelId, label = "Evidence views", appearance = "outline", style }: TabsProps) {
   const { register, onKeyDown } = useRovingTabs(tabs.map(t => t.id), active, onChange);
-  return <div className="cs-rules cs-tabs" style={style} data-appearance={appearance} role="tablist" aria-label={label} onKeyDown={onKeyDown}>
-    {tabs.map(tab => <button key={tab.id} ref={register(tab.id)} type="button" role="tab" id={`${idPrefix}-${tab.id}`} aria-controls={panelId} aria-selected={active === tab.id} tabIndex={active === tab.id ? 0 : -1} onClick={() => onChange(tab.id)} className="type-body-s">{tab.label}</button>)}
+  // Bar carries the dividers; the centred group is the tablist.
+  return <div className="cs-rules cs-tabs" style={style} data-appearance={appearance}>
+    <div className="cs-tab-group" role="tablist" aria-label={label} onKeyDown={onKeyDown}>
+      {tabs.map(tab => <button key={tab.id} ref={register(tab.id)} type="button" role="tab" id={`${idPrefix}-${tab.id}`} aria-controls={panelId} aria-selected={active === tab.id} tabIndex={active === tab.id ? 0 : -1} onClick={() => onChange(tab.id)} className="type-body-s">{tab.label}</button>)}
+    </div>
   </div>;
 }

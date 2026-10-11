@@ -1,7 +1,8 @@
 /* Extracted without visual changes. cs-* selectors retain compatibility. */
 .cs-pill { display: inline-block; color: var(--cs-secondary); border: 1px solid currentColor; border-radius: var(--cs-pill-radius); padding: var(--cs-pill-padding-y) var(--cs-pill-padding-x); }
 .cs-pill[data-emphasis='primary'] { color: var(--cs-primary); }
-.cs-tabs { height: var(--cs-tabs-height); display: flex; align-items: center; justify-content: center; gap: var(--cs-tab-gap); border-bottom: var(--cs-border); border-radius: var(--cs-tab-radius); background: var(--cs-tabs-background); }
+.cs-tabs { display: flex; justify-content: center; padding-block: var(--cs-tabs-padding); border-block: var(--cs-border); }
+.cs-tab-group { display: flex; align-items: center; gap: var(--cs-tab-gap); max-width: 100%; padding: var(--cs-tab-group-padding); border-radius: var(--cs-radius); background: var(--cs-tabs-background); }
 .cs-tabs button { height: var(--cs-tab-height); padding-inline: var(--cs-tab-padding); border: 1px solid transparent; border-radius: var(--cs-tab-radius); color: var(--cs-secondary); cursor: pointer; transition: color var(--duration-base) var(--ease-out-expo), border-color var(--duration-base) var(--ease-out-expo); }
 .cs-tabs button[aria-selected='true'] { color: var(--cs-primary); border-color: var(--cs-secondary); background: transparent; }
 .cs-tabs button:hover { color: var(--cs-primary); }

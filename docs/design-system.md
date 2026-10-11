@@ -6,7 +6,7 @@ Codex, Claude Code, and future coding agents must read this file before implemen
 
 ## Tokens
 
-- **colors** — CSS-variable references in `tokens/colors.ts`.
+- **colors** — CSS-variable references in `tokens/colors.ts`. `surface-3` (#1D1D1D) is the case-study tab group fill.
 - **typography** — existing `typeStyles` catalog; use the existing `type-*` CSS utilities. Fonts remain in `src/design/fonts.ts`.
 - **spacing** — references to the existing base unit and layout tokens.
 - **radius** — existing surface (10px) and control (8px) values.
@@ -17,10 +17,10 @@ CSS values remain authoritative in `src/app/globals.css`. Do not duplicate them 
 ## Components
 
 - **Button** — deferred; no generic export yet. Reuse existing native-button implementations until a repeated pattern justifies extraction.
-- **Tabs** — existing theme-tab presentation, `outline`/`filled` states, and `useRovingTabs` keyboard behavior. Retain distinct mode/capability selector presentations.
+- **Tabs** — theme-tab presentation (Figma 89:3670): a bar with only top and bottom 1px white/10% dividers around a centred `surface-3` group (10px radius, 4px padding, 6px gap). Active tab: transparent fill, 1px secondary border, 8px radius, primary text; inactive: no visible border, secondary text. `outline`/`filled` states and `useRovingTabs` keyboard behavior. Retain distinct mode/capability selector presentations.
 - **Pill** — `project`, `placeholder`, and `evidence` appearances.
 - **Input** — deferred; no generic export yet. Existing filter controls, textarea, and range inputs retain their behavior.
-- **Panel** — surface chrome only; `card`/`evidence` surfaces and `div`/`section`/`article` semantics. Callers own layout and interactions.
+- **Panel** — card surface chrome only, with `div`/`section`/`article` semantics. Callers own layout and interactions. Evidence templates have no surface: content sits on the page background.
 
 `Tabs` and evidence `Pill` use the existing case-study token scope: prefer `CaseStudyTabs` and `EvidencePill` adapters in case studies. Keep `EvidencePanelShell` for evidence layout.
 
