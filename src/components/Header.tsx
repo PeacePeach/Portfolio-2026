@@ -13,7 +13,7 @@ import { markPageSlide, slideBack, slideForward } from "@/lib/pageTransition";
 let navRevealed = false;
 
 /**
- * Fixed header (Figma 110:21956): a 48 px bar, HX logo left, Work / About /
+ * Fixed header (Figma 110:21956, bar 72 px): HX logo left, Work / About /
  * Resume right (12 px, 40 px apart), on the page background with a background
  * blur, so it stays readable over whatever scrolls under it. The current
  * section's link is full white, the others 60 % (Figma 41:24828).

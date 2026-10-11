@@ -121,7 +121,7 @@
   --spacing-margin: clamp(1.25rem, 5vw, 6rem);      /* page side margin: 64 px */
   --spacing-section: clamp(6rem, 14vw, 13rem);      /* vertical rhythm between sections */
   --spacing-header: clamp(4.5rem, 8.75vw, 9rem);    /* content offset below the header */
-  --spacing-header-bar: 3rem;       /* fixed bar, 48 px: 12 px above and below the logo (Figma 110:21956) */
+  --spacing-header-bar: 4.5rem;     /* fixed bar, 72 px; logo and links as Figma 110:21956 */
 
   /* ---- Breakpoints -------------------------------------------------- */
   --breakpoint-sm: 40rem;   /* 640  */
