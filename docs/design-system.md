@@ -24,6 +24,8 @@ CSS values remain authoritative in `src/app/globals.css`. Do not duplicate them 
 
 `Tabs` and evidence `Pill` use the existing case-study token scope: prefer `CaseStudyTabs` and `EvidencePill` adapters in case studies. Keep `EvidencePanelShell` for evidence layout.
 
+Case-study interactions (currently `TellMeAboutIt`, variants `prompt`/`feedback`) live in the case-study layer and consume these tokens; see [case-study templates](case-study-templates.md).
+
 Also exported: `Reveal`, `ScrollReveal`, `ChapterHeaderReveal`, `ArrowDown`, and `ArrowUpRight`. Chapter reveal preserves the earlier trigger (amount 0, bottom margin -15%), 320ms duration, and 50ms divider stagger; reduced motion is respected.
 
 ## Usage Rules
