@@ -40,12 +40,14 @@ export const ANALYTICS_PRIMARY = { ...project(50, 0, 80), scale: 1.05 };
 const c = { border: "#e5e6e6", muted: "#4d5056", ink: "#01050e", up: "#3a5de8", down: "#d84a4a", bar: "#809dff", navy: "#0b1533", ground: "rgba(9,45,189,0.18)" };
 const card: CSSProperties = { borderColor: c.border, boxShadow: "0 2px 10px rgba(0,0,0,0.08)" };
 
-type Layer = { id: string; x: number; y: number; w: number; h: number; lift: number; order: number; body: ReactNode };
+/** A device body: `depth` px of side wall under the face, drawn as stacked copies of its outline. */
+type Slab = { depth: number; radius: number; edge: string };
+type Layer = { id: string; x: number; y: number; w: number; h: number; lift: number; order: number; body: ReactNode; slab?: Slab };
 
 const LAYERS: Layer[] = [
-  { id: "phone", x: -330, y: 50, w: 140, h: 285, lift: 0, order: 3, body: <Phone /> },
+  { id: "phone", x: -328, y: -58, w: 140, h: 285, lift: 5, order: 3, body: <Phone />, slab: { depth: 5, radius: 28, edge: "#c9d0d9" } },
   { id: "minutes", x: -150, y: -150, w: 180, h: 86, lift: 40, order: 0, body: <Metric label="Viewed Minutes" value="800" delta="4.5%" down /> },
-  { id: "ctr", x: 330, y: -90, w: 160, h: 86, lift: 56, order: 1, body: <Metric label="CTR" value="17%" delta="4.5%" /> },
+  { id: "ctr", x: 360, y: -30, w: 160, h: 86, lift: 40, order: 1, body: <Metric label="CTR" value="17%" delta="4.5%" /> },
   { id: "videos", x: 250, y: 125, w: 230, h: 140, lift: 36, order: 2, body: <Videos /> },
   { id: "watched", x: -95, y: 150, w: 180, h: 86, lift: 50, order: 4, body: <Metric label="Avg. % Watched" value="65%" delta="4.5%" /> },
 ];
@@ -96,11 +98,11 @@ export function AnalyticsHero({
             visibility: scale === null ? "hidden" : undefined,
           }}
         >
-          <Iso x={40} y={0} w={520} h={325} enterAt={enterAt} order={-1}>
+          <Iso x={40} y={0} w={520} h={325} lift={6} slab={{ depth: 6, radius: 14, edge: "#c9d0d9" }} enterAt={enterAt} order={-1}>
             <Desktop />
           </Iso>
           {LAYERS.map((l) => (
-            <Iso key={l.id} x={l.x} y={l.y} w={l.w} h={l.h} lift={l.lift} enterAt={enterAt} order={l.order}>
+            <Iso key={l.id} x={l.x} y={l.y} w={l.w} h={l.h} lift={l.lift} slab={l.slab} enterAt={enterAt} order={l.order}>
               {l.body}
             </Iso>
           ))}
@@ -138,6 +140,7 @@ function Iso({
   enterAt,
   order = 0,
   shadowOnly = false,
+  slab,
   children,
 }: {
   x: number;
@@ -148,6 +151,7 @@ function Iso({
   enterAt?: number;
   order?: number;
   shadowOnly?: boolean;
+  slab?: Slab;
   children?: ReactNode;
 }) {
   const ground = project(x, y);
@@ -168,6 +172,15 @@ function Iso({
       transition={{ duration: t.duration, ease: morphTiming.settle, delay: entering ? Math.max(0, t.delay + Math.max(order, 0) * t.ring - enterAt) : 0 }}
     >
       {shadow}
+      {slab &&
+        Array.from({ length: slab.depth }, (_, i) => (
+          <div
+            key={i}
+            className="absolute"
+            // The bottom copy is darkest, so the wall reads as lit from above.
+            style={{ ...place(project(x, y, lift - slab.depth + i)), borderRadius: slab.radius, background: slab.edge, filter: `brightness(${0.85 + (0.3 * i) / slab.depth})` }}
+          />
+        ))}
       <div className="absolute" style={place(top)}>{children}</div>
     </motion.div>
   );
@@ -175,7 +188,7 @@ function Iso({
 
 function Desktop() {
   return (
-    <div className="size-full rounded-[14px] bg-[#1b2333] p-2" style={{ boxShadow: "0 1px 0 #2c3548, 6px 10px 0 #9fc7d6, 14px 28px 40px rgba(9,45,189,0.18)" }}>
+    <div className="size-full rounded-[14px] border border-[#dfe4ea] bg-[#f1f3f6] p-2">
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src="/case-studies/reimagining-analytics/overview.webp" alt="" draggable={false} className="size-full rounded-[8px] object-cover object-top select-none" />
     </div>
@@ -184,7 +197,7 @@ function Desktop() {
 
 function Phone() {
   return (
-    <div className="flex size-full flex-col overflow-hidden rounded-[28px] border-[6px] border-[#11151f] bg-[#f4f6fa]" style={{ boxShadow: "5px 9px 0 #9fc7d6, 12px 24px 34px rgba(9,45,189,0.2)" }}>
+    <div className="flex size-full flex-col overflow-hidden rounded-[28px] border-[6px] border-[#f1f3f6] bg-[#f4f6fa] outline outline-1 outline-[#dfe4ea]">
       <div className="px-3 pt-4 pb-2 text-[9px] font-bold tracking-[0.06em] text-white" style={{ background: c.navy }}>
         BRIGHTCOVE
         <div className="mt-2 flex gap-3 text-[8px] font-normal tracking-normal text-white/70">
