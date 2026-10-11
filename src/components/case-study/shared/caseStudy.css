@@ -63,3 +63,34 @@
 @media (max-width: 767px) {
   .cs-text-columns { grid-template-columns: minmax(0, var(--cs-text-column-width)); gap: var(--cs-column-gap); }
 }
+
+/* Tell Me About It: interaction chrome only. Callers own grid and spacing. */
+.cs-tma { min-width: 0; }
+.cs-tma-form { display: flex; flex-direction: column; gap: var(--cs-tma-gap); }
+.cs-tma-header { display: flex; flex-direction: column; gap: var(--cs-title-description-gap); }
+.cs-tma-eyebrow { display: flex; align-items: center; gap: var(--spacing); }
+.cs-tma-eyebrow-icon { width: var(--cs-icon-size); height: var(--cs-icon-size); flex-shrink: 0; }
+.cs-tma-title { display: block; color: var(--cs-bullet-text); overflow-wrap: anywhere; }
+.cs-tma-field { display: flex; flex-direction: column; gap: calc(var(--spacing) * 2); height: var(--cs-tma-prompt-height); padding: var(--cs-tma-prompt-inset); border: var(--cs-border); border-radius: var(--cs-tma-field-radius); background: var(--cs-tma-field-fill); transition: border-color var(--duration-base) var(--ease-out-expo); }
+.cs-tma[data-variant='feedback'] .cs-tma-field { height: var(--cs-tma-feedback-height); padding: var(--cs-tma-feedback-inset); }
+.cs-tma-field:hover { border-color: var(--color-line-strong); }
+.cs-tma-field:focus-within { border-color: var(--cs-secondary); }
+.cs-tma-input { flex: 1; min-height: 0; width: 100%; resize: none; border: 0; padding: 0; background: transparent; color: var(--cs-primary); }
+.cs-tma-input::placeholder { color: var(--color-tertiary); }
+.cs-tma-input:focus-visible { outline: none; }
+.cs-tma-actions { display: flex; align-items: center; justify-content: flex-end; gap: var(--cs-story-body-gap); }
+.cs-tma-skip { color: var(--cs-secondary); cursor: pointer; transition: color var(--duration-base) var(--ease-out-expo); }
+.cs-tma-skip:hover, .cs-tma-skip:focus-visible { color: var(--cs-primary); }
+.cs-tma-send { display: grid; place-items: center; width: var(--cs-tma-send-size); height: var(--cs-tma-send-size); flex-shrink: 0; border-radius: var(--cs-tma-send-radius); background: var(--cs-tma-send-fill); color: var(--cs-primary); cursor: pointer; transition: background-color var(--duration-base) var(--ease-out-expo), transform var(--duration-fast) var(--ease-out-expo); }
+.cs-tma-send:not(:disabled) { background: var(--color-line-strong); }
+.cs-tma-send:not(:disabled):active { transform: scale(0.9); }
+.cs-tma-send:disabled { cursor: not-allowed; }
+.cs-tma-chips { display: flex; flex-wrap: wrap; gap: var(--spacing); }
+.cs-tma-chip { padding: var(--cs-pill-padding-y) var(--cs-pill-padding-x); border-radius: var(--cs-pill-radius); background: var(--cs-tma-chip-fill); color: var(--cs-secondary); cursor: pointer; transition: color var(--duration-base) var(--ease-out-expo), background-color var(--duration-base) var(--ease-out-expo); }
+.cs-tma-chip:hover, .cs-tma-chip[aria-pressed='true'] { color: var(--cs-primary); background: var(--cs-tab-selected-fill); }
+.cs-tma-thinking-slot { display: flex; align-items: center; justify-content: center; min-height: inherit; }
+.cs-tma-slot[data-stage='loading'] { display: flex; flex-direction: column; }
+.cs-tma-slot[data-stage='loading'] > .cs-tma-thinking-slot { flex: 1; }
+.cs-tma-thinking { display: flex; align-items: center; gap: calc(var(--spacing) * 2); color: var(--cs-secondary); }
+.cs-tma-thinking-mark { width: var(--cs-icon-size); height: var(--cs-icon-size); flex-shrink: 0; color: var(--color-line-strong); }
+.cs-tma-thinking:focus-visible, .cs-tma-resolved:focus-visible { outline: none; }

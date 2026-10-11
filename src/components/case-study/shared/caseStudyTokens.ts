@@ -51,6 +51,19 @@ export const caseStudyTokens: CSSProperties & Record<`--cs-${string}`, string> =
   // Existing global display roles are responsive/semibold, not fixed 32px regular.
   "--cs-story-title-size": "32px",
   "--cs-content-gutter": "calc(var(--spacing) * 6)",
+  // Tell Me About It (Figma 99:39795 / 99:39796). Fills and radii have no global equivalent.
+  "--cs-tma-gap": "calc(var(--spacing) * 6)",
+  "--cs-tma-field-fill": "rgb(255 255 255 / 2%)",
+  "--cs-tma-field-radius": "15px",
+  "--cs-tma-prompt-height": "120px",
+  "--cs-tma-feedback-height": "275px",
+  // Field insets (top right bottom left) place text, chips and actions as in Figma.
+  "--cs-tma-prompt-inset": "18px 12px 11px 16px",
+  "--cs-tma-feedback-inset": "14px 17px 18px 14px",
+  "--cs-tma-send-size": "calc(var(--spacing) * 8)",
+  "--cs-tma-send-radius": "5px",
+  "--cs-tma-send-fill": "#323232",
+  "--cs-tma-chip-fill": "#1e1e1e",
 };
 
 /** Semantic roles compose existing site utilities. No template owns typography. */
