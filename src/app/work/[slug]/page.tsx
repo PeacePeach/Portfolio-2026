@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Fragment, Suspense } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Footer } from "@/components/Footer";
@@ -13,13 +12,12 @@ import { NeoHiFiExploration } from "@/components/case-study/neo-advance/NeoHiFiE
 import { NeoFinalDelivery } from "@/components/case-study/neo-advance/NeoFinalDelivery";
 import { NeoReflection } from "@/components/case-study/neo-advance/NeoReflection";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
-import { IntroTemplate } from "@/components/case-study/templates/IntroTemplate";
+import { AnalyticsCaseIntro } from "@/components/case-study/reimagining-analytics/AnalyticsCaseIntro";
 import { SimpleSectionTemplate } from "@/components/case-study/templates/SimpleSectionTemplate";
 import { ImpactTemplate } from "@/components/case-study/templates/ImpactTemplate";
 import { neoAdvanceImpact } from "@/content/neoAdvance";
 import {
   reimaginingAnalyticsImpact,
-  reimaginingAnalyticsIntro,
   reimaginingAnalyticsReframing,
 } from "@/content/case-study/reimaginingAnalytics";
 import { getProject, getProjects } from "@/content";
@@ -114,21 +112,19 @@ async function CaseStudyContent({ params }: PageProps<"/work/[slug]">) {
   }
 
   if (project.slug === "reimagining-analytics") {
-    const { hero, ...intro } = reimaginingAnalyticsIntro;
     return (
       <main id="main">
-        <Image src={hero.src} alt={hero.alt} width={hero.width} height={hero.height} priority sizes="100vw" className="mt-(--spacing-header-bar) h-auto w-full" />
-        <div className="container-page">
-          <IntroTemplate {...intro} />
+        <AnalyticsCaseIntro>
           <ScrollReveal as="hr" className="mt-24 border-line" />
           <SimpleSectionTemplate {...reimaginingAnalyticsReframing} />
           <ScrollReveal as="hr" className="border-line" />
           <ImpactTemplate {...reimaginingAnalyticsImpact} className="mt-24" />
           <ScrollReveal as="hr" className="mt-24 border-line" />
-        </div>
+        </AnalyticsCaseIntro>
       </main>
     );
   }
+
 
   return (
     <>

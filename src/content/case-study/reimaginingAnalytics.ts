@@ -2,14 +2,8 @@ import type { IntroData } from "@/components/case-study/templates/IntroTemplate"
 import type { SimpleSectionData } from "@/components/case-study/templates/SimpleSectionTemplate";
 import type { ImpactData } from "@/components/case-study/templates/ImpactTemplate";
 
-/** Reimagining Analytics intro (Figma 110:18593): hero band export, title, copy and facts. */
+/** Reimagining Analytics intro (Figma 110:18593): title, copy and facts. The hero is AnalyticsHero. */
 export const reimaginingAnalyticsIntro = {
-  hero: {
-    src: "/case-studies/reimagining-analytics/hero.png",
-    alt: "Redesigned Analytics dashboard on a laptop and a phone",
-    width: 2560,
-    height: 970,
-  },
   title: "Reimagining Analytics",
   paragraphs: [
     "I led the redesign of the Analytics module, a platform feature across multiple products and verticals, resulting in a significant increase in key business metrics.",
@@ -20,7 +14,7 @@ export const reimaginingAnalyticsIntro = {
     { label: "Type", items: ["1-N product", "B2B", "Analytics", "Design System"] },
     { label: "Role", items: ["Design lead", "User research", "UX strategy", "Design execution"] },
   ],
-} satisfies IntroData & { hero: { src: string; alt: string; width: number; height: number } };
+} satisfies IntroData;
 
 /** "Reframing Analytics Around User Decisions" (Figma 110:18922): simple section, before/after variant. */
 export const reimaginingAnalyticsReframing = {

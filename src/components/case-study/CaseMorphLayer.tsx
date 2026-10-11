@@ -5,6 +5,7 @@ import { animate, motion, useMotionValue, useTransform } from "motion/react";
 import { endCaseMorph, morphElapsed, morphTiming as T, useCaseMorph, type CaseMorph } from "@/lib/caseMorph";
 import { neo } from "@/components/scenes/neo-advance/frames";
 import { NeoHero } from "./neo-advance/NeoHero";
+import { AnalyticsMorph } from "./reimagining-analytics/AnalyticsMorph";
 import { HERO, HERO_MIN_UNIT, PRIMARY, PRIMARY_PHONE, SCREEN_SHADOW } from "./neo-advance/hero";
 
 /** The Work tile's design size: its CoverSheet sits 23 px in, in 375-wide phone pixels. */
@@ -30,7 +31,8 @@ const mix = (a: number, b: number, t: number) => a + (b - a) * t;
  */
 export function CaseMorphLayer() {
   const m = useCaseMorph();
-  return m ? <Morph key={m.start} m={m} /> : null;
+  if (!m) return null;
+  return m.slug === "reimagining-analytics" ? <AnalyticsMorph key={m.start} m={m} /> : <Morph key={m.start} m={m} />;
 }
 
 function Morph({ m }: { m: CaseMorph }) {

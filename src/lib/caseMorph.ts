@@ -42,7 +42,7 @@ export const morphTiming = {
 };
 
 /** Case studies with a hero the Work tile can morph into. */
-export const morphTargets = new Set(["neo-advance"]);
+export const morphTargets = new Set(["neo-advance", "reimagining-analytics"]);
 
 let current: CaseMorph | null = null;
 const listeners = new Set<() => void>();

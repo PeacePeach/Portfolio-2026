@@ -10,7 +10,7 @@
  * With reduced motion the finished card is shown, still.
  */
 
-import { useEffect, useRef, useSyncExternalStore } from "react";
+import { useEffect, useId, useRef, useSyncExternalStore } from "react";
 import { Public_Sans } from "next/font/google";
 import {
   animate,
@@ -43,7 +43,7 @@ const c = {
 const TOTAL = 1500;
 
 /** Vector 1, in its own 165 × 48 box at (34, 12) in the chart. */
-const linePath =
+export const linePath =
   "M0 48L13.22 40.9H28.35L38.2 33.99H44.8L47.14 30.01H54.86L57.8 23.63L60.85 20.98L66.13 13.81L68.97 14.61L72.02 13.81L74.66 10.09L78.01 9.03L81.16 5.58L82.48 3.45L83.54 0L85.93 6.9L89.59 13.81L92.83 17L95.27 23.63L97 26.82L99.23 28.41L102.38 24.17L104.61 24.96L106.04 30.54L112.74 28.41L115.95 27.35L119.41 25.23L122.55 23.63L125.9 25.23L127.23 22.04L128.85 20.71L130.27 18.89L131.79 14.61L134.84 18.89L137.07 19.92L139.12 18.89L142.15 21.24H145.3L147.94 24.96L151.29 26.02L155.05 26.82L158.4 28.68H161.65L165 27.62";
 
 const clamp = (v: number) => Math.min(Math.max(v, 0), 1);
@@ -85,10 +85,13 @@ export function BeaconAnalyticsAnimation({
   at,
   rounded = true,
   label = LABEL,
+  bare = false,
 }: {
   at?: number;
   rounded?: boolean;
   label?: string;
+  /** card only, no tile background (the case-study hero floats it over its own scene) */
+  bare?: boolean;
 }) {
   const reduce = useReducedMotion();
   const hydrated = useSyncExternalStore(
@@ -98,6 +101,8 @@ export function BeaconAnalyticsAnimation({
   );
   const still = reduce && hydrated && at === undefined ? doneAt : at;
 
+  // Unique per instance: the tile, its frozen copy and the case-study hero can all be on screen at once.
+  const gradientId = useId();
   const root = useRef<HTMLDivElement>(null);
   const path = useRef<SVGPathElement>(null);
   const inView = useInView(root, { margin: "100px" });
@@ -149,7 +154,7 @@ export function BeaconAnalyticsAnimation({
     <div
       ref={root}
       className={`relative overflow-hidden ${publicSans.className} ${rounded ? "rounded-[15px]" : ""}`}
-      style={{ width: TILE.width, height: TILE.height, background: c.tile }}
+      style={{ width: TILE.width, height: TILE.height, background: bare ? undefined : c.tile }}
       role="img"
       aria-label={label}
     >
@@ -215,7 +220,7 @@ export function BeaconAnalyticsAnimation({
           >
             <defs>
               <linearGradient
-                id="beacon-line"
+                id={gradientId}
                 x1="34"
                 y1="0"
                 x2="199"
@@ -241,7 +246,7 @@ export function BeaconAnalyticsAnimation({
               <motion.path
                 ref={path}
                 d={linePath}
-                stroke="url(#beacon-line)"
+                stroke={`url(#${gradientId})`}
                 strokeWidth={2}
                 strokeLinejoin="round"
                 style={{ pathLength: progress, opacity: shown }}
