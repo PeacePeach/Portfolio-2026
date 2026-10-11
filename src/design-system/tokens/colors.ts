@@ -1,0 +1,20 @@
+/** References only. Values remain in globals.css @theme. */
+export const colors = {
+  "background": "var(--color-background)",
+  "surface": "var(--color-surface)",
+  "surface-2": "var(--color-surface-2)",
+  "primary": "var(--color-primary)",
+  "secondary": "var(--color-secondary)",
+  "tertiary": "var(--color-tertiary)",
+  "ink": "var(--color-ink)",
+  "ink-muted": "var(--color-ink-muted)",
+  "line": "var(--color-line)",
+  "line-strong": "var(--color-line-strong)",
+  "tile": "var(--color-tile)",
+  "tag": "var(--color-tag)",
+  "card": "var(--color-card)",
+  "card-hover": "var(--color-card-hover)",
+  "check": "var(--color-check)",
+  "accent": "var(--color-accent)",
+  "highlight": "var(--color-highlight)",
+} as const;

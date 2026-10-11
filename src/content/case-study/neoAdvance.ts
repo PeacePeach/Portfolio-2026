@@ -102,3 +102,19 @@ export const neoAdvanceEarlyDiscovery = {
     },
   ],
 } satisfies TwoColumnTextData;
+
+/** Section 03 story, composed with the same text template as early discovery. */
+export const neoAdvanceValidationStory = {
+  "columns": [
+    {
+      "label": "WHERE WE WERE STUCK",
+      "title": "Too Late to Test,\nToo Risky Not To",
+      "body": "Two weeks before launch, the team was still misaligned on several key decisions. Product and Design wanted a final usability test, but leadership pushed back because testing all 10 flows and 200+ screens would take too long."
+    },
+    {
+      "label": "HOW I UNBLOCKED",
+      "title": "Breaking the\nValidation Trap",
+      "body": "After a tough leadership discussion, I grouped the open questions by type and matched each with the fastest research method. After a quick stakeholder sync, I ran 3 focused studies in 3 days, giving the team clear evidence to finalize the design."
+    }
+  ]
+} satisfies TwoColumnTextData;

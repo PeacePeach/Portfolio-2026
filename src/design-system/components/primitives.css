@@ -1,0 +1,11 @@
+/* Extracted without visual changes. cs-* selectors retain compatibility. */
+.cs-pill { display: inline-block; color: var(--cs-secondary); border: 1px solid currentColor; border-radius: var(--cs-pill-radius); padding: var(--cs-pill-padding-y) var(--cs-pill-padding-x); }
+.cs-pill[data-emphasis='primary'] { color: var(--cs-primary); }
+.cs-tabs { height: var(--cs-tabs-height); display: flex; align-items: center; justify-content: center; gap: var(--cs-tab-gap); border-bottom: var(--cs-border); border-radius: var(--cs-tab-radius); background: var(--cs-tabs-background); }
+.cs-tabs button { height: var(--cs-tab-height); padding-inline: var(--cs-tab-padding); border: 1px solid transparent; border-radius: var(--cs-tab-radius); color: var(--cs-secondary); cursor: pointer; transition: color var(--duration-base) var(--ease-out-expo), border-color var(--duration-base) var(--ease-out-expo); }
+.cs-tabs button[aria-selected='true'] { color: var(--cs-primary); border-color: var(--cs-secondary); background: transparent; }
+.cs-tabs button:hover { color: var(--cs-primary); }
+.cs-tabs[data-appearance="filled"] button[aria-selected="true"] { background: var(--cs-tab-selected-fill); }
+@media (max-width: 767px) {
+  .cs-tabs button { padding-inline: calc(var(--cs-tab-padding) / 2); }
+}
