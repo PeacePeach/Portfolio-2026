@@ -158,3 +158,28 @@ export const neoAdvanceFinalDelivery = [
     ],
   },
 ] as const;
+
+/** Figma 89:5173: delivery frameworks, on the same rolling narrative as early discovery (2x exports). */
+export const neoAdvanceDeliveryPanels = [
+  {
+    id: "lending-system",
+    title: "Delivering a Complex Lending System",
+    subtitle: "With one designer leaving and another on vacation, I independently delivered the core experience, delinquency, payments, and credit progression, while another designer supported additional lifecycle moments.",
+    alt: "Figma hand-off pages cycling through core experiences, delinquency and repayment, credit progression, additional lifecycle moments, and components and guidelines.",
+    width: 1406, height: 870, fullWidth: 1406, fullHeight: 870,
+  },
+  {
+    id: "payment-states",
+    title: "Payment State Framework",
+    subtitle: "I turned a dense set of payment states, account conditions, and edge cases into a rigorous framework that made the system easier to reason about, align on, and implement consistently.",
+    alt: "Payment state framework mapping basic, owed and delinquent states against account conditions.",
+    width: 1406, height: 966, fullWidth: 10878, fullHeight: 8130,
+    details: "View details →",
+  },
+] as const;
+
+/** Figma 99:38841. */
+export const neoAdvanceReflection = {
+  quote: "Designers navigate ambiguity not by eliminating uncertainty, but resolving the few uncertainties every downstream decision inherits.",
+  body: "In Neo Advance, the real risk wasn’t unanswered questions—it was letting unresolved decisions about account IA, entry points, and lending patterns propagate across 200+ screens and future products. I focused the team on resolving those structural questions first, using cross-product benchmarking and targeted research to turn them into shared rules before the design scaled.",
+} as const;

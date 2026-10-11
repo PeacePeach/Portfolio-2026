@@ -11,6 +11,7 @@ import { NeoEarlyDiscovery } from "@/components/case-study/neo-advance/NeoEarlyD
 import { NeoConceptExploration } from "@/components/case-study/neo-advance/NeoConceptExploration";
 import { NeoHiFiExploration } from "@/components/case-study/neo-advance/NeoHiFiExploration";
 import { NeoFinalDelivery } from "@/components/case-study/neo-advance/NeoFinalDelivery";
+import { NeoReflection } from "@/components/case-study/neo-advance/NeoReflection";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { getProject, getProjects } from "@/content";
 import { site } from "@/content/site";
@@ -96,6 +97,7 @@ async function CaseStudyContent({ params }: PageProps<"/work/[slug]">) {
             <NeoConceptExploration />
             <NeoHiFiExploration />
             <NeoFinalDelivery />
+            <NeoReflection />
           </NeoCaseIntro>
         </main>
       </>
