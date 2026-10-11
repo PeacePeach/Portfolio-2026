@@ -1,4 +1,6 @@
 @import "tailwindcss";
+@import "../components/case-study/shared/caseStudy.css";
+@import "../design-system/components/primitives.css";
 
 /* ==========================================================================
    DESIGN TOKENS — single source of truth for the visual foundation.
@@ -127,6 +129,10 @@
   --breakpoint-lg: 64rem;   /* 1024 */
   --breakpoint-xl: 80rem;   /* 1280 */
   --breakpoint-2xl: 96rem;  /* 1536 */
+
+  /* Existing repeated surface and tab radii. */
+  --radius-surface: 10px;
+  --radius-control: 8px;
 
   /* ---- Motion (mirrors src/design/motion.ts) ------------------------ */
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
@@ -438,4 +444,21 @@
     animation-duration: 0s !important;
     animation-delay: 0s !important;
   }
+}
+
+/* Section 03: final Figma 79:2211. Fixed desktop typography and layout. */
+.neo-validation-section { margin-top: 0; padding-top: 172px; --text-display-s: 32px; --text-display-s--font-weight: 400; --text-display-xs: 32px; --text-display-xs--font-weight: 400; --text-heading-l: 32px; --color-secondary: #a3a3a3; --color-primary: #f5f5f5; }
+.neo-validation-section h2, .neo-validation-section .type-label-s { font-size: 12px; font-weight: 400; line-height: 1.4; color: #a3a3a3; }
+.neo-validation-section .neo-chapter-header hr { margin-top: 12px; }
+.neo-validation-section .neo-story-grid { width: 881px; max-width: 100%; margin-left: 131px; margin-right: 0; grid-template-columns: repeat(2, 400px); gap: 81px; margin-top: 82px; }
+.neo-validation-section .neo-story-grid h3 { margin-top: 12px; white-space: pre-line; }
+.neo-validation-section .neo-story-grid .type-body-m { margin-top: 16px; }
+.neo-validation-section[data-stage='resolved'] .neo-story-slot { min-height: 241px; }
+.neo-validation-panel { margin-top: var(--cs-content-top, 64px); }
+@media (max-width: 1100px) {
+  .neo-validation-section .neo-story-grid { margin-inline: auto; width: 100%; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 48px; }
+}
+@media (max-width: 767px) {
+  .neo-validation-section { padding-top: 96px; }
+  .neo-validation-section .neo-story-grid { grid-template-columns: 1fr; }
 }
