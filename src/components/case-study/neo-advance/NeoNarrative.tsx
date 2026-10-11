@@ -6,7 +6,6 @@ import Image from "next/image";
 import { AnimatePresence, motion, useReducedMotion, useScroll, useTransform } from "motion/react";
 import { X, ZoomIn, ZoomOut } from "react-feather";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
-import { Pill } from "@/design-system";
 import { neoAdvanceNarrative } from "@/content/neoAdvance";
 import { duration, swap } from "@/design/motion";
 import { caseStudyTokens, caseStudyType } from "../shared/caseStudyTokens";
@@ -21,7 +20,8 @@ export type NarrativePanel = {
 };
 type Panel = NarrativePanel;
 
-export function NeoNarrative({ panels = neoAdvanceNarrative, label = "Lending platform research and frameworks" }: { panels?: readonly NarrativePanel[]; label?: string }) {
+/** `still`: plain images, as in Figma 89:5173: no surface, rounding, divider or scroll scaling. */
+export function NeoNarrative({ panels = neoAdvanceNarrative, label = "Lending platform research and frameworks", still = false }: { panels?: readonly NarrativePanel[]; label?: string; still?: boolean }) {
   const reduce = useReducedMotion();
   const [opened, setOpened] = useState<Panel | null>(null);
   const stack = useRef<HTMLDivElement>(null);
@@ -41,9 +41,9 @@ export function NeoNarrative({ panels = neoAdvanceNarrative, label = "Lending pl
         <StickyNarrativeText id={panels[active].id} title={panels[active].title} body={panels[active].subtitle} action={panels[active].details && (
           <DetailsButton label={panels[active].details} onClick={button => { trigger.current = button; setOpened(panels[active]); }} />
         )} />
-        <div ref={stack} className="min-w-0 lg:rounded-[20px] lg:bg-surface" data-neo-panels>
+        <div ref={stack} className={`min-w-0 ${still ? "" : "lg:rounded-[20px] lg:bg-surface"}`} data-neo-panels>
           {panels.map(panel => (
-            <VisualPanel key={panel.id} panel={panel} first={panel === panels[0]} last={panel === panels[panels.length - 1]} scaleEnabled={desktop && !reduce} onOpen={button => {
+            <VisualPanel key={panel.id} panel={panel} first={!still && panel === panels[0]} last={!still && panel === panels[panels.length - 1]} scaleEnabled={desktop && !reduce && !still} divider={!still} onOpen={button => {
               trigger.current = button;
               setOpened(panel);
             }} />
@@ -88,16 +88,17 @@ export function NarrativeText({ title, body }: { title: string; body: string }) 
 
 /** Figma 98:577: opens the active panel's high-resolution view. */
 function DetailsButton({ label, onClick }: { label: string; onClick: (button: HTMLButtonElement) => void }) {
-  return <button type="button" aria-haspopup="dialog" onClick={event => onClick(event.currentTarget)} className="mt-6 cursor-pointer">
-    <Pill appearance="evidence" emphasis="primary">{label}</Pill>
+  return <button type="button" aria-haspopup="dialog" onClick={event => onClick(event.currentTarget)} className="type-body-s mt-6 h-[34px] cursor-pointer rounded-control border border-(--cs-secondary) bg-(--cs-tab-selected-fill) px-8 text-(--cs-primary) transition-colors duration-(--duration-base) ease-out-expo hover:border-(--cs-primary)">
+    {label}
   </button>;
 }
 
-function VisualPanel({ panel, first, last, scaleEnabled, onOpen }: {
+function VisualPanel({ panel, first, last, scaleEnabled, divider, onOpen }: {
   panel: Panel;
   first: boolean;
   last: boolean;
   scaleEnabled: boolean;
+  divider: boolean;
   onOpen: (button: HTMLButtonElement) => void;
 }) {
   const target = useRef<HTMLDivElement>(null);
@@ -115,7 +116,7 @@ function VisualPanel({ panel, first, last, scaleEnabled, onOpen }: {
         onClick={event => onOpen(event.currentTarget)}
         className={`relative block w-full cursor-zoom-in appearance-none overflow-hidden border-0 bg-transparent p-0 text-left outline-none focus-visible:outline-1 focus-visible:outline-solid focus-visible:outline-[color:rgba(255,255,255,0.18)] focus-visible:outline-offset-[-1px] ${first ? "rounded-t-[20px]" : ""} ${last ? "rounded-b-[20px]" : ""}`}
       >
-        {!first && <span aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 z-10 hidden h-px bg-ink/10 lg:block" />}
+        {divider && !first && <span aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 z-10 hidden h-px bg-ink/10 lg:block" />}
         <div className="overflow-hidden">
           <motion.div style={{ scale: scaleEnabled ? scale : 1 }} className="origin-center motion-reduce:transform-none!">
             <Image

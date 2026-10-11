@@ -7,6 +7,6 @@ export function NeoFinalDelivery() {
   return <section aria-labelledby="neo-final">
     <CaseStudyChapterHeader id="neo-final">04 _ FINAL DESIGN</CaseStudyChapterHeader>
     <NeoCoreFlows />
-    <NeoNarrative panels={neoAdvanceDeliveryPanels} label="Delivery frameworks" />
+    <NeoNarrative panels={neoAdvanceDeliveryPanels} label="Delivery frameworks" still />
   </section>;
 }

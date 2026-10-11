@@ -4,8 +4,9 @@ import { useEffect, useState, type RefObject } from "react";
 
 /**
  * Sticky-text-beside-scrolling-visuals behavior: on desktop, the active index is
- * the child of `stack` crossing the viewport center. It holds until that child
- * leaves the 45–55% band, so the text doesn't flicker at boundaries.
+ * the last child of `stack` whose top has reached the pinned text (the
+ * `[data-neo-sticky]` sibling), so the text changes as the next visual arrives
+ * at the top of the viewport.
  */
 export function useStickyNarrative(stack: RefObject<HTMLElement | null>) {
   const [desktop, setDesktop] = useState(false);
@@ -26,13 +27,11 @@ export function useStickyNarrative(stack: RefObject<HTMLElement | null>) {
       frame = 0;
       const bounds = Array.from(stack.current?.children ?? []).map(node => node.getBoundingClientRect());
       if (!bounds.length) return;
-      const center = window.innerHeight / 2;
-      setActive(current => {
-        const rect = bounds[current];
-        if (rect && rect.bottom >= center * 0.9 && rect.top <= center * 1.1) return current;
-        const next = bounds.findIndex(rect => rect.top <= center && rect.bottom > center);
-        return next >= 0 ? next : bounds[0].top > center ? 0 : bounds.length - 1;
-      });
+      // Switch when the next visual's top reaches the pinned text near the top of the viewport.
+      const sticky = stack.current?.parentElement?.querySelector("[data-neo-sticky]");
+      const line = (sticky?.getBoundingClientRect().top ?? window.innerHeight * 0.2) + 1;
+      const passed = bounds.filter(rect => rect.top <= line).length;
+      setActive(Math.max(0, passed - 1));
     };
     const schedule = () => { if (!frame) frame = requestAnimationFrame(update); };
     update();

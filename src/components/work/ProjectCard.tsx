@@ -47,7 +47,13 @@ function preloadHero() {
  * A tile whose case study has a hero opens it with a shared-element
  * transition (CaseMorphLayer): the tile's surface grows into the hero.
  */
-export function ProjectCard({ project }: { project: Project }) {
+export function ProjectCard({ project, revealed = false, className = "aspect-[422/314]" }: {
+  project: Project;
+  /** Keep the panel visible (Figma 99:39393, the case-study Up Next tile). */
+  revealed?: boolean;
+  /** Tile sizing; defaults to the 422 × 314 aspect. */
+  className?: string;
+}) {
   const Scene = project.scene ? scenes[project.scene] : null;
   const [hovered, setHovered] = useState(false);
   const router = useRouter();
@@ -72,7 +78,7 @@ export function ProjectCard({ project }: { project: Project }) {
     });
     window.setTimeout(() => router.push(href), morphTiming.navigate * 1000);
   };
-  const shown = "opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 [@media(hover:none)]:opacity-100";
+  const shown = revealed ? "" : "opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 [@media(hover:none)]:opacity-100";
   const fade = "transition-opacity duration-(--duration-underline) ease-out-expo";
 
   return (
@@ -84,14 +90,14 @@ export function ProjectCard({ project }: { project: Project }) {
         if (e.pointerType === "mouse") setHovered(true);
       }}
       onPointerLeave={() => setHovered(false)}
-      className="group relative block aspect-[422/314] overflow-hidden rounded-[10px] bg-tile outline-offset-4"
+      className={`group relative block ${className} overflow-hidden rounded-[10px] bg-tile outline-offset-4`}
     >
       {/* The scene and the panel are separate GPU layers; rounded by the tile alone, their
           antialiasing along the corner curves let a hairline of the scene through the panel. The
           (no-op) mask flattens them into one layer before this rounded clip, so the corners are clean. */}
       <div className="absolute inset-0 overflow-hidden rounded-[10px] [mask-image:linear-gradient(#000,#000)]">
         {Scene ? (
-          <SceneStage ref={scene} width={TILE.width} height={TILE.height} className="absolute! inset-0">
+          <SceneStage ref={scene} width={TILE.width} height={TILE.height} className="absolute! inset-0 size-full">
             <ScenePause value={hovered}>
               <Scene rounded={false} />
             </ScenePause>
@@ -110,7 +116,7 @@ export function ProjectCard({ project }: { project: Project }) {
         ) : null}
 
         <div
-          className={`absolute inset-x-0 bottom-0 flex min-h-[51.3%] translate-y-2 flex-col justify-center text-primary transition-transform duration-(--duration-underline) ease-out-expo group-hover:translate-y-0 group-focus-visible:translate-y-0 [@media(hover:none)]:translate-y-0`}
+          className={`absolute inset-x-0 bottom-0 flex min-h-[51.3%] ${revealed ? "" : "translate-y-2"} flex-col justify-center text-primary transition-transform duration-(--duration-underline) ease-out-expo group-hover:translate-y-0 group-focus-visible:translate-y-0 [@media(hover:none)]:translate-y-0`}
         >
           {/* Frame 35: 70 % black over a 50 px background blur. Explicit colours: the palette has no black.
             The panel runs 1 px past the tile's sides and 20 px past its bottom, and the tile's rounded clip
