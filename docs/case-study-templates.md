@@ -22,6 +22,14 @@ Shared tokens alias the site foundation in `src/app/globals.css` and the design 
 
 Case-study chapters use `CaseStudyChapterHeader` (`## _ CHAPTER TITLE`, dotted divider, chapter reveal): 128px chapter spacing, 12px title-to-divider, and 96px divider-to-content. Sections within a chapter use `.cs-section`: consecutive sections get 96px, a separator line, then 96px (`--cs-chapter-gap`, `--cs-section-gap`).
 
+## IntroTemplate
+
+`templates/IntroTemplate.tsx` · Figma `83:3038` (specimen), `51:24883` (Neo Advance) · Preview `/case-study-templates/intro`
+
+Contract: `{ title, paragraphs, facts: { label, items }[] }`. A 720px block centred on the page: Display M title and Body M copy at left, Label S / Body S facts at right; stacks below `md`. Reuses the site type roles and spacing scale. The block sits 128px (`pt-32`) below the hero. Callers own the hero band and the page container (`container-page`). Each part reveals with the case-study text reveal; pass `reveal` to swap the motion (Neo Advance passes its Work → case morph rise).
+
+Used by Neo Advance (`neo-advance/NeoCaseIntro.tsx`, content `neoAdvanceIntro`).
+
 ## TwoColumnTextTemplate
 
 `templates/TwoColumnTextTemplate.tsx` · Figma `83:3445` · Preview `/case-study-templates/two-column-text`
