@@ -15,6 +15,8 @@
 .cs-bullet { display: flex; align-items: flex-start; gap: var(--cs-icon-gap); color: var(--cs-bullet-text); }
 .cs-bullet-icon { width: var(--cs-icon-size); height: var(--cs-icon-size); margin-top: var(--cs-icon-padding); padding: var(--cs-icon-padding); flex-shrink: 0; border-radius: var(--cs-pill-radius); stroke: var(--color-ink); background: var(--cs-negative); }
 .cs-bullet[data-tone='positive'] .cs-bullet-icon { background: var(--cs-positive); }
+/* Chapter header: margins (not padding) so they collapse with section margins instead of stacking. */
+.cs-chapter { margin-block: var(--cs-chapter-gap) var(--cs-section-gap); }
 .cs-chapter-label { color: var(--cs-secondary); line-height: var(--cs-small-line-height); }
 .cs-chapter-divider { margin-top: var(--cs-title-description-gap); border: 0; border-top: 1px dotted var(--color-line-strong); }
 .cs-story-title { font-size: var(--cs-story-title-size); font-weight: 400; }
@@ -54,7 +56,7 @@
 
 /* Shared story text rules, used by text templates. */
 /* Two fixed columns when they fit; otherwise one column, up to the column width. */
-.cs-text-columns { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--cs-text-column-width)), var(--cs-text-column-width))); justify-content: center; gap: var(--cs-column-gap) var(--cs-text-column-gap); padding-block: var(--cs-text-section-padding); }
+.cs-text-columns { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--cs-text-column-width)), var(--cs-text-column-width))); justify-content: center; gap: var(--cs-column-gap) var(--cs-text-column-gap); margin-block: var(--cs-section-gap); }
 .cs-text-column { min-width: 0; }
 .cs-story-text { display: flex; flex-direction: column; gap: var(--cs-story-body-gap); overflow-wrap: anywhere; }
 .cs-story-text-header { display: flex; flex-direction: column; gap: var(--cs-title-description-gap); }

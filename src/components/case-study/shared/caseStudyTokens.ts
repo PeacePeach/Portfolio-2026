@@ -46,7 +46,9 @@ export const caseStudyTokens: CSSProperties & Record<`--cs-${string}`, string> =
   "--cs-small-line-height": "1.4",
   "--cs-text-column-width": "400px",
   "--cs-text-column-gap": "calc(var(--spacing) * 24)",
-  "--cs-text-section-padding": "calc(var(--spacing) * 24)",
+  // Figma 83:3259: 128px between chapters; 96px from a divider or separator to content.
+  "--cs-chapter-gap": "calc(var(--spacing) * 32)",
+  "--cs-section-gap": "calc(var(--spacing) * 24)",
   "--cs-story-body-gap": "calc(var(--spacing) * 4)",
   // Existing global display roles are responsive/semibold, not fixed 32px regular.
   "--cs-story-title-size": "32px",

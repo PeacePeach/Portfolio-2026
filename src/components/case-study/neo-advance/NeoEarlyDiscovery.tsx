@@ -3,8 +3,8 @@ import { CaseStudyChapterHeader } from "../shared/CaseStudyChapterHeader";
 import { neoAdvanceEarlyDiscovery } from "@/content/case-study/neoAdvance";
 
 export function NeoEarlyDiscovery() {
-  return <section aria-labelledby="neo-discovery" className="mt-(--spacing-section)">
-    <CaseStudyChapterHeader id="neo-discovery" labelClassName="type-label-l text-secondary">01 _ EARLY DISCOVERY</CaseStudyChapterHeader>
+  return <section aria-labelledby="neo-discovery">
+    <CaseStudyChapterHeader id="neo-discovery">01 _ EARLY DISCOVERY</CaseStudyChapterHeader>
     <TwoColumnTextTemplate {...neoAdvanceEarlyDiscovery} />
   </section>;
 }
