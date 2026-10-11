@@ -64,9 +64,9 @@ export function NeoNarrative() {
   }
 
   return (
-    // A section within a chapter: shared section spacing. On desktop, end space
-    // lets the final short panel reach the center activation band.
-    <section aria-label="Lending platform research and frameworks" style={caseStudyTokens} className="cs-rules cs-section mx-auto w-full max-w-[1152px] lg:pb-[calc(50svh-var(--cs-section-gap))]">
+    // A section within a chapter: shared section spacing. Later chapters give
+    // the final short panel room to reach the center activation band.
+    <section aria-label="Lending platform research and frameworks" style={caseStudyTokens} className="cs-rules cs-section mx-auto w-full max-w-[1152px]">
       <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,320fr)_minmax(0,704fr)] lg:gap-x-32">
         <div className="hidden min-w-0 self-start lg:sticky lg:top-[calc(var(--spacing-header)+1.875rem)] lg:block" data-neo-sticky>
           <ScrollReveal>

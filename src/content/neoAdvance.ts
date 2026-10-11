@@ -103,3 +103,11 @@ export const neoAdvanceNarrative = [
     width: 2200, height: 1042, fullWidth: 3600, fullHeight: 1704,
   },
 ] as const;
+
+/** Figma 79:1979, exported at 2x as one image. */
+export const neoAdvanceJourneyMap = {
+  label: "End-to-end credit journey",
+  src: "/images/neo/credit-journey.webp",
+  alt: "End-to-end Neo Advance journey across marketing channels, profile creation, credit onboarding, Advance activation and use, marking which screens were refined, new, removed or unchanged, with notes on the key refinements.",
+  width: 4628, height: 1720,
+} as const;

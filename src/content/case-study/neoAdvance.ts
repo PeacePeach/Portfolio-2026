@@ -22,3 +22,26 @@ export const neoAdvanceEarlyDiscovery = {
     },
   ],
 } satisfies TwoColumnTextData;
+
+/** Concept exploration: the stuck point, then a Tell Me About It prompt that reveals how it was unblocked. */
+export const neoAdvanceConceptExploration = {
+  columns: [
+    {
+      label: "WHERE WE WERE STUCK",
+      title: "Conflicting Views of the Core Value Proposition",
+      body: "In early hi-fi exploration, the team was stuck on how to communicate credit progression within the Advance hub—the in-app screen showing a user’s total and available credit limit. Engineering, Marketing, and Product were pushing conflicting directions, stalling key design decisions.",
+    },
+    {
+      tellMeAboutIt: {
+        variant: "prompt",
+        eyebrow: "TELL ME ABOUT IT",
+        title: "What would you do if you were me?",
+        resolved: {
+          label: "HOW I UNBLOCKED",
+          title: "Solved the Journey, Not Just the Screen",
+          body: "Rather than choosing between competing solutions, I identified the deeper issue: Marketing and the in-app experience set different expectations for credit progression. I mapped the end-to-end journey, identified key moments to refine the progression experience, and aligned stakeholders on a direction within 2 days.",
+        },
+      },
+    },
+  ],
+} satisfies TwoColumnTextData;
