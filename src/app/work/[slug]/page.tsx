@@ -7,7 +7,6 @@ import { Footer } from "@/components/Footer";
 import { Media } from "@/components/ui/Media";
 import { NeoCaseIntro } from "@/components/case-study/neo-advance/NeoCaseIntro";
 import { NeoHowItWorks } from "@/components/case-study/neo-advance/NeoHowItWorks";
-import { NeoImpact } from "@/components/case-study/neo-advance/NeoImpact";
 import { NeoEarlyDiscovery } from "@/components/case-study/neo-advance/NeoEarlyDiscovery";
 import { NeoConceptExploration } from "@/components/case-study/neo-advance/NeoConceptExploration";
 import { NeoHiFiExploration } from "@/components/case-study/neo-advance/NeoHiFiExploration";
@@ -15,7 +14,14 @@ import { NeoFinalDelivery } from "@/components/case-study/neo-advance/NeoFinalDe
 import { NeoReflection } from "@/components/case-study/neo-advance/NeoReflection";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { IntroTemplate } from "@/components/case-study/templates/IntroTemplate";
-import { reimaginingAnalyticsIntro } from "@/content/case-study/reimaginingAnalytics";
+import { BeforeAfterTemplate } from "@/components/case-study/templates/BeforeAfterTemplate";
+import { ImpactTemplate } from "@/components/case-study/templates/ImpactTemplate";
+import { neoAdvanceImpact } from "@/content/neoAdvance";
+import {
+  reimaginingAnalyticsImpact,
+  reimaginingAnalyticsIntro,
+  reimaginingAnalyticsReframing,
+} from "@/content/case-study/reimaginingAnalytics";
 import { getProject, getProjects } from "@/content";
 import { site } from "@/content/site";
 
@@ -95,7 +101,7 @@ async function CaseStudyContent({ params }: PageProps<"/work/[slug]">) {
             <ScrollReveal as="hr" className="mt-24 border-line" />
             <NeoHowItWorks className="mt-24" />
             <ScrollReveal as="hr" className="mt-24 border-line" />
-            <NeoImpact className="mt-24" />
+            <ImpactTemplate {...neoAdvanceImpact} className="mt-24" />
             <NeoEarlyDiscovery />
             <NeoConceptExploration />
             <NeoHiFiExploration />
@@ -114,6 +120,11 @@ async function CaseStudyContent({ params }: PageProps<"/work/[slug]">) {
         <Image src={hero.src} alt={hero.alt} width={hero.width} height={hero.height} priority sizes="100vw" className="mt-(--spacing-header-bar) h-auto w-full" />
         <div className="container-page">
           <IntroTemplate {...intro} />
+          <ScrollReveal as="hr" className="mt-24 border-line" />
+          <BeforeAfterTemplate {...reimaginingAnalyticsReframing} />
+          <ScrollReveal as="hr" className="border-line" />
+          <ImpactTemplate {...reimaginingAnalyticsImpact} className="mt-24" />
+          <ScrollReveal as="hr" className="mt-24 border-line" />
         </div>
       </main>
     );

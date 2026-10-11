@@ -74,6 +74,16 @@ export const caseStudyTokens: CSSProperties & Record<`--cs-${string}`, string> =
   "--cs-tma-success": "#42be65",
 };
 
+/** Wide evidence (Figma 110:18922): 568 px desktop screenshots, 16 px apart and 16 px below their pills, 96 px from the dividers. */
+export const caseStudyWideTokens: Record<`--cs-${string}`, string> = {
+  "--cs-image-width": "568px",
+  "--cs-column-gap": "calc(var(--spacing) * 4)",
+  "--cs-evidence-gap": "calc(var(--spacing) * 4)",
+  "--cs-final-evidence-gap": "calc(var(--spacing) * 4)",
+  "--cs-content-top": "var(--cs-section-gap)",
+  "--cs-panel-min-height": "0",
+};
+
 /** Semantic roles compose existing site utilities. No template owns typography. */
 export const caseStudyType = {
   panelTitle: "type-heading-m cs-panel-title",

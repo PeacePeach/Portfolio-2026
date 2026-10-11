@@ -30,6 +30,17 @@ Contract: `{ title, paragraphs, facts: { label, items }[] }`. A 720px block cent
 
 Used by Neo Advance (`neo-advance/NeoCaseIntro.tsx`, content `neoAdvanceIntro`).
 
+## ImpactTemplate
+
+`templates/ImpactTemplate.tsx` · Figma `67:703` (Neo Advance), `110:18653` (Reimagining Analytics) · Preview `/case-study-templates/impact`
+
+Contract: `{ title, subtitle?, cards: ImpactCardData[] }`. A 947px block: `CaseStudySectionHeader` over a row of three `ImpactCard`s (one column below `md`). The header and each card use the site scroll reveal, cards staggered.
+
+- `shared/ImpactCard.tsx` (Figma `110:18673`): `{ icon, value, label, body }`. Icon is a key (`users`, `refresh`, `task`, `export`) mapped to `react-feather`, in Figma's accent blue; Display XS value, Heading S label, Body S proof; 40px radius, 1px line border.
+- `shared/CaseStudySectionHeader.tsx`: 508px block, Display XS title (32px regular) over Body M secondary copy, 12px apart. A title with no copy centres on the block.
+
+Used by Neo Advance (`neoAdvanceImpact`) and Reimagining Analytics (`reimaginingAnalyticsImpact`).
+
 ## TwoColumnTextTemplate
 
 `templates/TwoColumnTextTemplate.tsx` · Figma `83:3445` · Preview `/case-study-templates/two-column-text`
@@ -49,6 +60,8 @@ Structure only, built from the evidence primitives in `shared/`. Contract: `titl
 | `before-after` (default) | Before / After | `before`, `after` |
 | `before-iterated-after` | Before / Iterated / After | adds `iterated` |
 | `grouped-before-after` | Two images share one pill and bullet list | `groupedSide`: `before` (default) or `after` |
+
+`size: "wide"` (Figma `110:18922`): two 568px desktop screenshots 16px apart and 16px below their pills, stacking below `md`, under a `CaseStudySectionHeader` instead of the panel header, 96px from the dividers above and below. Bullets are optional in every variant; a column with none renders only its pill and images. Used by Reimagining Analytics (`reimaginingAnalyticsReframing`).
 
 Optional tabs: pass `navigation` (`CaseStudyTabs`), `contentId`, `activeTabId` and `contentKey`; only the inner content swaps. Used by Neo Advance hi-fi exploration (`neo-advance/NeoThemePanel.tsx`, content `neoAdvanceValidationThemes`).
 

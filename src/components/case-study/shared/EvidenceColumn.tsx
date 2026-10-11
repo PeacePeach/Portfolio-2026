@@ -7,7 +7,7 @@ export type EvidenceImage = { src: string; alt: string; width?: number; height?:
 export type EvidenceColumnData = {
   label?: string;
   images: readonly EvidenceImage[];
-  bullets: readonly EvidenceBulletData[];
+  bullets?: readonly EvidenceBulletData[];
 };
 
 export function EvidenceColumn({ data, label, emphasis = "secondary", imageLayout = "stack" }: { data: EvidenceColumnData; label: string; emphasis?: "primary" | "secondary"; imageLayout?: "stack" | "pair" }) {
@@ -25,7 +25,7 @@ export function EvidenceColumn({ data, label, emphasis = "secondary", imageLayou
           </div>
         ))}
       </div>
-      <ul className="cs-bullets">{data.bullets.map((bullet, index) => <EvidenceBullet key={index} {...bullet} />)}</ul>
+      {data.bullets?.length ? <ul className="cs-bullets">{data.bullets.map((bullet, index) => <EvidenceBullet key={index} {...bullet} />)}</ul> : null}
     </div>
   </EvidenceReveal>;
 }
