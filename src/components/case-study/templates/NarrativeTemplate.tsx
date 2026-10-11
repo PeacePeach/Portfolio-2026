@@ -6,51 +6,95 @@ import Image from "next/image";
 import { AnimatePresence, motion, useReducedMotion, useScroll, useTransform } from "motion/react";
 import { X, ZoomIn, ZoomOut } from "react-feather";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
-import { neoAdvanceNarrative } from "@/content/neoAdvance";
 import { duration, swap } from "@/design/motion";
 import { caseStudyTokens, caseStudyType } from "../shared/caseStudyTokens";
-import { useStickyNarrative } from "./useStickyNarrative";
+import { useStickyNarrative } from "../shared/useStickyNarrative";
 
-/** One rolling-narrative step: pinned text beside `/images/neo/{id}.webp`, zoomable to `{id}-full.webp`. */
-export type NarrativePanel = {
-  id: string; title: string; subtitle: string; alt: string;
-  width: number; height: number; fullWidth: number; fullHeight: number;
-  /** Optional text action that opens the high-resolution view. */
+export type NarrativeImage = {
+  src: string; alt: string; width: number; height: number;
+  /** High-resolution export for the zoom viewer; without it the image is not zoomable. */
+  full?: { src: string; width: number; height: number };
+};
+
+/** One text block and the images it sits beside. */
+export type NarrativeStep = {
+  id: string; title: string; body: string;
+  images: readonly NarrativeImage[];
+  /** Optional text action that opens the first image's high-resolution view. */
   details?: string;
 };
-type Panel = NarrativePanel;
 
-/** `still`: plain images, as in Figma 89:5173: no surface, rounding, divider or scroll scaling. */
-export function NeoNarrative({ panels = neoAdvanceNarrative, label = "Lending platform research and frameworks", still = false }: { panels?: readonly NarrativePanel[]; label?: string; still?: boolean }) {
+/**
+ * `joined`: one rounded surface, dividers between images, scroll scaling (Figma 83:3560).
+ * `separate`: each image its own bordered card, 16px apart (Figma 116:667).
+ * `plain`: images only, no surface, rounding or scaling (Figma 89:5173).
+ */
+export type NarrativeImageLayout = "joined" | "separate" | "plain";
+
+export type NarrativeData = {
+  label: string;
+  steps: readonly NarrativeStep[];
+  imageLayout?: NarrativeImageLayout;
+};
+
+type Opened = { title: string; image: NarrativeImage & { full: NonNullable<NarrativeImage["full"]> } };
+
+/**
+ * Text pinned beside scrolling images. Several steps roll: the pinned text
+ * swaps as each step's images reach it. One step keeps its text static.
+ */
+export function NarrativeTemplate({ label, steps, imageLayout = "joined" }: NarrativeData) {
   const reduce = useReducedMotion();
-  const [opened, setOpened] = useState<Panel | null>(null);
+  const [opened, setOpened] = useState<Opened | null>(null);
   const stack = useRef<HTMLDivElement>(null);
   const trigger = useRef<HTMLButtonElement | null>(null);
   const { desktop, active } = useStickyNarrative(stack);
+  const step = steps[active] ?? steps[0];
+  const joined = imageLayout === "joined";
+  const allImages = steps.flatMap(s => s.images);
 
+  function open(button: HTMLButtonElement, title: string, image: NarrativeImage) {
+    if (!image.full) return;
+    trigger.current = button;
+    setOpened({ title, image: { ...image, full: image.full } });
+  }
   function close() {
     setOpened(null);
     trigger.current?.focus({ preventScroll: true });
   }
+  const zoomTarget = step.images.find(image => image.full);
 
   return (
-    // A section within a chapter: shared section spacing. Later chapters give
-    // the final short panel room to reach the center activation band.
     <section aria-label={label} style={caseStudyTokens} className="cs-rules cs-section mx-auto w-full max-w-[1152px]">
       <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,320fr)_minmax(0,704fr)] lg:gap-x-32">
-        <StickyNarrativeText id={panels[active].id} title={panels[active].title} body={panels[active].subtitle} action={panels[active].details && (
-          <DetailsButton label={panels[active].details} onClick={button => { trigger.current = button; setOpened(panels[active]); }} />
+        <StickyNarrativeText id={step.id} title={step.title} body={step.body} action={step.details && zoomTarget && (
+          <DetailsButton label={step.details} onClick={button => open(button, step.title, zoomTarget)} />
         )} />
-        <div ref={stack} className={`min-w-0 ${still ? "" : "lg:rounded-[20px] lg:bg-surface"}`} data-neo-panels>
-          {panels.map(panel => (
-            <VisualPanel key={panel.id} panel={panel} first={!still && panel === panels[0]} last={!still && panel === panels[panels.length - 1]} scaleEnabled={desktop && !reduce && !still} divider={!still} onOpen={button => {
-              trigger.current = button;
-              setOpened(panel);
-            }} />
+        <div ref={stack} className={`min-w-0 ${joined ? "lg:rounded-[20px] lg:bg-surface" : ""} ${imageLayout === "separate" ? "lg:flex lg:flex-col lg:gap-4" : ""}`}>
+          {steps.map(s => (
+            <div key={s.id} data-narrative-step={s.id} className="mb-12 lg:mb-0">
+              <ScrollReveal className="mb-6 lg:hidden">
+                <NarrativeText title={s.title} body={s.body} />
+              </ScrollReveal>
+              <div className={imageLayout === "separate" ? "flex flex-col gap-4" : ""}>
+                {s.images.map(image => (
+                  <NarrativeFrame
+                    key={image.src}
+                    image={image}
+                    title={s.title}
+                    layout={imageLayout}
+                    first={image === allImages[0]}
+                    last={image === allImages[allImages.length - 1]}
+                    scaleEnabled={joined && desktop && !reduce}
+                    onOpen={button => open(button, s.title, image)}
+                  />
+                ))}
+              </div>
+            </div>
           ))}
         </div>
       </div>
-      {opened && createPortal(<ImageViewer panel={opened} onClose={close} />, document.body)}
+      {opened && createPortal(<ImageViewer title={opened.title} image={opened.image} onClose={close} />, document.body)}
     </section>
   );
 }
@@ -59,7 +103,7 @@ export function NeoNarrative({ panels = neoAdvanceNarrative, label = "Lending pl
 export function StickyNarrativeText({ id, title, body, action }: { id: string; title: string; body: string; action?: ReactNode }) {
   const reduce = useReducedMotion();
   return (
-    <div className="hidden min-w-0 self-start lg:sticky lg:top-[calc(var(--spacing-header)+1.875rem)] lg:block" data-neo-sticky>
+    <div className="hidden min-w-0 self-start lg:sticky lg:top-[calc(var(--spacing-header)+1.875rem)] lg:block" data-narrative-sticky>
       <ScrollReveal>
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
@@ -86,50 +130,52 @@ export function NarrativeText({ title, body }: { title: string; body: string }) 
   </article>;
 }
 
-/** Figma 98:577: opens the active panel's high-resolution view. */
+/** Figma 98:577: opens the active step's high-resolution view. */
 function DetailsButton({ label, onClick }: { label: string; onClick: (button: HTMLButtonElement) => void }) {
   return <button type="button" aria-haspopup="dialog" onClick={event => onClick(event.currentTarget)} className="type-body-s mt-6 h-[34px] cursor-pointer rounded-control border border-(--cs-secondary) bg-(--cs-tab-selected-fill) px-8 text-(--cs-primary) transition-colors duration-(--duration-base) ease-out-expo hover:border-(--cs-primary)">
     {label}
   </button>;
 }
 
-function VisualPanel({ panel, first, last, scaleEnabled, divider, onOpen }: {
-  panel: Panel;
+function NarrativeFrame({ image, title, layout, first, last, scaleEnabled, onOpen }: {
+  image: NarrativeImage;
+  title: string;
+  layout: NarrativeImageLayout;
   first: boolean;
   last: boolean;
   scaleEnabled: boolean;
-  divider: boolean;
   onOpen: (button: HTMLButtonElement) => void;
 }) {
   const target = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target, offset: ["start center", "end center"] });
   const scale = useTransform(scrollYProgress, [0, 0.5, 1], [0.98, 1, 0.98]);
+  const joined = layout === "joined";
+  const frame = layout === "separate"
+    ? "rounded-[10px] border border-ink/10"
+    : joined ? `${first ? "rounded-t-[20px]" : ""} ${last ? "rounded-b-[20px]" : ""}` : "";
+  const picture = <>
+    {joined && !first && <span aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 z-10 hidden h-px bg-ink/10 lg:block" />}
+    <div className="overflow-hidden">
+      <motion.div style={{ scale: scaleEnabled ? scale : 1 }} className="origin-center motion-reduce:transform-none!">
+        <Image src={image.src} alt={image.alt} width={image.width} height={image.height} unoptimized className="block h-auto w-full" />
+      </motion.div>
+    </div>
+  </>;
   return (
-    <div ref={target} data-neo-panel={panel.id} className="mb-12 lg:mb-0">
-      <ScrollReveal className="mb-6 lg:hidden">
-        <NarrativeText title={panel.title} body={panel.subtitle} />
-      </ScrollReveal>
-      <button
-        type="button"
-        aria-label={`View ${panel.title} in high resolution`}
-        aria-haspopup="dialog"
-        onClick={event => onOpen(event.currentTarget)}
-        className={`relative block w-full cursor-zoom-in appearance-none overflow-hidden border-0 bg-transparent p-0 text-left outline-none focus-visible:outline-1 focus-visible:outline-solid focus-visible:outline-[color:rgba(255,255,255,0.18)] focus-visible:outline-offset-[-1px] ${first ? "rounded-t-[20px]" : ""} ${last ? "rounded-b-[20px]" : ""}`}
-      >
-        {divider && !first && <span aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 z-10 hidden h-px bg-ink/10 lg:block" />}
-        <div className="overflow-hidden">
-          <motion.div style={{ scale: scaleEnabled ? scale : 1 }} className="origin-center motion-reduce:transform-none!">
-            <Image
-              src={`/images/neo/${panel.id}.webp`}
-              alt={panel.alt}
-              width={panel.width}
-              height={panel.height}
-              unoptimized
-              className="block h-auto w-full"
-            />
-          </motion.div>
-        </div>
-      </button>
+    <div ref={target}>
+      {image.full ? (
+        <button
+          type="button"
+          aria-label={`View ${title} in high resolution`}
+          aria-haspopup="dialog"
+          onClick={event => onOpen(event.currentTarget)}
+          className={`relative block w-full cursor-zoom-in appearance-none overflow-hidden border-0 bg-transparent p-0 text-left outline-none focus-visible:outline-1 focus-visible:outline-solid focus-visible:outline-[color:rgba(255,255,255,0.18)] focus-visible:outline-offset-[-1px] ${frame}`}
+        >
+          {picture}
+        </button>
+      ) : (
+        <ScrollReveal className={`relative overflow-hidden ${frame}`}>{picture}</ScrollReveal>
+      )}
     </div>
   );
 }
@@ -139,7 +185,7 @@ function VisualPanel({ panel, first, last, scaleEnabled, divider, onOpen }: {
  * half its pixel size (sharp on 2x screens); drag or scroll to pan, and the
  * clicked point stays under the pointer.
  */
-function ImageViewer({ panel, onClose }: { panel: Panel; onClose: () => void }) {
+function ImageViewer({ title, image: { alt, full }, onClose }: { title: string; image: Opened["image"]; onClose: () => void }) {
   const dialog = useRef<HTMLDialogElement>(null);
   const scroller = useRef<HTMLDivElement>(null);
   const drag = useRef<{ x: number; y: number; left: number; top: number; moved: boolean } | null>(null);
@@ -147,7 +193,7 @@ function ImageViewer({ panel, onClose }: { panel: Panel; onClose: () => void }) 
   const [zoomed, setZoomed] = useState(false);
   const reduce = useReducedMotion();
   // Half the pixel width stays sharp on 2x screens; small images still zoom past the fitted size.
-  const zoomWidth = Math.max(panel.fullWidth / 2, typeof window === "undefined" ? 0 : window.innerWidth * 1.5);
+  const zoomWidth = Math.max(full.width / 2, typeof window === "undefined" ? 0 : window.innerWidth * 1.5);
   function closeViewer() {
     // Release native modality before returning focus to the page trigger.
     dialog.current?.close();
@@ -176,16 +222,16 @@ function ImageViewer({ panel, onClose }: { panel: Panel; onClose: () => void }) 
   useEffect(() => {
     const el = scroller.current, f = focus.current;
     if (!zoomed || !el || !f) return;
-    const height = zoomWidth * panel.fullHeight / panel.fullWidth;
+    const height = zoomWidth * full.height / full.width;
     el.scrollTo({ left: f.fx * zoomWidth - f.cx, top: f.fy * height - f.cy });
-  }, [zoomed, zoomWidth, panel.fullHeight, panel.fullWidth]);
+  }, [zoomed, zoomWidth, full.height, full.width]);
 
   const control = "flex size-8 cursor-pointer items-center justify-center rounded-(--cs-tma-send-radius) bg-(--cs-tma-send-fill) text-ink/60 transition-colors duration-(--duration-base) ease-out-expo hover:text-primary active:scale-90";
-  const image = (className: string, style?: React.CSSProperties) => <Image
-    src={`/images/neo/${panel.id}-full.webp`}
-    alt={panel.alt}
-    width={panel.fullWidth}
-    height={panel.fullHeight}
+  const picture = (className: string, style?: React.CSSProperties) => <Image
+    src={full.src}
+    alt={alt}
+    width={full.width}
+    height={full.height}
     unoptimized
     loading="eager"
     draggable={false}
@@ -198,7 +244,7 @@ function ImageViewer({ panel, onClose }: { panel: Panel; onClose: () => void }) 
       ref={dialog}
       // Portaled to <body>, outside the section's token scope.
       style={caseStudyTokens}
-      aria-label={`${panel.title} — high-resolution image`}
+      aria-label={`${title} — high-resolution image`}
       onCancel={event => { event.preventDefault(); closeViewer(); }}
       onKeyDown={event => {
         // Keep focus on the viewer's controls.
@@ -231,12 +277,12 @@ function ImageViewer({ panel, onClose }: { panel: Panel; onClose: () => void }) 
             drag.current = null;
           }}
         >
-          {image("block h-auto max-w-none", { width: zoomWidth })}
+          {picture("block h-auto max-w-none", { width: zoomWidth })}
         </div>
       ) : (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={reduce ? { duration: duration.fast } : swap.enter} className="flex max-h-full max-w-full items-center justify-center">
           <button type="button" tabIndex={-1} aria-hidden onClick={event => toggle({ clientX: event.clientX, clientY: event.clientY, rect: event.currentTarget.getBoundingClientRect() })} className="block cursor-zoom-in border-0 bg-transparent p-0">
-            {image("block h-auto max-h-[calc(100dvh-6rem)] w-auto max-w-full object-contain")}
+            {picture("block h-auto max-h-[calc(100dvh-6rem)] w-auto max-w-full object-contain")}
           </button>
         </motion.div>
       )}

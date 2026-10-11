@@ -1,3 +1,5 @@
+import type { NarrativeStep } from "@/components/case-study/templates/NarrativeTemplate";
+
 /** Neo Advance case study intro (Figma 51:24883), Han's own copy. */
 export const neoAdvanceIntro = {
   title: "Neo Advance",
@@ -72,8 +74,16 @@ export const neoAdvanceImpact = {
   ],
 } as const;
 
-/** Local production exports; full-size images are mounted only by the viewer. */
-export const neoAdvanceNarrative = [
+/** NarrativeTemplate step from a local production export: `/images/neo/{id}.webp`, zoomable to `{id}-full.webp` (mounted only by the viewer). */
+const narrativeStep = ({ id, title, subtitle, alt, width, height, fullWidth, fullHeight, details }: {
+  id: string; title: string; subtitle: string; alt: string;
+  width: number; height: number; fullWidth: number; fullHeight: number; details?: string;
+}): NarrativeStep => ({
+  id, title, body: subtitle, details,
+  images: [{ src: `/images/neo/${id}.webp`, alt, width, height, full: { src: `/images/neo/${id}-full.webp`, width: fullWidth, height: fullHeight } }],
+});
+
+export const neoAdvanceNarrative = ([
   {
     id: "research-insights",
     title: "What Users Revealed",
@@ -102,7 +112,7 @@ export const neoAdvanceNarrative = [
     alt: "Shared payment screens and adaptations for Neo-funded payments, commitments to pay and settlements.",
     width: 2200, height: 1042, fullWidth: 3600, fullHeight: 1704,
   },
-] as const;
+]).map(narrativeStep);
 
 /** Figma 79:1979, exported at 2x as one image. */
 export const neoAdvanceJourneyMap = {
@@ -160,7 +170,7 @@ export const neoAdvanceFinalDelivery = [
 ] as const;
 
 /** Figma 89:5173: delivery frameworks, on the same rolling narrative as early discovery (2x exports). */
-export const neoAdvanceDeliveryPanels = [
+export const neoAdvanceDeliveryPanels = ([
   {
     id: "lending-system",
     title: "Delivering a Complex Lending System",
@@ -176,7 +186,7 @@ export const neoAdvanceDeliveryPanels = [
     width: 1406, height: 966, fullWidth: 10878, fullHeight: 8130,
     details: "View details →",
   },
-] as const;
+]).map(narrativeStep);
 
 /** Figma 99:38841. */
 export const neoAdvanceReflection = {

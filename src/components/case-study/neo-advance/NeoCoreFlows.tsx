@@ -5,8 +5,8 @@ import Image from "next/image";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { neoAdvanceFinalDelivery as groups } from "@/content/neoAdvance";
 import { caseStudyTokens } from "../shared/caseStudyTokens";
-import { NarrativeText, StickyNarrativeText } from "./NeoNarrative";
-import { useStickyNarrative } from "./useStickyNarrative";
+import { NarrativeText, StickyNarrativeText } from "../templates/NarrativeTemplate";
+import { useStickyNarrative } from "../shared/useStickyNarrative";
 
 /**
  * Figma 94:5545: the rolling-narrative layout with mobile screens. Text stays

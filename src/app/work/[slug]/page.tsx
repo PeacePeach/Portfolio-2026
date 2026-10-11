@@ -15,9 +15,12 @@ import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { AnalyticsCaseIntro } from "@/components/case-study/reimagining-analytics/AnalyticsCaseIntro";
 import { SimpleSectionTemplate } from "@/components/case-study/templates/SimpleSectionTemplate";
 import { ImpactTemplate } from "@/components/case-study/templates/ImpactTemplate";
+import { NarrativeTemplate } from "@/components/case-study/templates/NarrativeTemplate";
+import { CaseStudyChapterHeader } from "@/components/case-study/shared/CaseStudyChapterHeader";
 import { neoAdvanceImpact } from "@/content/neoAdvance";
 import {
   reimaginingAnalyticsImpact,
+  reimaginingAnalyticsProblem,
   reimaginingAnalyticsReframing,
 } from "@/content/case-study/reimaginingAnalytics";
 import { getProject, getProjects } from "@/content";
@@ -119,7 +122,10 @@ async function CaseStudyContent({ params }: PageProps<"/work/[slug]">) {
           <SimpleSectionTemplate {...reimaginingAnalyticsReframing} />
           <ScrollReveal as="hr" className="border-line" />
           <ImpactTemplate {...reimaginingAnalyticsImpact} className="mt-24" />
-          <ScrollReveal as="hr" className="mt-24 border-line" />
+          <section aria-labelledby="analytics-problem">
+            <CaseStudyChapterHeader id="analytics-problem">01 _ PROBLEM</CaseStudyChapterHeader>
+            <NarrativeTemplate {...reimaginingAnalyticsProblem} />
+          </section>
         </AnalyticsCaseIntro>
       </main>
     );

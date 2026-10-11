@@ -1,6 +1,7 @@
 import type { IntroData } from "@/components/case-study/templates/IntroTemplate";
 import type { SimpleSectionData } from "@/components/case-study/templates/SimpleSectionTemplate";
 import type { ImpactData } from "@/components/case-study/templates/ImpactTemplate";
+import type { NarrativeData } from "@/components/case-study/templates/NarrativeTemplate";
 
 /** Reimagining Analytics intro (Figma 110:18593): title, copy and facts. The hero is AnalyticsHero. */
 export const reimaginingAnalyticsIntro = {
@@ -39,3 +40,19 @@ export const reimaginingAnalyticsImpact = {
     { icon: "task", value: "87", label: "Satisfaction score", body: "A post-launch survey of 65 users produced an 87 satisfaction score." },
   ],
 } satisfies ImpactData;
+
+/** "01 _ PROBLEM" (Figma 116:667): one static text block beside two separate image cards (2x exports of 138:1547, 138:1614). */
+export const reimaginingAnalyticsProblem = {
+  label: "One Analytics feature, many different jobs",
+  imageLayout: "separate",
+  steps: [{
+    id: "problem",
+    title: "One Analytics Feature, Many Different Jobs",
+    body:
+      "Analytics served more than 10K users across marketing, video streaming, and corporate communication. Yet fewer than 25% of monthly active users engaged with it, and 27% of churned customers cited Analytics as a reason for leaving. Interviews showed the root issue: one generic structure was forcing very different roles to hunt for very different metrics.",
+    images: [
+      { src: "/case-studies/reimagining-analytics/context-map.png", alt: "Cross-product context map: Analytics sits inside every product across Marketing, Corporate Communication and Video Streaming", width: 2560, height: 1292 },
+      { src: "/case-studies/reimagining-analytics/role-needs.png", alt: "Role-specific metric needs: what a campaign manager, video producer and HR coordinator can't find, takes time to find, need manual effort for, or are distracted by", width: 2558, height: 1472 },
+    ],
+  }],
+} satisfies NarrativeData;

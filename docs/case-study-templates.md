@@ -62,6 +62,27 @@ Contract: `columns: [column, column]`, where each column is either static story 
 
 Used by Neo Advance early discovery (`neo-advance/NeoEarlyDiscovery.tsx`, content `neoAdvanceEarlyDiscovery`).
 
+## NarrativeTemplate
+
+`templates/NarrativeTemplate.tsx` · Figma `83:3560` (joined), `116:667` (separate), `89:5173` (plain) · Preview `/case-study-templates/narrative`
+
+Text pinned on the left (320) beside images on the right (704), 128px apart. Contract: `label`, `steps: [{ id, title, body, images, details? }]`, each image `{ src, alt, width, height, full? }`, plus `imageLayout`:
+
+| Steps | Text |
+| --- | --- |
+| 1 | Static: one text block beside all its images |
+| 2+ | Rolling: the pinned text swaps (site `swap` motion) as each step's images reach it |
+
+| `imageLayout` | Images |
+| --- | --- |
+| `joined` (default) | One 20px-radius surface, dividers between images, scroll scale 0.98 → 1 |
+| `separate` | Each image its own 10px-radius card with a 10% ink border, 16px apart |
+| `plain` | Images only: no surface, rounding, divider or scaling |
+
+An image with `full` opens the zoom viewer; `details` adds a text button for the step's first zoomable image. On mobile each step's text sits above its images. `NarrativeText`, `StickyNarrativeText` and `shared/useStickyNarrative` are exported for layouts with other visuals (Neo `NeoCoreFlows`).
+
+Used by Neo Advance (`neoAdvanceNarrative`, `neoAdvanceDeliveryPanels` with `plain`) and Reimagining Analytics problem (`reimaginingAnalyticsProblem`, `separate`).
+
 ## BeforeAfterTemplate
 
 `templates/BeforeAfterTemplate.tsx` · Figma `89:3854`, `89:4106`, `89:4186`
