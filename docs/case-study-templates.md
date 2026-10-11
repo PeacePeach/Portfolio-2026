@@ -23,6 +23,20 @@ Contract: `columns: [column, column]`, where each column is either static story 
 
 Used by Neo Advance early discovery (`neo-advance/NeoEarlyDiscovery.tsx`, content `neoAdvanceEarlyDiscovery`).
 
+## BeforeAfterTemplate
+
+`templates/BeforeAfterTemplate.tsx` · Figma `89:3854`, `89:4106`, `89:4186`
+
+Structure only, built from the evidence primitives in `shared/`. Contract: `title`, `description`, `before`, `after` (each `{ label?, images, bullets }`, bullets `positive`/`negative`), plus a `variant`:
+
+| `variant` | Structure | Config |
+| --- | --- | --- |
+| `before-after` (default) | Before / After | `before`, `after` |
+| `before-iterated-after` | Before / Iterated / After | adds `iterated` |
+| `grouped-before-after` | Two images share one pill and bullet list | `groupedSide`: `before` (default) or `after` |
+
+Optional tabs: pass `navigation` (`CaseStudyTabs`), `contentId`, `activeTabId` and `contentKey`; only the inner content swaps. Used by Neo Advance hi-fi exploration (`neo-advance/NeoThemePanel.tsx`, content `neoAdvanceValidationThemes`).
+
 ## TellMeAboutIt
 
 `shared/tell-me-about-it/TellMeAboutIt.tsx` · Figma `99:39795` (prompt), `99:39796` (feedback) · Preview `/case-study-templates/tell-me-about-it`
