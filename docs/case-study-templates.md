@@ -13,7 +13,7 @@ Shared tokens alias the site foundation in `src/app/globals.css` and the design 
 
 ## Chapters
 
-Case-study chapters use `CaseStudyChapterHeader` (`## _ CHAPTER TITLE`, dotted divider, chapter reveal): 128px chapter spacing, 12px title-to-divider, and 96px divider-to-content. Sections keep 96px to any separator (`--cs-chapter-gap`, `--cs-section-gap`).
+Case-study chapters use `CaseStudyChapterHeader` (`## _ CHAPTER TITLE`, dotted divider, chapter reveal): 128px chapter spacing, 12px title-to-divider, and 96px divider-to-content. Sections within a chapter use `.cs-section`: 96px to the next section or any separator (`--cs-chapter-gap`, `--cs-section-gap`).
 
 ## TwoColumnTextTemplate
 

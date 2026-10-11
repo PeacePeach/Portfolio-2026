@@ -71,3 +71,35 @@ export const neoAdvanceImpact = {
     },
   ],
 } as const;
+
+/** Local production exports; full-size images are mounted only by the viewer. */
+export const neoAdvanceNarrative = [
+  {
+    id: "research-insights",
+    title: "What Users Revealed",
+    subtitle: "We tested the assumptions shaping the product and used what we learned to define clearer system rules.",
+    alt: "Research hypotheses compared with what users revealed about credit reporting, balances and overdraft.",
+    width: 2200, height: 1322, fullWidth: 3600, fullHeight: 2163,
+  },
+  {
+    id: "lending-journeys",
+    title: "Lending Journeys",
+    subtitle: "Same journey spine, different behaviours by loan structure.",
+    alt: "Demand, term and revolving lending journeys compared across discovery, application, access, repayment and risk.",
+    width: 2200, height: 1313, fullWidth: 3600, fullHeight: 2149,
+  },
+  {
+    id: "account-ia",
+    title: "Account IA",
+    subtitle: "A shared account framework, adapted to each loan structure.",
+    alt: "Neo Advance, personal loan and HELOC account screens aligned to a shared information architecture.",
+    width: 2200, height: 2150, fullWidth: 3600, fullHeight: 3518,
+  },
+  {
+    id: "payment-framework",
+    title: "Payment Framework",
+    subtitle: "A shared framework for different ways to pay.",
+    alt: "Shared payment screens and adaptations for Neo-funded payments, commitments to pay and settlements.",
+    width: 2200, height: 1042, fullWidth: 3600, fullHeight: 1704,
+  },
+] as const;

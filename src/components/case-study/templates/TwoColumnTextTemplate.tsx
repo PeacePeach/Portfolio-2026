@@ -12,7 +12,7 @@ export type TwoColumnTextData = {
 
 /** Figma 83:3445. Structure only; shared rules own layout, typography and motion. */
 export function TwoColumnTextTemplate({ columns }: TwoColumnTextData) {
-  return <section className="cs-rules cs-text-columns" style={caseStudyTokens}>
+  return <section className="cs-rules cs-section cs-text-columns" style={caseStudyTokens}>
     {columns.map((column, index) => <CaseStudyTextReveal key={index} index={index}>
       {"tellMeAboutIt" in column ? <TellMeAboutIt {...column.tellMeAboutIt} /> : <StoryTextBlock {...column} />}
     </CaseStudyTextReveal>)}
