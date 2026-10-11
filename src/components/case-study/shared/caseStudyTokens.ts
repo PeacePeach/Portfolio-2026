@@ -68,6 +68,7 @@ export const caseStudyTokens: CSSProperties & Record<`--cs-${string}`, string> =
   "--cs-tma-send-radius": "5px",
   "--cs-tma-send-fill": "#323232",
   "--cs-tma-chip-fill": "#1e1e1e",
+  "--cs-tma-toast-width": "222px",
   "--cs-tma-toast-height": "48px",
   "--cs-tma-toast-icon-size": "20px",
   "--cs-tma-success": "#42be65",

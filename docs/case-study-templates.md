@@ -61,11 +61,11 @@ The one reader-input interaction. It owns state, the pen-icon header, the respon
 | `variant` | Structure | Config |
 | --- | --- | --- |
 | `prompt` | Eyebrow, story title, 120px field, Skip and reveal, send → H loader (16px, "Here’s what I did ...") → resolved `StoryTextBlock` | `eyebrow`, `title`, `resolved: { label?, title, body }`; optional `skipLabel`, `loadingLabel`, `placeholder`, `sendLabel` |
-| `feedback` | Eyebrow, Heading M title, 275px field with quick replies, send → "Feedback sent." toast 16px under the field (Figma `110:21828`) for 2s; no skip, loading or resolution | `eyebrow`, `title`, `quickReplies`; optional `placeholder`, `sendLabel`, `sentAnnouncement` (toast text) |
+| `feedback` | Eyebrow, Heading M title, 275px field with quick replies, send → "Feedback sent." toast inside the field, left with the quick replies and bottom with send (Figma `99:39859`), for 2s; no skip, loading or resolution | `eyebrow`, `title`, `quickReplies`; optional `placeholder`, `sendLabel`, `sentAnnouncement` (toast text) |
 
 - Reuses the shared system: case-study type roles (`caseStudyType`), colors, spacing and pill tokens, `react-feather` icons, the site `swap` motion through `caseStudyMotion`, and reduced-motion handling. Interaction-only values are the `--cs-tma-*` entries in `caseStudyTokens`.
 - `ThinkingIndicator` is the H loader; `QuickReplyChip` and the 32px send control stay local to this interaction until another one needs them.
-- Responses stay on the page; `onSubmit` is optional. The send control's fill lights up on hover and keyboard focus (Figma `99:39774`). Feedback keeps the response visible and shows the toast with the site `swap` motion; the toast overlays the space below, so it never shifts the layout.
+- Responses stay on the page; `onSubmit` is optional. The send control's fill lights up on hover and keyboard focus (Figma `99:39774`). Feedback keeps the response visible and shows the toast with the site `swap` motion; the toast overlays the field, so nothing reflows.
 - Add a new `variant` here rather than copying the interaction.
 
 ## Rules

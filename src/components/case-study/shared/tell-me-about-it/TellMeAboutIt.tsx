@@ -127,7 +127,7 @@ const toastDuration = 2000;
 function FeedbackInteraction({ eyebrow, title, placeholder, sendLabel = "Send feedback", quickReplies = [], sentAnnouncement = "Feedback sent.", onSubmit }: TellMeAboutItFeedbackData & { onSubmit?: (response: string) => void }) {
   const timing = caseStudyMotion(useReducedMotion());
   const [response, setResponse] = useState("");
-  // Local only: a toast under the field, which leaves on its own.
+  // Local only: a toast inside the field, beside send, which leaves on its own.
   const [sent, setSent] = useState(0);
   const field = useRef<HTMLTextAreaElement>(null);
 
@@ -165,21 +165,21 @@ function FeedbackInteraction({ eyebrow, title, placeholder, sendLabel = "Send fe
           }}
         >{reply}</QuickReplyChip>)}
       </div>}
+      action={<div role="status" className="cs-tma-toast-slot">
+        <AnimatePresence>
+          {sent > 0 && <motion.p
+            key={sent}
+            className="cs-tma-toast type-body-s"
+            initial={timing.hidden}
+            animate={{ ...timing.shown, transition: timing.enter }}
+            exit={{ opacity: 0, transition: timing.exit }}
+          >
+            <span className="cs-tma-toast-icon" aria-hidden><Check size={12} strokeWidth={3} /></span>
+            {sentAnnouncement}
+          </motion.p>}
+        </AnimatePresence>
+      </div>}
     />
-    <div role="status" className="cs-tma-toast-slot">
-      <AnimatePresence>
-        {sent > 0 && <motion.p
-          key={sent}
-          className="cs-tma-toast type-body-s"
-          initial={timing.hidden}
-          animate={{ ...timing.shown, transition: timing.enter }}
-          exit={{ opacity: 0, transition: timing.exit }}
-        >
-          <span className="cs-tma-toast-icon" aria-hidden><Check size={12} strokeWidth={3} /></span>
-          {sentAnnouncement}
-        </motion.p>}
-      </AnimatePresence>
-    </div>
   </>;
 }
 
