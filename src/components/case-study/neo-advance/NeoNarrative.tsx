@@ -9,54 +9,16 @@ import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { neoAdvanceNarrative as panels } from "@/content/neoAdvance";
 import { duration, swap } from "@/design/motion";
 import { caseStudyTokens, caseStudyType } from "../shared/caseStudyTokens";
+import { useStickyNarrative } from "./useStickyNarrative";
 
 type Panel = (typeof panels)[number];
 
 export function NeoNarrative() {
   const reduce = useReducedMotion();
-  const [desktop, setDesktop] = useState(false);
-  const [active, setActive] = useState(0);
   const [opened, setOpened] = useState<Panel | null>(null);
   const stack = useRef<HTMLDivElement>(null);
   const trigger = useRef<HTMLButtonElement | null>(null);
-
-  useEffect(() => {
-    const query = window.matchMedia("(min-width: 1024px)");
-    const update = () => setDesktop(query.matches);
-    update();
-    query.addEventListener("change", update);
-    return () => query.removeEventListener("change", update);
-  }, []);
-
-  useEffect(() => {
-    if (!desktop) return;
-    let frame = 0;
-    const update = () => {
-      frame = 0;
-      const bounds = Array.from(stack.current?.children ?? []).map(node => node.getBoundingClientRect());
-      if (!bounds.length) return;
-      const center = window.innerHeight / 2;
-      setActive(current => {
-        // Keep the current narrative until its panel leaves the 45–55% band.
-        const rect = bounds[current];
-        if (rect.bottom >= center * 0.9 && rect.top <= center * 1.1) return current;
-        const next = bounds.findIndex(rect => rect.top <= center && rect.bottom > center);
-        return next >= 0 ? next : bounds[0].top > center ? 0 : bounds.length - 1;
-      });
-    };
-    const schedule = () => { if (!frame) frame = requestAnimationFrame(update); };
-    update();
-    window.addEventListener("scroll", schedule, { passive: true });
-    window.addEventListener("resize", schedule);
-    const observer = new ResizeObserver(schedule);
-    if (stack.current) observer.observe(stack.current);
-    return () => {
-      cancelAnimationFrame(frame);
-      observer.disconnect();
-      window.removeEventListener("scroll", schedule);
-      window.removeEventListener("resize", schedule);
-    };
-  }, [desktop]);
+  const { desktop, active } = useStickyNarrative(stack);
 
   function close() {
     setOpened(null);
@@ -68,21 +30,7 @@ export function NeoNarrative() {
     // the final short panel room to reach the center activation band.
     <section aria-label="Lending platform research and frameworks" style={caseStudyTokens} className="cs-rules cs-section mx-auto w-full max-w-[1152px]">
       <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,320fr)_minmax(0,704fr)] lg:gap-x-32">
-        <div className="hidden min-w-0 self-start lg:sticky lg:top-[calc(var(--spacing-header)+1.875rem)] lg:block" data-neo-sticky>
-          <ScrollReveal>
-            <AnimatePresence mode="wait" initial={false}>
-              <motion.div
-                key={panels[active].id}
-                initial={{ opacity: 0, y: reduce ? 0 : swap.offset }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: reduce ? 0 : -swap.offset, transition: reduce ? { duration: duration.fast } : swap.exit }}
-                transition={reduce ? { duration: duration.fast } : swap.enter}
-              >
-                <Narrative panel={panels[active]} />
-              </motion.div>
-            </AnimatePresence>
-          </ScrollReveal>
-        </div>
+        <StickyNarrativeText id={panels[active].id} title={panels[active].title} body={panels[active].subtitle} />
         <div ref={stack} className="min-w-0 lg:rounded-[20px] lg:bg-surface" data-neo-panels>
           {panels.map(panel => (
             <VisualPanel key={panel.id} panel={panel} scaleEnabled={desktop && !reduce} onOpen={button => {
@@ -97,11 +45,33 @@ export function NeoNarrative() {
   );
 }
 
+/** Desktop-only sticky column: the active text swaps with the site swap motion. */
+export function StickyNarrativeText({ id, title, body }: { id: string; title: string; body: string }) {
+  const reduce = useReducedMotion();
+  return (
+    <div className="hidden min-w-0 self-start lg:sticky lg:top-[calc(var(--spacing-header)+1.875rem)] lg:block" data-neo-sticky>
+      <ScrollReveal>
+        <AnimatePresence mode="wait" initial={false}>
+          <motion.div
+            key={id}
+            initial={{ opacity: 0, y: reduce ? 0 : swap.offset }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: reduce ? 0 : -swap.offset, transition: reduce ? { duration: duration.fast } : swap.exit }}
+            transition={reduce ? { duration: duration.fast } : swap.enter}
+          >
+            <NarrativeText title={title} body={body} />
+          </motion.div>
+        </AnimatePresence>
+      </ScrollReveal>
+    </div>
+  );
+}
+
 /** Figma 83:3560: Heading M title over Body M, on the shared story-text spacing. */
-function Narrative({ panel }: { panel: Panel }) {
+export function NarrativeText({ title, body }: { title: string; body: string }) {
   return <article className="cs-story-text">
-    <h2 className="type-heading-m text-(--cs-bullet-text)">{panel.title}</h2>
-    <p className={`${caseStudyType.storyBody} cs-story-text-body`}>{panel.subtitle}</p>
+    <h2 className="type-heading-m text-(--cs-bullet-text)">{title}</h2>
+    <p className={`${caseStudyType.storyBody} cs-story-text-body`}>{body}</p>
   </article>;
 }
 
@@ -116,7 +86,7 @@ function VisualPanel({ panel, scaleEnabled, onOpen }: {
   return (
     <div ref={target} data-neo-panel={panel.id} className="mb-12 lg:mb-0">
       <ScrollReveal className="mb-6 lg:hidden">
-        <Narrative panel={panel} />
+        <NarrativeText title={panel.title} body={panel.subtitle} />
       </ScrollReveal>
       <button
         type="button"

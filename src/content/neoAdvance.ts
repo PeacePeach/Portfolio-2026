@@ -111,3 +111,50 @@ export const neoAdvanceJourneyMap = {
   alt: "End-to-end Neo Advance journey across marketing channels, profile creation, credit onboarding, Advance activation and use, marking which screens were refined, new, removed or unchanged, with notes on the key refinements.",
   width: 4628, height: 1720,
 } as const;
+
+/** Figma 94:5545: final delivery, 2x exports. Each group's text stays pinned beside its screens (two staggered columns). */
+const screen = (id: string, alt: string, height = 493) => ({ src: `/images/neo/final/${id}.png`, alt, width: 231, height });
+export const neoAdvanceFinalDelivery = [
+  {
+    id: "core-advance",
+    title: "Core Advance Experience",
+    body: "I set the core interaction model and led a two-designer team through the highest-risk flows, personally owning the key paths from access to repayment.",
+    columns: [
+      [
+        screen("use-advance", "Use advance sheet listing ways to use Neo Advance: pay a bill, linked bank account, Interac e-Transfer and card spending"),
+        screen("advance-cover", "Neo Advance will cover you: transfer breakdown from chequing and advance with the convenience fee"),
+      ],
+      [
+        screen("send-money", "Send money screen showing $65 available to transfer with Neo Advance"),
+        screen("transfer-success", "Transfer successful, with the chequing balance and amount owed on Neo Advance"),
+      ],
+    ],
+  },
+  {
+    id: "payment-flow",
+    title: "Payment Flow",
+    body: "I partnered with Product and Engineering to define the end-to-end payment flow across initiation, review, completion, and edge cases, while keeping the experience consistent with the broader Advance model.",
+    columns: [
+      [
+        screen("overdue-home", "Home screen flagging an overdue advance payment with a view options action", 554),
+        screen("split-balance", "Split the balance with Neo: choose a payment date and amount, and how it works", 554),
+      ],
+      [
+        screen("catch-up-options", "Explore ways to catch up faster: split the balance with Neo or pay what you can now", 554),
+        screen("payment-options", "Your payment options: catch up on what you owe or settle your balance for less", 554),
+      ],
+    ],
+  },
+  {
+    id: "credit-progression",
+    title: "Credit Progression System",
+    body: "I defined the lifecycle framework for eligibility, limit growth, and ongoing use, then reviewed execution across teams to keep 200+ screens coherent.",
+    columns: [
+      [
+        screen("limit-offer-home", "Home screen offering a higher advance limit for a limited time"),
+        screen("credit-progress", "Path to $300: current limit progress and tasks that grow the limit"),
+      ],
+      [screen("limit-unlocked", "You've unlocked a higher limit, with accept and decline actions")],
+    ],
+  },
+] as const;
