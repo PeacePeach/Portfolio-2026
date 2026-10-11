@@ -131,7 +131,6 @@ function FeedbackInteraction({ eyebrow, title, placeholder, sendLabel = "Send fe
     const value = response.trim();
     if (!value) return;
     onSubmit?.(value);
-    setResponse("");
     setSent(true);
   }
 
