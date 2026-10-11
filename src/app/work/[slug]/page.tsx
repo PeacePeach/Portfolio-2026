@@ -14,7 +14,7 @@ import { NeoFinalDelivery } from "@/components/case-study/neo-advance/NeoFinalDe
 import { NeoReflection } from "@/components/case-study/neo-advance/NeoReflection";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { IntroTemplate } from "@/components/case-study/templates/IntroTemplate";
-import { BeforeAfterTemplate } from "@/components/case-study/templates/BeforeAfterTemplate";
+import { SimpleSectionTemplate } from "@/components/case-study/templates/SimpleSectionTemplate";
 import { ImpactTemplate } from "@/components/case-study/templates/ImpactTemplate";
 import { neoAdvanceImpact } from "@/content/neoAdvance";
 import {
@@ -121,7 +121,7 @@ async function CaseStudyContent({ params }: PageProps<"/work/[slug]">) {
         <div className="container-page">
           <IntroTemplate {...intro} />
           <ScrollReveal as="hr" className="mt-24 border-line" />
-          <BeforeAfterTemplate {...reimaginingAnalyticsReframing} />
+          <SimpleSectionTemplate {...reimaginingAnalyticsReframing} />
           <ScrollReveal as="hr" className="border-line" />
           <ImpactTemplate {...reimaginingAnalyticsImpact} className="mt-24" />
           <ScrollReveal as="hr" className="mt-24 border-line" />

@@ -1,5 +1,5 @@
 import type { IntroData } from "@/components/case-study/templates/IntroTemplate";
-import type { BeforeAfterData } from "@/components/case-study/templates/BeforeAfterTemplate";
+import type { SimpleSectionData } from "@/components/case-study/templates/SimpleSectionTemplate";
 import type { ImpactData } from "@/components/case-study/templates/ImpactTemplate";
 
 /** Reimagining Analytics intro (Figma 110:18593): hero band export, title, copy and facts. */
@@ -22,11 +22,11 @@ export const reimaginingAnalyticsIntro = {
   ],
 } satisfies IntroData & { hero: { src: string; alt: string; width: number; height: number } };
 
-/** "Reframing Analytics Around User Decisions" (Figma 110:18922): before and after screenshots, no bullets. */
+/** "Reframing Analytics Around User Decisions" (Figma 110:18922): simple section, before/after variant. */
 export const reimaginingAnalyticsReframing = {
-  size: "wide",
+  variant: "before-after",
   title: "Reframing Analytics Around User Decisions",
-  description:
+  body:
     "I led the redesign across desktop and mobile, turning a fragmented reporting experience into a clearer, scalable analytics system that could work across products and verticals.",
   before: {
     images: [{ src: "/case-studies/reimagining-analytics/before.png", alt: "Analytics before the redesign: a single bar chart over a dense data table" }],
@@ -34,7 +34,7 @@ export const reimaginingAnalyticsReframing = {
   after: {
     images: [{ src: "/case-studies/reimagining-analytics/after.png", alt: "Analytics Overview after the redesign: headline metrics, a trend chart and top-performing lists" }],
   },
-} satisfies BeforeAfterData;
+} satisfies SimpleSectionData;
 
 /** "Impact" (Figma 110:18653). */
 export const reimaginingAnalyticsImpact = {

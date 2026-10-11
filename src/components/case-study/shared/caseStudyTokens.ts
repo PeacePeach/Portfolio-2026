@@ -74,16 +74,12 @@ export const caseStudyTokens: CSSProperties & Record<`--cs-${string}`, string> =
   "--cs-tma-success": "#42be65",
 };
 
-/** Wide evidence (Figma 110:18922): 568 px desktop screenshots, 16 px apart and 16 px below their pills, 96 px from the dividers. */
-export const caseStudyWideTokens: Record<`--cs-${string}`, string> = {
+/** Simple section, before/after variant (Figma 110:18926): 568 px desktop screenshots, 16 px apart and 16 px below their pills. */
+export const caseStudyWideEvidenceTokens: Record<`--cs-${string}`, string> = {
   "--cs-image-width": "568px",
   "--cs-column-gap": "calc(var(--spacing) * 4)",
   "--cs-evidence-gap": "calc(var(--spacing) * 4)",
   "--cs-final-evidence-gap": "calc(var(--spacing) * 4)",
-  "--cs-content-top": "var(--cs-section-gap)",
-  "--cs-panel-min-height": "0",
-  // The page container already supplies the gutter.
-  "--cs-content-gutter": "0px",
 };
 
 /** Semantic roles compose existing site utilities. No template owns typography. */

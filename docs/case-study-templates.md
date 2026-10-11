@@ -30,6 +30,19 @@ Contract: `{ title, paragraphs, facts: { label, items }[] }`. A 720px block cent
 
 Used by Neo Advance (`neo-advance/NeoCaseIntro.tsx`, content `neoAdvanceIntro`).
 
+## SimpleSectionTemplate
+
+`templates/SimpleSectionTemplate.tsx` · Figma `135:1453` · Preview `/case-study-templates/simple-section`
+
+Contract: `StoryTextBlock` data (`label?`, `title`, `body`) plus a `variant`. A 400px `StoryTextBlock` centred above full-width content: 96px from the dividers above and below, 64px from text to content. Text uses the case-study text reveal.
+
+| `variant` | Content | Config |
+| --- | --- | --- |
+| `container` (default) | Any children | `children` |
+| `before-after` | Two 568px desktop screenshots, 16px apart, each 16px under its Before / After pill (Figma `110:18926`); stacks below `md` | `before`, `after` (`EvidenceColumn` data, bullets optional) |
+
+Used by Reimagining Analytics (`reimaginingAnalyticsReframing`, `before-after`).
+
 ## ImpactTemplate
 
 `templates/ImpactTemplate.tsx` · Figma `67:703` (Neo Advance), `110:18653` (Reimagining Analytics) · Preview `/case-study-templates/impact`
@@ -61,7 +74,7 @@ Structure only, built from the evidence primitives in `shared/`. Contract: `titl
 | `before-iterated-after` | Before / Iterated / After | adds `iterated` |
 | `grouped-before-after` | Two images share one pill and bullet list | `groupedSide`: `before` (default) or `after` |
 
-`size: "wide"` (Figma `110:18922`): two 568px desktop screenshots 16px apart and 16px below their pills, stacking below `md`, under a `CaseStudySectionHeader` instead of the panel header, 96px from the dividers above and below. Bullets are optional in every variant; a column with none renders only its pill and images. Used by Reimagining Analytics (`reimaginingAnalyticsReframing`).
+Bullets are optional; a column with none renders only its pill and images.
 
 Optional tabs: pass `navigation` (`CaseStudyTabs`), `contentId`, `activeTabId` and `contentKey`; only the inner content swaps. Used by Neo Advance hi-fi exploration (`neo-advance/NeoThemePanel.tsx`, content `neoAdvanceValidationThemes`).
 

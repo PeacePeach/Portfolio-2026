@@ -34,11 +34,16 @@
 }
 
 
-/* Structural variants share all evidence styling and motion. */
-.cs-panel[data-size="wide"] .cs-evidence-columns { grid-template-columns: repeat(2, minmax(0, var(--cs-image-width))); justify-content: center; }
+/* Simple section (Figma 135:1453): 96px from the dividers, 400px story text, 64px to full-width content. */
+.cs-simple-section { padding-block: var(--cs-section-gap); }
+.cs-simple-section-text { width: min(100%, var(--cs-text-column-width)); margin-inline: auto; }
+.cs-simple-section-content { margin-top: var(--cs-content-top); }
+.cs-simple-section .cs-evidence-columns { grid-template-columns: repeat(2, minmax(0, var(--cs-image-width))); justify-content: center; }
 @media (max-width: 767px) {
-  .cs-panel[data-size="wide"] .cs-evidence-columns { grid-template-columns: minmax(0, var(--cs-image-width)); }
+  .cs-simple-section .cs-evidence-columns { grid-template-columns: minmax(0, var(--cs-image-width)); }
 }
+
+/* Structural variants share all evidence styling and motion. */
 .cs-panel[data-layout="before-iterated-after"] .cs-panel-content { width: calc(var(--cs-image-width) * 3 + var(--cs-column-gap) * 2); }
 .cs-panel[data-layout="before-iterated-after"] .cs-evidence-columns { grid-template-columns: repeat(3, var(--cs-image-width)); }
 .cs-panel[data-layout="grouped-before-after"] .cs-panel-content { width: calc(var(--cs-pair-image-width) * 2 + var(--cs-image-width) + var(--cs-image-pair-gap) + var(--cs-column-gap)); }
