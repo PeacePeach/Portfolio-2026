@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { motion, useMotionValue, useReducedMotion } from "motion/react";
+import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { neoAdvanceJourneyMap as journey } from "@/content/neoAdvance";
 import { caseStudyTokens } from "../shared/caseStudyTokens";
 
@@ -71,16 +72,19 @@ export function NeoJourneyMap() {
           style={{ top: "calc(var(--spacing-header-bar) + var(--spacing) * 5)" }}
           className={`-mx-(--spacing-margin) px-(--spacing-margin) ${pinned ? "sticky overflow-hidden" : "overflow-x-auto"}`}
         >
-          <motion.div ref={track} style={{ x }} className="w-max">
-            <Image
-              src={journey.src}
-              alt={journey.alt}
-              width={journey.width}
-              height={journey.height}
-              unoptimized
-              className="block h-[min(860px,calc(100svh-var(--spacing-header-bar)-var(--spacing)*10))] w-auto max-w-none"
-            />
-          </motion.div>
+          {/* Same scroll reveal as the other case-study sections; inside the sticky box so pinning is unaffected. */}
+          <ScrollReveal>
+            <motion.div ref={track} style={{ x }} className="w-max">
+              <Image
+                src={journey.src}
+                alt={journey.alt}
+                width={journey.width}
+                height={journey.height}
+                unoptimized
+                className="block h-[min(860px,calc(100svh-var(--spacing-header-bar)-var(--spacing)*10))] w-auto max-w-none"
+              />
+            </motion.div>
+          </ScrollReveal>
         </div>
       </div>
     </section>
