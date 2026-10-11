@@ -14,7 +14,7 @@
 @theme {
   /* ---- Color -------------------------------------------------------- */
   --color-*: initial;
-  --color-background: #0e0e0e;      /* page background: every page, the loader, the top nav bar (at 50 %) */
+  --color-background: #0e0e0e;      /* page background: every page, the loader, the top nav bar */
   --color-surface: #141414;         /* image placeholders, raised areas */
   --color-surface-2: #1c1c1c;
   /* Text: the only three text colours. Change a value here and every text
@@ -110,10 +110,10 @@
   --text-label-s--font-weight: 600;
 
   /* Brand mark (HX): Fraunces Regular 32, -3%. Outside the scale on purpose. */
-  --text-brand: clamp(1.5rem, 2.5vw, 2.75rem);
+  --text-brand: 1.25rem;                                    /* 20, nav logo (Figma 110:21956) */
   --text-brand--line-height: 1.2;
   --text-brand--letter-spacing: -0.03em;
-  --text-brand--font-weight: 400;
+  --text-brand--font-weight: 600;
 
   /* ---- Spacing & layout --------------------------------------------- */
   --spacing: 0.25rem;               /* Tailwind base unit (p-4 = 1rem) */
@@ -121,7 +121,7 @@
   --spacing-margin: clamp(1.25rem, 5vw, 6rem);      /* page side margin: 64 px */
   --spacing-section: clamp(6rem, 14vw, 13rem);      /* vertical rhythm between sections */
   --spacing-header: clamp(4.5rem, 8.75vw, 9rem);    /* content offset below the header */
-  --spacing-header-bar: clamp(4.5rem, 6.8vw, 5.4375rem); /* fixed bar, 87 px at 1280 (Figma 45:24842) */
+  --spacing-header-bar: 3rem;       /* fixed bar, 48 px: 12 px above and below the logo (Figma 110:21956) */
 
   /* ---- Breakpoints -------------------------------------------------- */
   --breakpoint-sm: 40rem;   /* 640  */

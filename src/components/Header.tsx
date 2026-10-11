@@ -13,10 +13,10 @@ import { markPageSlide, slideBack, slideForward } from "@/lib/pageTransition";
 let navRevealed = false;
 
 /**
- * Fixed header (Figma 1:5, bar from 45:24842): HX logo left, Work / About /
- * Resume right, on a 50 % background bar with a background blur, so it stays
- * readable over whatever scrolls under it. The current section's link is
- * full white, the others 60 % (Figma 41:24828).
+ * Fixed header (Figma 110:21956): a 48 px bar, HX logo left, Work / About /
+ * Resume right (12 px, 40 px apart), on the page background with a background
+ * blur, so it stays readable over whatever scrolls under it. The current
+ * section's link is full white, the others 60 % (Figma 41:24828).
  * During the intro the loader's initials glide onto the logo, so the logo
  * stays hidden until that hand-off and the links fade in alongside.
  */
@@ -30,7 +30,7 @@ export function Header() {
 
   return (
     <header
-      className="fixed inset-x-0 top-0 z-40 bg-background/50 backdrop-blur-[25px]"
+      className="fixed inset-x-0 top-0 z-40 bg-background backdrop-blur-[25px]"
       style={{ viewTransitionName: "site-header" }}
     >
       <div className="container-page flex h-header-bar items-center justify-between gap-6">
@@ -56,7 +56,7 @@ export function Header() {
           }}
           transition={{ duration: intro.nav.duration, ease: intro.nav.ease, delay: navDelay }}
         >
-          <ul className="flex gap-[clamp(1.25rem,3.125vw,3.5rem)]">
+          <ul className="flex gap-10">
             {site.nav.map((item) => {
               const current = isCurrent(item.href);
               return (
@@ -68,7 +68,7 @@ export function Header() {
                     onClick={() => {
                       if (item.href === "/work" && window.location.pathname !== "/work") markPageSlide();
                     }}
-                    className={`hover-underline font-sans text-[0.875rem] leading-[1.3] tracking-[-0.03em] uppercase transition-colors duration-(--duration-base) ${
+                    className={`hover-underline type-body-xs leading-[1.4] uppercase transition-colors duration-(--duration-base) ${
                       current ? "text-primary" : "text-secondary hover:text-primary"
                     }`}
                   >
