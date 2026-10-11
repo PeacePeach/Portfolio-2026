@@ -14,7 +14,8 @@
 .cs-bullets { display: flex; flex-direction: column; gap: var(--cs-bullet-gap); list-style: none; padding: 0; margin: 0; width: 100%; }
 .cs-bullet { display: flex; align-items: flex-start; gap: var(--cs-icon-gap); color: var(--cs-bullet-text); }
 /* Centred on the first line box: centred beside one line, level with the first of several. */
-.cs-bullet-icon { width: var(--cs-icon-size); height: var(--cs-icon-size); margin-top: calc((1em * var(--cs-small-line-height) - var(--cs-icon-size)) / 2); flex-shrink: 0; color: var(--cs-negative); stroke: var(--color-ink); }
+.cs-bullet-icon { width: var(--cs-icon-size); height: var(--cs-icon-size); margin-top: calc((1em * var(--cs-small-line-height) - var(--cs-icon-size)) / 2); flex-shrink: 0; color: var(--cs-negative); }
+.cs-bullet-icon path { stroke: var(--color-ink); }
 .cs-bullet[data-tone='positive'] .cs-bullet-icon { color: var(--cs-positive); }
 /* Chapter header: margins (not padding) so they collapse with section margins instead of stacking. */
 .cs-chapter { margin-block: var(--cs-chapter-gap) var(--cs-section-gap); }
