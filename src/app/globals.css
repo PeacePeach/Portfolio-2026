@@ -17,6 +17,7 @@
   --color-background: #0e0e0e;      /* page background: every page, the loader, the top nav bar (at 50 %) */
   --color-surface: #141414;         /* image placeholders, raised areas */
   --color-surface-2: #1c1c1c;
+  --color-surface-3: #1d1d1d;       /* case-study tab group */
   /* Text: the only three text colours. Change a value here and every text
      using it follows (text-primary / text-secondary / text-tertiary). A
      future theme overrides these three variables, nothing else. */

@@ -3,6 +3,7 @@ export const colors = {
   "background": "var(--color-background)",
   "surface": "var(--color-surface)",
   "surface-2": "var(--color-surface-2)",
+  "surface-3": "var(--color-surface-3)",
   "primary": "var(--color-primary)",
   "secondary": "var(--color-secondary)",
   "tertiary": "var(--color-tertiary)",

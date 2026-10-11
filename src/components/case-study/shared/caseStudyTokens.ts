@@ -8,7 +8,8 @@ import { radius } from "@/design-system/tokens/radius";
  * aliasing primary/secondary would change the standalone template previews.
  */
 export const caseStudyTokens: CSSProperties & Record<`--cs-${string}`, string> = {
-  "--cs-panel-width": "1174px",
+  // Figma variable "Case study / Content width / Desktop".
+  "--cs-content-width-desktop": "1174px",
   "--cs-panel-min-height": "1066px",
   // No exact shared border token. Keep RGB alpha: color-mix changed corner pixels.
   "--cs-border": "1px solid rgb(255 255 255 / 10%)",
@@ -18,9 +19,10 @@ export const caseStudyTokens: CSSProperties & Record<`--cs-${string}`, string> =
   "--cs-bullet-text": "#f9f9f9",
   "--cs-positive": "#65c466",
   "--cs-negative": "#e1747a",
-  "--cs-tabs-background": "#1d1d1d",
+  "--cs-tabs-background": "var(--color-surface-3)",
   "--cs-tab-selected-fill": "#2a2a2a",
-  "--cs-tabs-height": "83px",
+  "--cs-tabs-padding": "calc(var(--spacing) * 2)",
+  "--cs-tab-group-padding": "var(--spacing)",
   "--cs-tab-height": "34px",
   "--cs-tab-radius": radius.control,
   "--cs-tab-gap": "calc(var(--spacing) * 1.5)",
