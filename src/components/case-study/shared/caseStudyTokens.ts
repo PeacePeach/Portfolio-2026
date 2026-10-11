@@ -82,6 +82,8 @@ export const caseStudyWideTokens: Record<`--cs-${string}`, string> = {
   "--cs-final-evidence-gap": "calc(var(--spacing) * 4)",
   "--cs-content-top": "var(--cs-section-gap)",
   "--cs-panel-min-height": "0",
+  // The page container already supplies the gutter.
+  "--cs-content-gutter": "0px",
 };
 
 /** Semantic roles compose existing site utilities. No template owns typography. */
