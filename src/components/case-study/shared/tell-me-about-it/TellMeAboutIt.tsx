@@ -2,7 +2,7 @@
 
 import { useEffect, useId, useRef, useState, type KeyboardEvent, type ReactNode, type Ref } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { PenTool, Send } from "react-feather";
+import { Check, PenTool, Send } from "react-feather";
 import { duration } from "@/design/motion";
 import { StoryTextBlock, type StoryTextBlockData } from "../StoryTextBlock";
 import { caseStudyMotion } from "../caseStudyMotion";
@@ -30,7 +30,7 @@ export type TellMeAboutItPromptData = Shared & {
 export type TellMeAboutItFeedbackData = Shared & {
   variant: "feedback";
   quickReplies?: readonly string[];
-  /** Screen-reader confirmation after sending; nothing visible changes. */
+  /** Confirmation toast after sending (Figma 110:21828), also announced to assistive tech. */
   sentAnnouncement?: string;
 };
 
@@ -121,17 +121,27 @@ function PromptInteraction({ eyebrow, title, placeholder, sendLabel = "Send resp
   </div>;
 }
 
+/** How long the sent toast stays before it leaves. */
+const toastDuration = 2000;
+
 function FeedbackInteraction({ eyebrow, title, placeholder, sendLabel = "Send feedback", quickReplies = [], sentAnnouncement = "Feedback sent.", onSubmit }: TellMeAboutItFeedbackData & { onSubmit?: (response: string) => void }) {
+  const timing = caseStudyMotion(useReducedMotion());
   const [response, setResponse] = useState("");
-  // Local only; announced to assistive tech, visually neutral.
-  const [sent, setSent] = useState(false);
+  // Local only: a toast under the field, which leaves on its own.
+  const [sent, setSent] = useState(0);
   const field = useRef<HTMLTextAreaElement>(null);
+
+  useEffect(() => {
+    if (!sent) return;
+    const timer = window.setTimeout(() => setSent(0), toastDuration);
+    return () => window.clearTimeout(timer);
+  }, [sent]);
 
   function send() {
     const value = response.trim();
     if (!value) return;
     onSubmit?.(value);
-    setSent(true);
+    setSent(Date.now());
   }
 
   return <>
@@ -141,7 +151,7 @@ function FeedbackInteraction({ eyebrow, title, placeholder, sendLabel = "Send fe
       titleClassName="type-heading-m"
       fieldRef={field}
       value={response}
-      onChange={(value) => { setResponse(value); setSent(false); }}
+      onChange={setResponse}
       onSend={send}
       placeholder={placeholder}
       sendLabel={sendLabel}
@@ -151,13 +161,25 @@ function FeedbackInteraction({ eyebrow, title, placeholder, sendLabel = "Send fe
           selected={response === reply}
           onClick={() => {
             setResponse(reply);
-            setSent(false);
             field.current?.focus();
           }}
         >{reply}</QuickReplyChip>)}
       </div>}
     />
-    <p role="status" className="sr-only">{sent ? sentAnnouncement : ""}</p>
+    <div role="status" className="cs-tma-toast-slot">
+      <AnimatePresence>
+        {sent > 0 && <motion.p
+          key={sent}
+          className="cs-tma-toast type-body-s"
+          initial={timing.hidden}
+          animate={{ ...timing.shown, transition: timing.enter }}
+          exit={{ opacity: 0, transition: timing.exit }}
+        >
+          <span className="cs-tma-toast-icon" aria-hidden><Check size={12} strokeWidth={3} /></span>
+          {sentAnnouncement}
+        </motion.p>}
+      </AnimatePresence>
+    </div>
   </>;
 }
 
