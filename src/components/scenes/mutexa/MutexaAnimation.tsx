@@ -33,6 +33,7 @@ import {
 } from "motion/react";
 import { useScenePaused } from "../ScenePause";
 import {
+  BACKGROUND,
   CardId,
   LOOP,
   ROTATION,
@@ -60,10 +61,6 @@ const plex = IBM_Plex_Sans({
   weight: ["400", "600"],
   display: "swap",
 });
-
-/** Rectangle 7: the fixed purple background. */
-const background =
-  "linear-gradient(-57.34deg, #aaaefd -7.06%, #3741f3 140.75%)";
 
 const cardViews: Record<
   CardId,
@@ -155,7 +152,7 @@ function Stage({
       style={{
         width: TILE.width,
         height: TILE.height,
-        backgroundImage: background,
+        backgroundImage: BACKGROUND,
       }}
       role="img"
       aria-label={label}
@@ -221,7 +218,7 @@ function ReducedLoop({ corners, label }: { corners: string; label: string }) {
       style={{
         width: TILE.width,
         height: TILE.height,
-        backgroundImage: background,
+        backgroundImage: BACKGROUND,
       }}
       role="img"
       aria-label={label}

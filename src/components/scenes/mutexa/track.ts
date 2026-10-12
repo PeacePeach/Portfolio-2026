@@ -14,6 +14,9 @@
  */
 
 export const TILE = { width: 422, height: 314 } as const;
+
+/** Rectangle 7: the fixed purple background. */
+export const BACKGROUND = "linear-gradient(-57.34deg, #aaaefd -7.06%, #3741f3 140.75%)";
 export const CENTER = { x: TILE.width / 2, y: TILE.height / 2 };
 
 /** Figma rotation -32.21° (clockwise on screen). */

@@ -8,6 +8,7 @@ import { Media } from "@/components/ui/Media";
 import { NeoHero } from "@/components/case-study/neo-advance/NeoHero";
 import { AnalyticsHero } from "@/components/case-study/reimagining-analytics/AnalyticsHero";
 import { BeaconHero } from "@/components/case-study/brightcove-beacon/BeaconHero";
+import { MutexaHero } from "@/components/case-study/mutexa/MutexaHero";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { CaseIntroTemplate } from "@/components/case-study/templates/CaseIntroTemplate";
 import { MediaRowTemplate } from "@/components/case-study/templates/MediaRowTemplate";
@@ -301,7 +302,7 @@ async function CaseStudyContent({ params }: PageProps<"/work/[slug]">) {
       <main id="main">
         <CaseIntroTemplate
           intro={mutexaIntro}
-          hero={<Media ratio="1280 / 595" sizes="100vw" label="Hero — AI-assisted experiment workflow" />}
+          hero={<MutexaHero />}
         />
       </main>
     );

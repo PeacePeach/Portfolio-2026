@@ -14,6 +14,7 @@ import { BeaconAnalyticsAnimation } from "@/components/scenes/beacon-analytics/B
 import { BrightcoveAnimation } from "@/components/scenes/brightcove/BrightcoveAnimation";
 import { HERO_IMAGES } from "@/components/case-study/neo-advance/hero";
 import { BEACON_HERO_IMAGES } from "@/components/case-study/brightcove-beacon/hero";
+import { MUTEXA_HERO_IMAGES } from "@/components/case-study/mutexa/hero";
 import { markCaseFade, morphTargets, morphTiming, startCaseMorph } from "@/lib/caseMorph";
 
 /** Every scene is a 422 × 314 Figma tile. */
@@ -27,7 +28,7 @@ const scenes = {
 
 const tagLabel = (id: string) => caseStudyFilters.find((f) => f.id === id)?.label ?? id;
 
-const heroImages: Record<string, readonly string[]> = { "neo-advance": HERO_IMAGES, "brightcove-beacon": BEACON_HERO_IMAGES };
+const heroImages: Record<string, readonly string[]> = { "neo-advance": HERO_IMAGES, "brightcove-beacon": BEACON_HERO_IMAGES, mutexa: MUTEXA_HERO_IMAGES };
 const preloaded = new Set<string>();
 /** Warm the case study hero's screens so they are decoded before the transition shows them. */
 function preloadHero(slug: string) {
