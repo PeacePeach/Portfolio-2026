@@ -167,7 +167,7 @@ Text pinned on the left (320) beside images on the right (704), 128px apart. Con
 | --- | --- |
 | 1 | Static: one text block beside all its images. With exactly one image (any layout but `screens`) the text is not pinned: it sits vertically centred on the image and nothing moves on scroll |
 | 2+ | Rolling: the pinned text swaps (site `swap` motion) as each step's images reach it |
-| Held | A step with no `images`, `visual` or `columns` keeps the previous step's visual pinned (desktop) while its own text swaps in over 70svh of scroll, then the next step scrolls in. Mobile shows its text in flow. Used by Brightcove Beacon's Customer Problem beside the team map |
+| Held | A step with no `images`, `visual` or `columns` keeps the previous step's visual pinned (desktop) while its own text swaps in; each held step adds 50svh of scroll. The pinned block fills the viewport, so the next visual stays below the fold until the swap is done and the hold releases, then everything scrolls on together. Mobile shows its text in flow. Used by Brightcove Beacon's Customer Problem beside the team map |
 
 | `imageLayout` | Images |
 | --- | --- |

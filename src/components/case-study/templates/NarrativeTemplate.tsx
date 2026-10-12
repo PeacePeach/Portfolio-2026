@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import Image from "next/image";
 import { AnimatePresence, motion, useReducedMotion, useScroll, useTransform } from "motion/react";
@@ -99,9 +99,10 @@ export function NarrativeTemplate({ label, steps, imageLayout = "joined" }: Narr
           <DetailsButton label={step.details} onClick={button => open(button, step.title, zoomTarget)} />
         )} />
         <div ref={stack} className={`min-w-0 ${joined ? "lg:rounded-[20px] lg:bg-surface" : ""} ${imageLayout === "separate" ? `lg:flex lg:flex-col ${labelled ? "lg:gap-16" : "lg:gap-4"}` : ""} ${screens ? "flex flex-col gap-12 lg:gap-10.5" : ""}`}>
-          {/* Each group is a step plus any held steps after it; held steps add scroll while the step's visual stays pinned. */}
-          {groups.map(([s, ...held]) => <div key={s.id}>
-            <div data-narrative-step={s.id} className={`${screens ? "" : "mb-12 lg:mb-0"} ${held.length ? "lg:sticky lg:top-[calc(var(--spacing-header)+1.875rem)]" : ""}`}>
+          {/* Each group is a step plus any held steps after it; held steps add scroll while the step's visual stays pinned.
+              The pinned block fills the viewport below its top, so the next visual stays below the fold until the hold ends. */}
+          {groups.map(([s, ...held]) => <div key={s.id} className={held.length ? "lg:relative" : ""}>
+            <div data-narrative-step={s.id} className={`${screens ? "" : "mb-12 lg:mb-0"} ${held.length ? "lg:sticky lg:top-[calc(var(--spacing-header)+1.875rem)] lg:min-h-[calc(100svh-var(--spacing-header)-1.875rem)]" : ""}`}>
               <ScrollReveal className="mb-6 lg:hidden">
                 <StoryTextBlock heading="section" label={s.label} title={s.title} body={s.body} text={s.text} />
               </ScrollReveal>
@@ -121,9 +122,11 @@ export function NarrativeTemplate({ label, steps, imageLayout = "joined" }: Narr
                 ))}
               </div>}
             </div>
-            {held.map(h => <div key={h.id} data-narrative-step={h.id} className="mb-12 lg:mb-0 lg:h-[70svh]">
+            {/* Held text swaps in partway through its 50svh of scroll, well before the hold releases. */}
+            {held.map((h, i) => <div key={h.id} data-narrative-step={h.id} className="mb-12 lg:absolute lg:inset-x-0 lg:top-[var(--held-at)] lg:mb-0 lg:h-0" style={{ "--held-at": `${40 + i * 50}svh` } as CSSProperties}>
               <ScrollReveal className="lg:hidden"><StoryTextBlock heading="section" label={h.label} title={h.title} body={h.body} text={h.text} /></ScrollReveal>
             </div>)}
+            {held.length > 0 && <div aria-hidden className="hidden lg:block" style={{ height: `${held.length * 50}svh` }} />}
           </div>)}
         </div>
       </div>
