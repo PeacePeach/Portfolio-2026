@@ -99,6 +99,8 @@ export const caseStudyWideEvidenceTokens: Record<`--cs-${string}`, string> = {
   // Two 568px columns fill the 1174px panel; the page already provides the side margin.
   "--cs-content-gutter": "0px",
   "--cs-image-radius": radius.image,
+  // The 1066px tab-panel floor fits phone screens (Figma 79:2211); desktop screenshots are far shorter, so the panel hugs them.
+  "--cs-panel-min-height": "auto",
 };
 
 /** The case-study text control (Narrative "details" button): 34px outlined, case-study tab fill. Shared by buttons and links. */

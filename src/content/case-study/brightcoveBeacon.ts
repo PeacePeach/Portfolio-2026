@@ -89,6 +89,7 @@ export const brightcoveBeaconContext = {
     {
       id: "persona-brandon",
       title: "Brandon, Pricing Manager",
+      body: "“Every plan should earn its keep: priced right, accurate, and live without waiting on a developer.”",
       images: [img(
         "persona-brandon-card.jpg",
         "Persona card for Brandon, Pricing Manager at Xstream.ly: current tools, aptitude and altitude, responsibilities, goals, needs and pain points",
@@ -207,7 +208,7 @@ export const brightcoveBeaconDivingDeeperImage = img(
   1408, 758,
 );
 
-/** Chapter 2 (Figma AI-Portfolio 166:5756, top): challenge and approach, then the discovery process diagram. */
+/** Chapter 2 (Figma AI-Portfolio 166:5756, top): the challenge, then a Tell Me About It prompt that reveals the approach, then the discovery process diagram. */
 export const brightcoveBeaconDiscovery = {
   columns: [
     {
@@ -216,9 +217,16 @@ export const brightcoveBeaconDiscovery = {
       body: "During discovery, conflicting research emerged around monetization ownership. Earlier findings pointed to the pricing manager, while my Monetize interviews suggested the video producer. Resolving this was critical because each model required a fundamentally different data structure and front-end experience.",
     },
     {
-      label: "Approach",
-      title: "Sequenced Validation",
-      body: "Upon undertaking subsequent steps, it was discovered that the product primarily catered to small organizations where the content producer monetizes their content. Thus, after validating with customers, we chose to proceed in that direction.",
+      tellMeAboutIt: {
+        variant: "prompt",
+        eyebrow: "TELL ME ABOUT IT",
+        title: "What would you do if you were me?",
+        resolved: {
+          label: "Approach",
+          title: "Sequenced Validation",
+          body: "Upon undertaking subsequent steps, it was discovered that the product primarily catered to small organizations where the content producer monetizes their content. Thus, after validating with customers, we chose to proceed in that direction.",
+        },
+      },
     },
   ],
 } satisfies TwoColumnTextData;
@@ -230,7 +238,7 @@ export const brightcoveBeaconDiscoveryImage = img(
   1762, 1200,
 );
 
-/** Chapter 3 (Figma AI-Portfolio 166:5756, bottom): challenge and approach, then micro-jobs and their user flows. */
+/** Chapter 3 (Figma AI-Portfolio 166:5756, bottom): the challenge, then a Tell Me About It prompt that reveals the approach, then micro-jobs and their user flows. */
 export const brightcoveBeaconIdeation = {
   columns: [
     {
@@ -239,9 +247,16 @@ export const brightcoveBeaconIdeation = {
       body: "In the ideation phase, the team was overwhelmed by research data, and the design process was blocked by the complexities of collaboration and workflows.",
     },
     {
-      label: "Approach",
-      title: "Leveraging Granularity",
-      body: "Using the job map as a guide, I broke down the primary job into four distinct micro-jobs, each with its own set of user flows. I assigned each flow to a Junior Designer, while I took on a flow myself. We then iterated on our respective flows based on user feedback gathered from usability tests, creating a collaborative and dynamic design process.",
+      tellMeAboutIt: {
+        variant: "prompt",
+        eyebrow: "TELL ME ABOUT IT",
+        title: "What would you do if you were me?",
+        resolved: {
+          label: "Approach",
+          title: "Leveraging Granularity",
+          body: "Using the job map as a guide, I broke down the primary job into four distinct micro-jobs, each with its own set of user flows. I assigned each flow to a Junior Designer, while I took on a flow myself. We then iterated on our respective flows based on user feedback gathered from usability tests, creating a collaborative and dynamic design process.",
+        },
+      },
     },
   ],
 } satisfies TwoColumnTextData;
@@ -258,7 +273,7 @@ export const brightcoveBeaconUserFlowsImage = img(
   2304, 3132,
 );
 
-/** Chapter 4 (Figma AI-Portfolio 166:10574, old layout): challenge and approach, then the sprint flows as tabbed Before / After. */
+/** Chapter 4 (Figma AI-Portfolio 166:10574, old layout): the challenge, then a Tell Me About It prompt that reveals the approach, then the sprint flows as tabbed Before / After. */
 export const brightcoveBeaconExecution = {
   columns: [
     {
@@ -267,9 +282,16 @@ export const brightcoveBeaconExecution = {
       body: "When we entered the design execution phase, the team was challenged by the complex data input and structure that a user needs to cope with in order to create a plan.",
     },
     {
-      label: "Approach",
-      title: "Rigorous Bi-Weekly Design Sprints",
-      body: "To address the complexity in data input, I spearheaded bi-weekly design sprints. In these sessions, designers selected relevant stories, collaborated with peers, project managers, and developers, conducted usability tests, and refined designs based on the gathered feedback.",
+      tellMeAboutIt: {
+        variant: "prompt",
+        eyebrow: "TELL ME ABOUT IT",
+        title: "What would you do if you were me?",
+        resolved: {
+          label: "Approach",
+          title: "Rigorous Bi-Weekly Design Sprints",
+          body: "To address the complexity in data input, I spearheaded bi-weekly design sprints. In these sessions, designers selected relevant stories, collaborated with peers, project managers, and developers, conducted usability tests, and refined designs based on the gathered feedback.",
+        },
+      },
     },
   ],
 } satisfies TwoColumnTextData;

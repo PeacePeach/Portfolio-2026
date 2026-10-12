@@ -1,6 +1,8 @@
 .cs-rules { font-family: var(--font-sans); }
 .cs-panel { width: 100%; max-width: var(--cs-content-width-desktop); min-height: var(--cs-panel-min-height); margin-inline: auto; overflow: hidden; color: var(--cs-primary); }
 .cs-panel-content { width: calc(var(--cs-image-width) * 2 + var(--cs-column-gap)); max-width: calc(100% - var(--cs-content-gutter) * 2); margin: var(--cs-content-top) auto; }
+/* A wide panel hugs its content, so the section gap below it starts right after the bullets. */
+.cs-panel[data-size="wide"] .cs-panel-content { margin-bottom: 0; }
 .cs-panel-header { display: flex; flex-direction: column; gap: var(--cs-title-description-gap); margin-bottom: var(--cs-header-evidence-gap); }
 .cs-panel-title { color: var(--cs-bullet-text); }
 .cs-panel-description { color: var(--cs-secondary); }
