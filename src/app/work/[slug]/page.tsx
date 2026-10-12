@@ -20,6 +20,7 @@ import { CaseStudyChapterHeader } from "@/components/case-study/shared/CaseStudy
 import { neoAdvanceImpact } from "@/content/neoAdvance";
 import {
   reimaginingAnalyticsImpact,
+  reimaginingAnalyticsPatterns,
   reimaginingAnalyticsProblem,
   reimaginingAnalyticsReframing,
   reimaginingAnalyticsStrategy,
@@ -130,6 +131,11 @@ async function CaseStudyContent({ params }: PageProps<"/work/[slug]">) {
           <section aria-labelledby="analytics-strategy">
             <CaseStudyChapterHeader id="analytics-strategy">02 _ UX STRATEGY</CaseStudyChapterHeader>
             <NarrativeTemplate {...reimaginingAnalyticsStrategy} />
+          </section>
+          <section aria-labelledby="analytics-patterns">
+            <CaseStudyChapterHeader id="analytics-patterns">03 _ UX GOAL 2</CaseStudyChapterHeader>
+            <SimpleSectionTemplate {...reimaginingAnalyticsPatterns.intro} />
+            {reimaginingAnalyticsPatterns.sections.map(section => <SimpleSectionTemplate key={section.title} {...section} />)}
           </section>
         </AnalyticsCaseIntro>
       </main>
