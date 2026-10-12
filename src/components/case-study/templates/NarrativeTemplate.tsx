@@ -159,22 +159,29 @@ function NarrativeFrame({ image, title, layout, first, last, scaleEnabled, onOpe
       </motion.div>
     </div>
   </>;
+  const button = image.full && (
+    <button
+      type="button"
+      aria-label={`View ${title} in high resolution`}
+      aria-haspopup="dialog"
+      onClick={event => onOpen(event.currentTarget)}
+      className={`relative block w-full cursor-zoom-in appearance-none overflow-hidden border-0 bg-transparent p-0 text-left outline-none focus-visible:outline-1 focus-visible:outline-solid focus-visible:outline-[color:rgba(255,255,255,0.18)] focus-visible:outline-offset-[-1px] ${frame}`}
+    >
+      {picture}
+    </button>
+  );
+  // A pill and its image reveal together as one block, so a pill never shows above an empty space.
+  if (image.pill) return (
+    <div ref={target}>
+      <ScrollReveal className="flex flex-col items-start gap-4">
+        <EvidencePill label={image.pill.label} emphasis={image.pill.emphasis} />
+        {button || <div className={`relative w-full overflow-hidden ${frame}`}>{picture}</div>}
+      </ScrollReveal>
+    </div>
+  );
   return (
-    <div ref={target} className={image.pill ? "flex flex-col items-start gap-4" : undefined}>
-      {image.pill && <EvidencePill label={image.pill.label} emphasis={image.pill.emphasis} />}
-      {image.full ? (
-        <button
-          type="button"
-          aria-label={`View ${title} in high resolution`}
-          aria-haspopup="dialog"
-          onClick={event => onOpen(event.currentTarget)}
-          className={`relative block w-full cursor-zoom-in appearance-none overflow-hidden border-0 bg-transparent p-0 text-left outline-none focus-visible:outline-1 focus-visible:outline-solid focus-visible:outline-[color:rgba(255,255,255,0.18)] focus-visible:outline-offset-[-1px] ${frame}`}
-        >
-          {picture}
-        </button>
-      ) : (
-        <ScrollReveal className={`relative overflow-hidden ${frame}`}>{picture}</ScrollReveal>
-      )}
+    <div ref={target}>
+      {button || <ScrollReveal className={`relative overflow-hidden ${frame}`}>{picture}</ScrollReveal>}
     </div>
   );
 }
