@@ -53,7 +53,7 @@ Case-study chapters use `CaseStudyChapterHeader` (`## _ CHAPTER TITLE`, dotted d
 
 The top of a case study: the project's hero band (`hero`, any node), then `IntroTemplate`, then the page's chapters (`children`) in `container-page`. The shell places the hero under the nav bar and keeps it hidden while the Work → case morph layer still covers it; the intro text rises in last (`morphTiming`). Contract: `{ hero, intro: IntroData, children }`. The hero artwork itself stays project-specific.
 
-Used by Neo Advance (`<NeoHero />`, `neoAdvanceIntro`) and Reimagining Analytics (`<AnalyticsHero />`, `reimaginingAnalyticsIntro`).
+Used by Neo Advance (`<NeoHero />`, `neoAdvanceIntro`), Reimagining Analytics (`<AnalyticsHero />`, `reimaginingAnalyticsIntro`) and Brightcove Beacon (an exported hero image, `brightcoveBeaconHero` and `brightcoveBeaconIntro`).
 
 ## IntroTemplate
 
@@ -106,7 +106,7 @@ Used by Neo Advance "How Neo Advance Works?" (`neoAdvanceHow`).
 
 ## ImpactTemplate
 
-`templates/ImpactTemplate.tsx` · Figma `67:703` (Neo Advance), `110:18653` (Reimagining Analytics) · Preview `/case-study-templates/impact`
+`templates/ImpactTemplate.tsx` · Figma `67:703` (Neo Advance), `110:18653` (Reimagining Analytics), `929:1880` (Brightcove Beacon) · Preview `/case-study-templates/impact`
 
 Contract: `{ title, subtitle?, cards: ImpactCardData[] }`. A 947px block: `CaseStudySectionHeader` over a row of three `ImpactCard`s (one column below `md`). The header and each card use the site scroll reveal, cards staggered.
 

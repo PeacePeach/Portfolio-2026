@@ -55,6 +55,7 @@ import {
   reimaginingAnalyticsReframing,
   reimaginingAnalyticsStrategy,
 } from "@/content/case-study/reimaginingAnalytics";
+import { brightcoveBeaconHero, brightcoveBeaconImpact, brightcoveBeaconIntro } from "@/content/case-study/brightcoveBeacon";
 import { getProject, getProjects } from "@/content";
 import { site } from "@/content/site";
 
@@ -165,6 +166,20 @@ async function CaseStudyContent({ params }: PageProps<"/work/[slug]">) {
           </CaseIntroTemplate>
         </main>
       </>
+    );
+  }
+
+  if (project.slug === "brightcove-beacon") {
+    return (
+      <main id="main">
+        <CaseIntroTemplate
+          intro={brightcoveBeaconIntro}
+          hero={<Image src={brightcoveBeaconHero.src} alt={brightcoveBeaconHero.alt} width={brightcoveBeaconHero.width} height={brightcoveBeaconHero.height} sizes="100vw" priority className="block h-auto w-full" />}
+        >
+          <ScrollReveal as="hr" className="mt-24 border-line" />
+          <ImpactTemplate {...brightcoveBeaconImpact} className="mt-24" />
+        </CaseIntroTemplate>
+      </main>
     );
   }
 
