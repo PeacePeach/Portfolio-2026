@@ -2,6 +2,9 @@ import type { IntroData } from "@/components/case-study/templates/IntroTemplate"
 import type { SimpleSectionData } from "@/components/case-study/templates/SimpleSectionTemplate";
 import type { ImageRef } from "@/content/types";
 import type { NarrativeData } from "@/components/case-study/templates/NarrativeTemplate";
+import type { ImpactData } from "@/components/case-study/templates/ImpactTemplate";
+import type { ReflectionData } from "@/components/case-study/templates/ReflectionTemplate";
+import type { FollowUpData } from "@/components/case-study/templates/FollowUpTemplate";
 import type { StatCircleData } from "@/components/case-study/shared/StatCircles";
 
 /** Mutexa / EnzyHTP case study intro. */
@@ -136,6 +139,12 @@ export const mutexaIterations = {
   ],
 } satisfies NarrativeData;
 
+/** Reflection after chapter 01's iterations, as the other case studies' reflections. */
+export const mutexaReflection: ReflectionData = {
+  headline: "The right autonomy for the situation.",
+  body: "At Mutexa, I started by exploring how much of the scientific workflow AI could automate. But through research and prototyping, I realized that more autonomy wasn't always better. AI could propose workflows, tools, and parameters, while scientists needed to retain control over critical decisions.\n\nThe most intelligent AI isn't the one that takes over the most. It's the one that knows when to lead, when to step back, and when to leave judgment to humans.",
+};
+
 /** Figma Slides 187:3489: Story 2 copy over the tool landscape (187:3505), a transparent diagram. */
 export const mutexaExpertise = {
   label: "Story 2",
@@ -171,3 +180,66 @@ export const mutexaExitPoints = {
     },
   ],
 } satisfies NarrativeData;
+
+/** Figma Slides 187:3517: Story 3 copy over the anomaly types (187:3531) and the four response states (248:3782). */
+export const mutexaDiscovery = {
+  label: "Story 3",
+  title: "Discovery begins where certainty ends",
+  body: "I realized that in scientific research, an unexpected result isn't always a failure. Instead of automatically blocking anomalies, I designed the system to distinguish true errors from results worth exploring, giving scientists the choice to investigate and continue.",
+} satisfies SimpleSectionData;
+
+const discovery = (name: string, alt: string, width: number, height: number) => ({ src: `/case-studies/mutexa/discovery/${name}.webp`, alt, width, height });
+
+export const mutexaAnomalyTypes: ImageRef = discovery(
+  "anomaly-types",
+  "Issues that block an experiment, split into true errors (input and syntax, computational failures, output errors) and exploratory issues (structural conflicts, unusual substrate reactions, parameter sensitivity, solvent effects), each with examples",
+  2304,
+  1132,
+);
+
+export const mutexaResponseStates: ImageRef = discovery(
+  "response-states",
+  "Four HTP Copilot responses: Block with how-to-fix steps, Recover with a suggested fix, Warn with model confidence and things to check, and Explore with suggested analyses",
+  1396,
+  872,
+);
+
+/** Figma Slides 187:3533, 187:3538: rolling steps beside separate screens, as `mutexaIterations`. */
+export const mutexaErrorToExploration = {
+  label: "From error to exploration",
+  imageLayout: "separate",
+  steps: [
+    {
+      id: "before",
+      title: "Before",
+      body: "Unexpected outcomes were treated as errors, immediately warning scientists that something had gone wrong.",
+      images: [discovery("before", "The AI Planner treating an unexpected mutation result as an error", 1600, 925)],
+    },
+    {
+      id: "after",
+      title: "After",
+      body: "I replaced the binary error state with an exploratory path, giving scientists the option to investigate, bookmark, or continue when an anomaly could lead to discovery.",
+      images: [discovery("after", "The AI Planner offering to investigate, bookmark or continue after an unexpected mutation result", 1600, 925)],
+    },
+  ],
+} satisfies NarrativeData;
+
+/** "Outcome" (Figma Slides 187:3543). */
+export const mutexaOutcome = {
+  title: "Outcome",
+  cards: [
+    { icon: "refresh", value: "~5×", label: "Faster research", body: "Helped scientists run enzyme-engineering research about five times faster." },
+    { icon: "export", value: "Nature", label: "Computational Science", body: "Contributed to a paper accepted by Nature Computational Science, with me as a co-author." },
+    { icon: "users", value: "$50K", label: "NSF I-Corps grant", body: "Ranked among the top teams in Vanderbilt's Builder cohort and recommended for the NSF National I-Corps program and its customer-discovery grant." },
+  ],
+} satisfies ImpactData;
+
+/** Closing follow-up, as the other case studies: feedback beside the next case study. */
+export const mutexaFollowUp: FollowUpData = {
+  feedback: {
+    eyebrow: "TELL ME ABOUT IT",
+    title: "How do you like this case study?",
+    quickReplies: ["Loved it!", "Meh ...", "It’s too long"],
+  },
+  current: "mutexa",
+};

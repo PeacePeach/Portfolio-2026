@@ -87,7 +87,7 @@ import {
   brightcoveBeaconJobMapImage,
   brightcoveBeaconProblem,
 } from "@/content/case-study/brightcoveBeacon";
-import { mutexaContext, mutexaContextFigure, mutexaIntro, mutexaKeyExperience, mutexaRelationship, mutexaPrototypes, mutexaPrototypesImage, mutexaIterations, mutexaOpportunity, mutexaOpportunityStats, mutexaExpertise, mutexaToolLandscape, mutexaExitPoints } from "@/content/case-study/mutexa";
+import { mutexaContext, mutexaContextFigure, mutexaIntro, mutexaKeyExperience, mutexaRelationship, mutexaPrototypes, mutexaPrototypesImage, mutexaIterations, mutexaOpportunity, mutexaOpportunityStats, mutexaExpertise, mutexaToolLandscape, mutexaExitPoints, mutexaDiscovery, mutexaAnomalyTypes, mutexaResponseStates, mutexaErrorToExploration, mutexaOutcome, mutexaReflection, mutexaFollowUp } from "@/content/case-study/mutexa";
 import { getProject, getProjects } from "@/content";
 import { site } from "@/content/site";
 
@@ -350,6 +350,8 @@ async function CaseStudyContent({ params }: PageProps<"/work/[slug]">) {
             </SimpleSectionTemplate>
             <ScrollReveal as="hr" className="border-line" />
             <NarrativeTemplate {...mutexaIterations} />
+            <ScrollReveal as="hr" className="border-line" />
+            <ReflectionTemplate {...mutexaReflection} />
           </section>
           <section aria-labelledby="mutexa-expertise">
             <CaseStudyChapterHeader id="mutexa-expertise">02 _ PROTECTING EXPERTISE</CaseStudyChapterHeader>
@@ -362,6 +364,24 @@ async function CaseStudyContent({ params }: PageProps<"/work/[slug]">) {
             <ScrollReveal as="hr" className="border-line" />
             <NarrativeTemplate {...mutexaExitPoints} />
           </section>
+          <section aria-labelledby="mutexa-discovery">
+            <CaseStudyChapterHeader id="mutexa-discovery">03 _ DESIGNING FOR DISCOVERY</CaseStudyChapterHeader>
+            <SimpleSectionTemplate {...mutexaDiscovery}>
+              {/* 128px from text to the first diagram, as chapter 02; 96px between the two. */}
+              <div className="flex flex-col gap-24 pt-16">
+                {[mutexaAnomalyTypes, mutexaResponseStates].map((img) => (
+                  <ScrollReveal key={img.src}>
+                    <Image src={img.src} alt={img.alt} width={img.width} height={img.height} sizes="(min-width: 1280px) 1152px, 100vw" className="mx-auto block h-auto w-full" style={{ maxWidth: img.width / 2 > 1000 ? undefined : img.width }} />
+                  </ScrollReveal>
+                ))}
+              </div>
+            </SimpleSectionTemplate>
+            <ScrollReveal as="hr" className="border-line" />
+            <NarrativeTemplate {...mutexaErrorToExploration} />
+          </section>
+          <ScrollReveal as="hr" className="border-line" />
+          <ImpactTemplate {...mutexaOutcome} className="my-24" />
+          <FollowUpTemplate {...mutexaFollowUp} />
         </CaseIntroTemplate>
       </main>
     );
