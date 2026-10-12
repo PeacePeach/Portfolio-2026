@@ -24,9 +24,9 @@ export default function LeadershipPhysicsPrototype() {
           <CaseStudySectionHeader
             id="momentum"
             title="How I Turn Ambiguity Into Momentum"
-            description="Leadership here is a set of elastic boundaries, not boxes. Each one holds its own work, flexes under pressure and settles back, while complexity runs through all of them."
+            description="Direction creates clarity. Cohesion brings people together. Calibration sharpens decisions. Together, they help teams navigate complexity and sustain momentum."
           />
-          <div className="relative mt-16 h-[calc((100vw-2*var(--spacing-margin))*3.3)] w-full sm:h-[calc((100vw-2*var(--spacing-margin))*0.9)] lg:h-[clamp(600px,50vw,680px)]">
+          <div className="mt-16 w-full">
             <LeadershipPhysics />
           </div>
         </section>

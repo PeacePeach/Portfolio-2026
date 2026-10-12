@@ -5,36 +5,109 @@ import { useEffect, useRef } from "react";
 /*
  * Leadership physics: an isolated experiment (not production code, not shared).
  *
- * Four elastic membranes (Ambiguity, Direction, Cohesion, Calibration) drift and
- * deform inside a system-wide Complexity field. Each membrane is a ring of radial
- * springs around a drifting centre: every ring point has a radius that eases toward
- * an organic, slowly changing target and is coupled to its neighbours (rope / water
- * membrane feel). Nodes push ring points outward on contact (local bulge, capped)
- * and are then hard-clamped inside the ring, so they can never escape. When the
- * pressure goes, the springs ease the ring back.
+ * Composition follows Figma 174:2747 (Group 636517): Ambiguity is the broad outer
+ * field; Calibration, Cohesion and Direction overlap inside it; COMPLEXITY sits in
+ * the overlap. Each boundary is a ring of radial springs around a drifting centre:
+ * every ring point eases toward an organic, slowly changing target (the Figma
+ * contour plus moving harmonics) and is coupled to its neighbours (rope / water
+ * membrane feel). Labelled nodes push ring points outward on contact (local bulge,
+ * capped) and are then hard-clamped inside their own boundary and inside
+ * Ambiguity, so they can never escape. When the pressure goes, the springs ease
+ * the ring back.
  *
  * Plain Canvas 2D + a small hand-written solver: no new dependency.
  */
 
-const BOUNDARIES = ["Ambiguity", "Direction", "Cohesion", "Calibration"] as const;
-const NODES_PER_BOUNDARY = 9;
-const RING_POINTS = 72;
+const RING_POINTS = 160;
 
 // Colours mirror globals.css tokens (canvas cannot read Tailwind classes).
 const C = {
+  background: "#0e0e0e",
   primary: "#f0efec",
   secondary: "#c3c2b8",
-  tertiary: "#898782",
   highlight: "#2d54dd",
 };
 
-type Ring = {
+/*
+ * Geometry in Figma units, measured from the 1019 x 483 diagram group and
+ * centred on its middle (510, 228). Contours are rotated ellipses, with a static
+ * lobe where the Figma contour is irregular. Label: contour angle (ellipse-local
+ * angle + rotation, screen space) and how far inside the contour the label sits.
+ */
+const FIGMA_CENTRE = { x: 510, y: 228 };
+const FIGMA_BOX = { w: 980, h: 445 }; // diagram + room for bulges
+
+type Shape = {
   label: string;
-  ax: number; // home anchor
+  cx: number;
+  cy: number;
+  a: number;
+  b: number;
+  rot: number;
+  lobe?: { ang: number; amt: number; width: number }; // ellipse-local angle
+  labelAt: { ang: number; inset: number; onLine?: boolean };
+};
+
+const SHAPES: Shape[] = [
+  { label: "Ambiguity", cx: 510, cy: 228, a: 468, b: 198, rot: -0.1, labelAt: { ang: -Math.PI / 2, inset: 0, onLine: true } },
+  {
+    label: "Calibration",
+    cx: 290,
+    cy: 222,
+    a: 222,
+    b: 78,
+    rot: -0.12,
+    lobe: { ang: -0.35, amt: 0.32, width: 0.35 },
+    labelAt: { ang: Math.PI, inset: 62 },
+  },
+  { label: "Cohesion", cx: 650, cy: 180, a: 312, b: 98, rot: -0.1, labelAt: { ang: -0.15, inset: 76 } },
+  {
+    label: "Direction",
+    cx: 530,
+    cy: 282,
+    a: 280,
+    b: 100,
+    rot: 0,
+    lobe: { ang: -2.0, amt: 0.18, width: 0.5 },
+    labelAt: { ang: 0.28, inset: 13 },
+  },
+];
+
+const COMPLEXITY_AT = { x: 455, y: 228 };
+
+// Figma toolkit nodes: centre (Figma units), diameter, boundary index into SHAPES.
+const NODES: { label: string; x: number; y: number; d: number; ring: number }[] = [
+  // Calibration
+  { label: "Insight", x: 221, y: 202, d: 52.4, ring: 1 },
+  { label: "Validation", x: 287, y: 184, d: 52.4, ring: 1 },
+  { label: "Critique", x: 407, y: 160, d: 52.4, ring: 1 },
+  { label: "Judgment", x: 283, y: 229, d: 52.4, ring: 1 },
+  { label: "Iteration", x: 214, y: 252, d: 52.4, ring: 1 },
+  { label: "Outcomes", x: 149, y: 200, d: 52.4, ring: 1 },
+  // Cohesion
+  { label: "People", x: 560, y: 125, d: 52.4, ring: 2 },
+  { label: "Facilitation", x: 720, y: 125, d: 59.9, ring: 2 },
+  { label: "Mentorship", x: 647, y: 157, d: 64.4, ring: 2 },
+  { label: "Communication", x: 765, y: 175, d: 81.1, ring: 2 },
+  { label: "Trust", x: 855, y: 172, d: 52.4, ring: 2 },
+  { label: "Alignment", x: 591, y: 236, d: 52.4, ring: 2 },
+  // Direction
+  { label: "Vision", x: 462, y: 310, d: 52.4, ring: 3 },
+  { label: "Systems", x: 542, y: 310, d: 52.4, ring: 3 },
+  { label: "Strategy", x: 630, y: 318, d: 52.4, ring: 3 },
+  { label: "Framing", x: 700, y: 310, d: 52.4, ring: 3 },
+  { label: "Journeys", x: 494, y: 360, d: 52.4, ring: 3 },
+  { label: "Trade-offs", x: 358, y: 268, d: 52.4, ring: 3 },
+];
+
+type Ring = {
+  shape: Shape;
+  ax: number; // home centre (screen)
   ay: number;
   cx: number; // drifting centre
   cy: number;
-  R: number;
+  R: number; // scale reference for drift, bulge cap and pressure
+  base: Float32Array; // Figma contour radius per angle (screen space)
   rho: Float32Array; // current radius per angle
   vel: Float32Array;
   target: Float32Array;
@@ -44,6 +117,7 @@ type Ring = {
 };
 
 type Node = {
+  label: string;
   ring: number;
   x: number;
   y: number;
@@ -65,6 +139,12 @@ function rand(seed: number) {
   };
 }
 
+function wrapAngle(a: number) {
+  a = (a + Math.PI) % TAU;
+  if (a < 0) a += TAU;
+  return a - Math.PI;
+}
+
 /** Radius of a ring at an arbitrary angle, linearly interpolated. */
 function rhoAt(ring: Ring, angle: number) {
   let a = angle % TAU;
@@ -76,7 +156,7 @@ function rhoAt(ring: Ring, angle: number) {
   return ring.rho[i] * (1 - t) + ring.rho[j] * t;
 }
 
-/** Complexity: one smooth, slowly turning vector field over the whole canvas. */
+/** Complexity: one smooth, slowly turning vector field over the whole diagram. */
 function field(x: number, y: number, t: number, scale: number) {
   const s = 1 / scale;
   const a =
@@ -103,8 +183,13 @@ export function LeadershipPhysics() {
     let H = 0;
     let dpr = 1;
     let unit = 1; // layout scale (px)
+    let s = 1; // Figma units -> px
+    let portrait = false; // phones: the composition turns 90 degrees
+    let nodeFont = 11;
+    let labelFont = 12;
     let fontFamily = "sans-serif";
     let rings: Ring[] = [];
+    let labelWidths: Record<string, number> = {};
     let nodes: Node[] = [];
     let time = 0;
 
@@ -115,70 +200,56 @@ export function LeadershipPhysics() {
 
     // ---- Layout ------------------------------------------------------------
 
-    // Layout follows the diagram's own width (it sits inside the 1152 content
-    // column): a staggered row on desktop, 2 x 2 on tablet, one column on phones.
-    function layoutMode() {
-      return W >= 880 ? "row" : W >= 540 ? "grid" : "column";
+    /** Figma point -> canvas point (rotated a quarter turn in portrait). */
+    function toScreen(x: number, y: number) {
+      const u = (x - FIGMA_CENTRE.x) * s;
+      const v = (y - FIGMA_CENTRE.y) * s;
+      return portrait ? { x: W / 2 - v, y: H / 2 + u } : { x: W / 2 + u, y: H / 2 + v };
     }
+    const turn = () => (portrait ? Math.PI / 2 : 0);
 
-    function anchors() {
-      const mode = layoutMode();
-      if (mode === "row") {
-        const R = Math.min(W * 0.11, H * 0.25);
-        const pos = [
-          [0.18, 0.37],
-          [0.395, 0.63],
-          [0.605, 0.37],
-          [0.82, 0.63],
-        ];
-        return pos.map(([x, y]) => ({ x: x * W, y: y * H, R }));
+    /** Width decides scale; the diagram sets its own height (600-700 on desktop). */
+    function measure(width: number) {
+      portrait = width < 640;
+      if (portrait) {
+        s = Math.min(1, width / (FIGMA_BOX.h + 15));
+        return Math.round(FIGMA_BOX.w * s + 20);
       }
-      if (mode === "grid") {
-        const padX = W * 0.04;
-        const padTop = H * 0.07;
-        const padBottom = H * 0.07;
-        const cw = (W - padX * 2) / 2;
-        const ch = (H - padTop - padBottom) / 2;
-        const R = Math.min(cw, ch) * 0.37;
-        const jitter = [
-          [-0.05, 0.02],
-          [0.04, -0.03],
-          [0.03, 0.04],
-          [-0.04, -0.02],
-        ];
-        return BOUNDARIES.map((_, i) => ({
-          x: padX + cw * ((i % 2) + 0.5) + jitter[i][0] * cw,
-          y: padTop + ch * (Math.floor(i / 2) + 0.5) + jitter[i][1] * ch,
-          R,
-        }));
-      }
-      const padTop = H * 0.02;
-      const ch = (H - padTop * 2) / 4;
-      const R = Math.min(W * 0.33, ch * 0.36);
-      return BOUNDARIES.map((_, i) => ({
-        x: W * (0.5 + (i % 2 ? 0.07 : -0.07)),
-        y: padTop + ch * (i + 0.5),
-        R,
-      }));
+      s = Math.min(1.15, (width - 24) / FIGMA_BOX.w);
+      return width >= 1000 ? 640 : Math.round(FIGMA_BOX.h * s + 80);
     }
 
     function build() {
       const rnd = rand(7);
-      const a = anchors();
-      rings = BOUNDARIES.map((label, i) => {
+      rings = SHAPES.map((shape) => {
+        const c = toScreen(shape.cx, shape.cy);
+        const rot = shape.rot + turn();
+        const base = new Float32Array(RING_POINTS);
+        for (let i = 0; i < RING_POINTS; i++) {
+          const local = (i / RING_POINTS) * TAU - rot;
+          const ca = Math.cos(local) * shape.b;
+          const sa = Math.sin(local) * shape.a;
+          let r = (shape.a * shape.b) / Math.hypot(ca, sa);
+          if (shape.lobe) {
+            const d = wrapAngle(local - shape.lobe.ang) / shape.lobe.width;
+            r *= 1 + shape.lobe.amt * Math.exp(-d * d);
+          }
+          base[i] = r * s;
+        }
         const ring: Ring = {
-          label,
-          ax: a[i].x,
-          ay: a[i].y,
-          cx: a[i].x,
-          cy: a[i].y,
-          R: a[i].R,
-          rho: new Float32Array(RING_POINTS).fill(a[i].R),
+          shape,
+          ax: c.x,
+          ay: c.y,
+          cx: c.x,
+          cy: c.y,
+          R: 100 * s,
+          base,
+          rho: new Float32Array(base),
           vel: new Float32Array(RING_POINTS),
           target: new Float32Array(RING_POINTS),
           harm: [2, 3, 4, 5].map((k) => ({
             k,
-            a: (0.075 / (k - 1)) * (0.7 + rnd() * 0.6),
+            a: (0.05 / (k - 1)) * (0.7 + rnd() * 0.6),
             w: (0.12 + rnd() * 0.18) * (rnd() < 0.5 ? -1 : 1),
             p: rnd() * TAU,
           })),
@@ -187,66 +258,50 @@ export function LeadershipPhysics() {
         };
         return ring;
       });
-      nodes = [];
-      rings.forEach((ring, ri) => {
-        for (let n = 0; n < NODES_PER_BOUNDARY; n++) {
-          const ang = rnd() * TAU;
-          const d = Math.sqrt(rnd()) * ring.R * 0.6;
-          nodes.push({
-            ring: ri,
-            x: ring.cx + Math.cos(ang) * d,
-            y: ring.cy + Math.sin(ang) * d,
-            vx: 0,
-            vy: 0,
-            r: ring.R * (0.07 + rnd() * 0.05),
-            wander: rnd() * TAU,
-            hot: 0,
-          });
-        }
+
+      ctx.font = `600 ${labelFont}px ${fontFamily}`;
+      labelWidths = {};
+      for (const t of [...SHAPES.map((sh) => sh.label.toUpperCase()), "COMPLEXITY"]) labelWidths[t] = ctx.measureText(t).width;
+
+      // Node size: the Figma diameter, grown where needed so the label fits.
+      ctx.font = `400 ${nodeFont}px ${fontFamily}`;
+      nodes = NODES.map((n) => {
+        const p = toScreen(n.x, n.y);
+        const fit = ctx.measureText(n.label).width / 2 + 6;
+        return {
+          label: n.label,
+          ring: n.ring,
+          x: p.x,
+          y: p.y,
+          vx: 0,
+          vy: 0,
+          r: Math.max((n.d / 2) * s, fit),
+          wander: rnd() * TAU,
+          hot: 0,
+        };
       });
       updateTargets();
       rings.forEach((r) => r.rho.set(r.target));
     }
 
     function resize() {
-      const rect = wrap.getBoundingClientRect();
-      const prevW = W;
-      const prevH = H;
-      const prevRings = rings.map((r) => ({ cx: r.cx, cy: r.cy, R: r.R }));
-      W = Math.max(1, rect.width);
-      H = Math.max(1, rect.height);
+      const width = Math.max(1, wrap.getBoundingClientRect().width);
+      const height = measure(width);
+      const changed = width !== W || height !== H;
+      W = width;
+      H = height;
+      wrap.style.height = `${H}px`;
       dpr = Math.min(window.devicePixelRatio || 1, 2);
       canvas.width = Math.round(W * dpr);
       canvas.height = Math.round(H * dpr);
       canvas.style.width = `${W}px`;
       canvas.style.height = `${H}px`;
       unit = Math.min(W, H);
+      nodeFont = Math.min(11, Math.max(9, 10.5 * s));
+      labelFont = Math.min(12, Math.max(10, 12 * s));
       fontFamily = getComputedStyle(document.body).fontFamily || "sans-serif";
-
-      if (!rings.length || !prevW || !prevH) {
-        build();
-        return;
-      }
-      // Rescale the live system around each ring's centre instead of rebuilding.
-      const a = anchors();
-      rings.forEach((ring, i) => {
-        const k = a[i].R / prevRings[i].R;
-        ring.ax = a[i].x;
-        ring.ay = a[i].y;
-        ring.R = a[i].R;
-        ring.cx = a[i].x;
-        ring.cy = a[i].y;
-        for (let p = 0; p < RING_POINTS; p++) ring.rho[p] *= k;
-      });
-      nodes.forEach((n) => {
-        const o = prevRings[n.ring];
-        const ring = rings[n.ring];
-        const k = ring.R / o.R;
-        n.x = ring.cx + (n.x - o.cx) * k;
-        n.y = ring.cy + (n.y - o.cy) * k;
-        n.r *= k;
-      });
-      updateTargets();
+      // Prototype: a new size simply rebuilds the composition.
+      if (changed || !rings.length) build();
     }
 
     // ---- Physics -----------------------------------------------------------
@@ -262,7 +317,7 @@ export function LeadershipPhysics() {
           const th = (i / RING_POINTS) * TAU;
           let m = 1;
           for (const h of ring.harm) m += h.a * Math.sin(h.k * th + h.w * t + h.p);
-          ring.target[i] = ring.R * m;
+          ring.target[i] = ring.base[i] * m;
         }
       }
     }
@@ -277,20 +332,129 @@ export function LeadershipPhysics() {
       return Math.min(tx, ty);
     }
 
+    /** Node vs one membrane: push the ring out locally (capped bulge), then hard clamp. */
+    function contain(n: Node, ring: Ring) {
+      const pad = 2;
+      const dx = n.x - ring.cx;
+      const dy = n.y - ring.cy;
+      const d = Math.hypot(dx, dy) || 0.0001;
+      const ang = Math.atan2(dy, dx);
+      const need = d + n.r + pad;
+      const have = rhoAt(ring, ang);
+      if (need > have) {
+        const pen = need - have;
+        // A dragged node presses the membrane out; a free node mostly gets
+        // pushed back in, so the membrane can relax once the hand lets go.
+        const yieldShare = n === drag ? 0.85 : 0.3;
+        const sigma = (n.r * 2.4) / Math.max(d, n.r); // angular width of the bulge
+        const span = Math.ceil((sigma * 2.5 * RING_POINTS) / TAU);
+        const centre = (((ang / TAU) * RING_POINTS) % RING_POINTS + RING_POINTS) % RING_POINTS;
+        const c0 = Math.round(centre);
+        for (let o = -span; o <= span; o++) {
+          const idx = (((c0 + o) % RING_POINTS) + RING_POINTS) % RING_POINTS;
+          const da = ((c0 + o - centre) / RING_POINTS) * TAU;
+          const g = Math.exp(-(da * da) / (sigma * sigma));
+          // never bulge past the diagram's edge (no clipping inside the page)
+          const cap = Math.min(ring.target[idx] + ring.R * 0.45, edgeDistance(ring, (idx / RING_POINTS) * TAU));
+          ring.rho[idx] = Math.min(cap, ring.rho[idx] + pen * g * yieldShare);
+          if (n === drag && ring.vel[idx] < 0) ring.vel[idx] *= 1 - g * 0.6;
+        }
+        ring.pressure = Math.min(1, ring.pressure + pen / ring.R);
+      }
+      // Hard containment: whatever the ring did, the node stays inside it.
+      const limit = Math.max(0, rhoAt(ring, ang) - n.r - pad);
+      if (d > limit) {
+        const ux = dx / d;
+        const uy = dy / d;
+        n.x = ring.cx + ux * limit;
+        n.y = ring.cy + uy * limit;
+        const vn = n.vx * ux + n.vy * uy;
+        if (vn > 0) {
+          n.vx -= vn * ux * 1.3;
+          n.vy -= vn * uy * 1.3;
+        }
+      }
+    }
+
+    type Label = { text: string; x: number; y: number; w: number; onLine?: boolean };
+
+    /**
+     * Boundary labels pinned to a point on the moving contour, just inside it
+     * (Ambiguity sits on the line, which breaks around it as in Figma), plus
+     * COMPLEXITY: a system-wide concept, not a boundary, sitting in the overlap
+     * and drifting with it.
+     */
+    function labels(): Label[] {
+      const out: Label[] = rings.map((ring) => {
+        const { ang, inset, onLine } = ring.shape.labelAt;
+        const a = ang + turn();
+        const r = rhoAt(ring, a) - inset * s;
+        const text = ring.shape.label.toUpperCase();
+        return { text, x: ring.cx + Math.cos(a) * r, y: ring.cy + Math.sin(a) * r, w: labelWidths[text] ?? 0, onLine };
+      });
+      const home = toScreen(COMPLEXITY_AT.x, COMPLEXITY_AT.y);
+      let dx = 0;
+      let dy = 0;
+      for (let i = 1; i < rings.length; i++) {
+        dx += (rings[i].cx - rings[i].ax) / 3;
+        dy += (rings[i].cy - rings[i].ay) / 3;
+      }
+      out.push({ text: "COMPLEXITY", x: home.x + dx, y: home.y + dy, w: labelWidths.COMPLEXITY ?? 0 });
+      return out;
+    }
+
+    /** Labels stay readable: free nodes are nudged off them like off a static obstacle. */
+    function avoidLabels() {
+      const halfH = labelFont * 0.8;
+      for (const l of labels()) {
+        const x0 = l.x - l.w / 2 - 4;
+        const x1 = l.x + l.w / 2 + 4;
+        const y0 = l.y - halfH;
+        const y1 = l.y + halfH;
+        for (const n of nodes) {
+          if (n === drag) continue;
+          const px = Math.min(Math.max(n.x, x0), x1);
+          const py = Math.min(Math.max(n.y, y0), y1);
+          let dx = n.x - px;
+          let dy = n.y - py;
+          let d = Math.hypot(dx, dy);
+          if (d >= n.r) continue;
+          if (d === 0) {
+            // centre inside the label box: leave through the nearer vertical side
+            dy = n.y < l.y ? -1 : 1;
+            dx = 0;
+            d = 0;
+            n.y = dy < 0 ? y0 - n.r : y1 + n.r;
+          } else {
+            n.x += (dx / d) * (n.r - d);
+            n.y += (dy / d) * (n.r - d);
+          }
+          const vn = (n.vx * dx + n.vy * dy) / (d || 1);
+          if (vn < 0) {
+            n.vx -= (vn * dx) / (d || 1);
+            n.vy -= (vn * dy) / (d || 1);
+          }
+        }
+      }
+    }
+
     function step(dt: number) {
       if (!reduced) time += dt;
       updateTargets();
 
       // Ring springs: toward organic target + neighbour coupling (rope tension).
+      // Coupling acts on the deviation from the target, so the Figma contour is
+      // the rest shape and only bulges get smoothed out along the rope.
       const kTarget = 9;
       const kNeighbour = 140;
       const damping = 4.2;
       for (const ring of rings) {
         const { rho, vel, target } = ring;
         for (let i = 0; i < RING_POINTS; i++) {
-          const l = rho[(i - 1 + RING_POINTS) % RING_POINTS];
-          const r = rho[(i + 1) % RING_POINTS];
-          const acc = kTarget * (target[i] - rho[i]) + kNeighbour * (l + r - 2 * rho[i]) - damping * vel[i];
+          const l = (i - 1 + RING_POINTS) % RING_POINTS;
+          const r = (i + 1) % RING_POINTS;
+          const dev = rho[l] - target[l] + rho[r] - target[r] - 2 * (rho[i] - target[i]);
+          const acc = kTarget * (target[i] - rho[i]) + kNeighbour * dev - damping * vel[i];
           vel[i] += acc * dt;
         }
         for (let i = 0; i < RING_POINTS; i++) rho[i] += vel[i] * dt;
@@ -331,7 +495,7 @@ export function LeadershipPhysics() {
         n.y += n.vy * dt;
       }
 
-      // Node-node collisions (all pairs; 36 nodes = 630 pairs, trivial).
+      // Node-node collisions (all pairs; 18 nodes, trivial).
       for (let i = 0; i < nodes.length; i++) {
         const a = nodes[i];
         for (let j = i + 1; j < nodes.length; j++) {
@@ -363,57 +527,20 @@ export function LeadershipPhysics() {
         }
       }
 
-      // Node vs membrane: push ring out locally (capped bulge), then hard clamp.
-      const pad = 2;
+      avoidLabels();
+
+      // Every node stays inside its own boundary and inside Ambiguity.
       for (const n of nodes) {
-        const ring = rings[n.ring];
-        const dx = n.x - ring.cx;
-        const dy = n.y - ring.cy;
-        const d = Math.hypot(dx, dy) || 0.0001;
-        const ang = Math.atan2(dy, dx);
-        const need = d + n.r + pad;
-        const have = rhoAt(ring, ang);
-        if (need > have) {
-          const pen = need - have;
-          // A dragged node presses the membrane out; a free node mostly gets
-          // pushed back in, so the membrane can relax once the hand lets go.
-          const yieldShare = n === drag ? 0.85 : 0.3;
-          const sigma = (n.r * 2.4) / Math.max(d, n.r); // angular width of the bulge
-          const span = Math.ceil((sigma * 2.5 * RING_POINTS) / TAU);
-          const centre = (ang / TAU) * RING_POINTS;
-          const c0 = Math.round(centre);
-          for (let o = -span; o <= span; o++) {
-            const idx = (((c0 + o) % RING_POINTS) + RING_POINTS) % RING_POINTS;
-            const da = ((c0 + o - centre) / RING_POINTS) * TAU;
-            const g = Math.exp(-(da * da) / (sigma * sigma));
-            // never bulge past the diagram's edge (no clipping inside the page)
-            const cap = Math.min(ring.target[idx] + ring.R * 0.38, edgeDistance(ring, (idx / RING_POINTS) * TAU));
-            ring.rho[idx] = Math.min(cap, ring.rho[idx] + pen * g * yieldShare);
-            if (n === drag && ring.vel[idx] < 0) ring.vel[idx] *= 1 - g * 0.6;
-          }
-          ring.pressure = Math.min(1, ring.pressure + pen / ring.R);
-        }
-        // Hard containment: whatever the ring did, the node stays inside it.
-        const limit = rhoAt(ring, ang) - n.r - pad;
-        if (d > limit) {
-          const ux = dx / d;
-          const uy = dy / d;
-          n.x = ring.cx + ux * limit;
-          n.y = ring.cy + uy * limit;
-          const vn = n.vx * ux + n.vy * uy;
-          if (vn > 0) {
-            n.vx -= vn * ux * 1.3;
-            n.vy -= vn * uy * 1.3;
-          }
-        }
+        contain(n, rings[n.ring]);
+        contain(n, rings[0]);
       }
     }
 
     // ---- Drawing -----------------------------------------------------------
 
-    function ringPoint(ring: Ring, i: number, extra = 0) {
+    function ringPoint(ring: Ring, i: number) {
       const th = (i / RING_POINTS) * TAU;
-      const r = ring.rho[((i % RING_POINTS) + RING_POINTS) % RING_POINTS] + extra;
+      const r = ring.rho[((i % RING_POINTS) + RING_POINTS) % RING_POINTS];
       return [ring.cx + Math.cos(th) * r, ring.cy + Math.sin(th) * r] as const;
     }
 
@@ -430,101 +557,51 @@ export function LeadershipPhysics() {
       ctx.closePath();
     }
 
-    function drawField() {
-      const spacing = Math.max(26, unit * 0.045);
-      const len = spacing * 0.32;
-      const scale = unit * 0.18;
-      ctx.beginPath();
-      for (let y = spacing / 2; y < H; y += spacing) {
-        for (let x = spacing / 2; x < W; x += spacing) {
-          const f = field(x, y, reduced ? 0 : time, scale);
-          const cx = Math.cos(f) * len;
-          const cy = Math.sin(f) * len;
-          ctx.moveTo(x - cx, y - cy);
-          ctx.lineTo(x + cx, y + cy);
-        }
-      }
-      ctx.strokeStyle = "rgba(195,194,184,0.07)";
-      ctx.lineWidth = 1;
-      ctx.stroke();
-
-      ctx.fillStyle = C.tertiary;
-      ctx.font = `500 11px ${fontFamily}`;
-      ctx.textBaseline = "top";
-      ctx.textAlign = "left";
-      // Field label sits in a corner the blobs leave free in each layout.
-      const lx = 16;
-      const ly = layoutMode() === "row" ? H - 16 - 26 : 16;
-      ctx.fillText("COMPLEXITY", lx, ly);
-      ctx.fillStyle = "rgba(137,135,130,0.6)";
-      ctx.fillText("system-wide field", lx, ly + 15);
-    }
-
-    function drawLabel(ring: Ring, index: number) {
-      // Letters walk along the contour, a few px outside it, centred near the top.
-      const text = ring.label.toUpperCase();
-      ctx.font = `500 11px ${fontFamily}`;
-      ctx.fillStyle = ring.pressure > 0.05 ? C.secondary : C.tertiary;
+    function drawLabel(l: Label) {
+      ctx.font = `600 ${labelFont}px ${fontFamily}`;
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
-      const tracking = 1.5;
-      const widths = [...text].map((ch) => ctx.measureText(ch).width + tracking);
-      const total = widths.reduce((s, w) => s + w, 0);
-      const anchor = -Math.PI / 2 + (index % 2 ? 0.35 : -0.35);
-      const off = 11;
-      const rTop = rhoAt(ring, anchor) + off;
-      let ang = anchor - total / 2 / rTop;
-      for (let i = 0; i < text.length; i++) {
-        const r = rhoAt(ring, ang) + off;
-        const half = widths[i] / 2 / r;
-        ang += half;
-        const rr = rhoAt(ring, ang) + off;
-        const x = ring.cx + Math.cos(ang) * rr;
-        const y = ring.cy + Math.sin(ang) * rr;
-        // tangent from neighbouring contour samples
-        const e = 0.02;
-        const ra = rhoAt(ring, ang - e) + off;
-        const rb = rhoAt(ring, ang + e) + off;
-        const tx = Math.cos(ang + e) * rb - Math.cos(ang - e) * ra;
-        const ty = Math.sin(ang + e) * rb - Math.sin(ang - e) * ra;
-        ctx.save();
-        ctx.translate(x, y);
-        ctx.rotate(Math.atan2(ty, tx));
-        ctx.fillText(text[i], 0, 0);
-        ctx.restore();
-        ang += half;
+      if (l.onLine) {
+        ctx.fillStyle = C.background;
+        ctx.fillRect(l.x - l.w / 2 - 6, l.y - labelFont, l.w + 12, labelFont * 2);
       }
+      ctx.fillStyle = C.primary;
+      ctx.fillText(l.text, l.x, l.y);
     }
 
     function draw() {
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx.clearRect(0, 0, W, H);
-      drawField();
 
-      rings.forEach((ring, i) => {
+      for (const ring of rings) {
         ctx.beginPath();
         tracePath(ring);
-        ctx.fillStyle = "rgba(255,255,255,0.025)";
-        ctx.fill();
         const p = Math.min(1, ring.pressure * 4);
-        ctx.strokeStyle = `rgba(195,194,184,${0.38 + p * 0.4})`;
+        ctx.strokeStyle = `rgba(240,239,236,${0.55 + p * 0.35})`;
         ctx.lineWidth = 1 + p * 0.5;
         ctx.stroke();
-        drawLabel(ring, i);
-      });
+      }
+      labels().forEach(drawLabel);
 
+      ctx.font = `400 ${nodeFont}px ${fontFamily}`;
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
       for (const n of nodes) {
         const target = n === hover || n === drag ? 1 : 0;
         n.hot += (target - n.hot) * (reduced ? 1 : 0.25);
         ctx.beginPath();
         ctx.arc(n.x, n.y, n.r, 0, TAU);
+        ctx.fillStyle = C.background;
+        ctx.fill();
         if (n.hot > 0.01) {
           ctx.fillStyle = `rgba(45,84,221,${n.hot})`;
           ctx.fill();
         }
-        ctx.strokeStyle = n.hot > 0.5 ? C.highlight : "rgba(240,239,236,0.7)";
+        ctx.strokeStyle = n.hot > 0.5 ? C.highlight : "rgba(240,239,236,0.22)";
         ctx.lineWidth = 1;
         ctx.stroke();
+        ctx.fillStyle = n.hot > 0.5 ? C.primary : "rgba(195,194,184,0.85)";
+        ctx.fillText(n.label, n.x, n.y + 0.5);
       }
     }
 
@@ -622,7 +699,7 @@ export function LeadershipPhysics() {
       last = now;
       const t0 = performance.now();
       const sub = 3;
-      for (let s = 0; s < sub; s++) step(dt / sub);
+      for (let k = 0; k < sub; k++) step(dt / sub);
       draw();
       if (showStats && statsRef.current) {
         frameTimes.push(performance.now() - t0);
@@ -652,12 +729,12 @@ export function LeadershipPhysics() {
   }, []);
 
   return (
-    <div ref={wrapRef} className="absolute inset-0">
+    <div ref={wrapRef} className="relative h-[640px] w-full">
       <canvas
         ref={canvasRef}
         className="block"
         role="img"
-        aria-label="Prototype: four elastic boundaries named Ambiguity, Direction, Cohesion and Calibration, each holding draggable nodes, inside a system-wide Complexity field."
+        aria-label="Prototype: Ambiguity as the outer field, with overlapping Calibration, Cohesion and Direction boundaries holding draggable labelled nodes, and Complexity in the overlap."
       />
       <pre ref={statsRef} className="pointer-events-none absolute right-4 bottom-4 type-body-xs text-tertiary" />
     </div>
