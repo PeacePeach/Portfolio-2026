@@ -101,6 +101,9 @@ export const caseStudyWideEvidenceTokens: Record<`--cs-${string}`, string> = {
   "--cs-image-radius": radius.image,
 };
 
+/** The case-study text control (Narrative "details" button): 34px outlined, case-study tab fill. Shared by buttons and links. */
+export const caseStudyControl = "type-body-s inline-flex h-[34px] cursor-pointer items-center rounded-control border border-(--cs-secondary) bg-(--cs-tab-selected-fill) px-8 text-(--cs-primary) transition-colors duration-(--duration-base) ease-out-expo hover:border-(--cs-primary)";
+
 /** Semantic roles compose existing site utilities. No template owns typography. */
 export const caseStudyType = {
   panelTitle: "type-heading-m cs-panel-title",

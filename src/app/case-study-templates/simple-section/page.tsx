@@ -32,6 +32,14 @@ export default function SimpleSectionPreviewPage() {
       <div className="flex h-[25rem] items-center justify-center border border-line bg-surface type-body-m text-secondary">Container</div>
     </SimpleSectionTemplate>
     <hr className="border-line" />
+    <SimpleSectionTemplate
+      layout="horizontal"
+      label="OPTIONAL LABEL"
+      title="Text beside one artifact, centred against it"
+    >
+      <div className="flex h-[23.75rem] items-center justify-center border border-line bg-surface type-body-m text-secondary">Container</div>
+    </SimpleSectionTemplate>
+    <hr className="border-line" />
     <SimpleSectionTemplate {...reimaginingAnalyticsReframing} />
   </main>;
 }

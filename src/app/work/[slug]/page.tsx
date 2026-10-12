@@ -22,7 +22,8 @@ import { HorizontalSlidesTemplate } from "@/components/case-study/templates/Hori
 import { ReflectionTemplate } from "@/components/case-study/templates/ReflectionTemplate";
 import { PersonaQuote } from "@/components/case-study/shared/PersonaQuote";
 import { PersonaTasks } from "@/components/case-study/shared/PersonaTasks";
-import { caseStudyTokens, caseStudyType } from "@/components/case-study/shared/caseStudyTokens";
+import { caseStudyControl, caseStudyTokens, caseStudyType } from "@/components/case-study/shared/caseStudyTokens";
+import { ArrowRight } from "react-feather";
 import { CaseStudyChapterHeader } from "@/components/case-study/shared/CaseStudyChapterHeader";
 import {
   neoAdvanceCoreFlows,
@@ -61,6 +62,18 @@ import {
 import {
   brightcoveBeaconCollaboration,
   brightcoveBeaconCollaborationFlow,
+  brightcoveBeaconDivingDeeper,
+  brightcoveBeaconDivingDeeperImage,
+  brightcoveBeaconDiscovery,
+  brightcoveBeaconDiscoveryImage,
+  brightcoveBeaconIdeation,
+  brightcoveBeaconMicroJobsImage,
+  brightcoveBeaconUserFlowsImage,
+  brightcoveBeaconExecution,
+  brightcoveBeaconSprintFlows,
+  brightcoveBeaconFinalDesign,
+  brightcoveBeaconReflection,
+  brightcoveBeaconFollowUp,
   brightcoveBeaconContext,
   brightcoveBeaconHero,
   brightcoveBeaconImpact,
@@ -221,6 +234,61 @@ async function CaseStudyContent({ params }: PageProps<"/work/[slug]">) {
               imageLayout="separate"
               steps={brightcoveBeaconCollaborationFlow.steps.map(({ persona, ...step }) => ({ ...step, text: <PersonaTasks {...persona} /> }))}
             />
+            <ScrollReveal as="hr" className="border-line" />
+            <SimpleSectionTemplate {...brightcoveBeaconDivingDeeper}>
+              <ScrollReveal className="overflow-hidden rounded-image border border-border-default">
+                <Image src={brightcoveBeaconDivingDeeperImage.src} alt={brightcoveBeaconDivingDeeperImage.alt} width={brightcoveBeaconDivingDeeperImage.width} height={brightcoveBeaconDivingDeeperImage.height} sizes="(min-width: 1024px) 704px, 100vw" className="block h-auto w-full" />
+              </ScrollReveal>
+            </SimpleSectionTemplate>
+          </section>
+          <section aria-labelledby="beacon-discovery">
+            <CaseStudyChapterHeader id="beacon-discovery">02 _ CHALLENGE IN DISCOVERY</CaseStudyChapterHeader>
+            <TwoColumnTextTemplate {...brightcoveBeaconDiscovery} />
+            <ScrollReveal as="hr" className="border-line" />
+            {/* Diagrams are exported on the page background, so they sit unframed; this one spans the text columns above. */}
+            <div style={caseStudyTokens} className="cs-section">
+              <ScrollReveal className="cs-text-columns-width">
+                <Image src={brightcoveBeaconDiscoveryImage.src} alt={brightcoveBeaconDiscoveryImage.alt} width={brightcoveBeaconDiscoveryImage.width} height={brightcoveBeaconDiscoveryImage.height} sizes="(min-width: 1024px) 896px, 100vw" className="block h-auto w-full" />
+              </ScrollReveal>
+            </div>
+          </section>
+          <section aria-labelledby="beacon-ideation">
+            <CaseStudyChapterHeader id="beacon-ideation">03 _ CHALLENGE IN IDEATION</CaseStudyChapterHeader>
+            <TwoColumnTextTemplate {...brightcoveBeaconIdeation} />
+            <ScrollReveal as="hr" className="border-line" />
+            <div style={caseStudyTokens} className="cs-section flex flex-col gap-(--cs-section-gap)">
+              {[brightcoveBeaconMicroJobsImage, brightcoveBeaconUserFlowsImage].map(image => <ScrollReveal key={image.src}>
+                <Image src={image.src} alt={image.alt} width={image.width} height={image.height} sizes="(min-width: 1280px) 1152px, 100vw" className="block h-auto w-full" />
+              </ScrollReveal>)}
+            </div>
+          </section>
+          <section aria-labelledby="beacon-execution">
+            <CaseStudyChapterHeader id="beacon-execution">04 _ CHALLENGE IN DESIGN EXECUTION</CaseStudyChapterHeader>
+            <TwoColumnTextTemplate {...brightcoveBeaconExecution} />
+            <div style={caseStudyTokens} className="cs-section">
+              <BeforeAfterTemplate {...brightcoveBeaconSprintFlows} />
+            </div>
+          </section>
+          <section aria-labelledby="beacon-final">
+            <CaseStudyChapterHeader id="beacon-final">05 _ FINAL DESIGN</CaseStudyChapterHeader>
+            {brightcoveBeaconFinalDesign.map(({ id, title, persona, images, prototype }, index) => <Fragment key={id}>
+              {index > 0 && <ScrollReveal as="hr" className="border-line" />}
+              <SimpleSectionTemplate title={title} align="left" inset text={<PersonaQuote {...persona} />}>
+                <div className="flex flex-col gap-(--cs-row-gap)">
+                  {images.map(image => <ScrollReveal key={image.src} className="overflow-hidden rounded-image border border-border-default">
+                    <Image src={image.src} alt={image.alt} width={image.width} height={image.height} sizes="(min-width: 1280px) 1040px, 100vw" className="block h-auto w-full" />
+                  </ScrollReveal>)}
+                  {prototype && <a href={prototype} target="_blank" rel="noreferrer" className={`${caseStudyControl} gap-2 self-end`}>
+                    Try the prototype<ArrowRight size={16} strokeWidth={1.33} aria-hidden="true" />
+                  </a>}
+                </div>
+              </SimpleSectionTemplate>
+            </Fragment>)}
+          </section>
+          <section aria-labelledby="beacon-reflection">
+            <CaseStudyChapterHeader id="beacon-reflection">06 _ REFLECTION</CaseStudyChapterHeader>
+            <ReflectionTemplate {...brightcoveBeaconReflection} />
+            <FollowUpTemplate {...brightcoveBeaconFollowUp} />
           </section>
         </CaseIntroTemplate>
       </main>

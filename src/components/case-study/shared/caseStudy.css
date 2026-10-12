@@ -39,10 +39,18 @@
 .cs-simple-section { padding-block: var(--cs-section-gap); }
 /* Right after a chapter header, the header already provides the 96px gap. */
 .cs-chapter + .cs-simple-section { padding-top: 0; }
+/* A simple section that leads straight into a section (no divider) is its intro: one 96px gap to that content, not two. */
+.cs-simple-section:has(+ .cs-section) { padding-bottom: 0; }
 .cs-simple-section-text { width: min(100%, var(--cs-text-column-width)); margin-inline: auto; }
 .cs-simple-section[data-align="left"] .cs-simple-section-text { width: min(100%, var(--cs-text-left-width)); margin-inline: 0; }
 @media (min-width: 1280px) { .cs-simple-section[data-inset] { padding-inline: var(--cs-section-inset); } }
 .cs-simple-section-content { margin-top: var(--cs-content-top); }
+/* Horizontal (Figma 166:5550): 320 text beside 704 content, 128px apart, both vertically centred, on the narrative's 1152 grid. */
+@media (min-width: 1024px) {
+  .cs-simple-section[data-layout="horizontal"] { display: grid; grid-template-columns: minmax(0, 320fr) minmax(0, 704fr); column-gap: calc(var(--spacing) * 32); align-items: center; max-width: 1152px; margin-inline: auto; }
+  .cs-simple-section[data-layout="horizontal"] .cs-simple-section-text { width: 100%; margin-inline: 0; }
+  .cs-simple-section[data-layout="horizontal"] .cs-simple-section-content { margin-top: 0; }
+}
 /* Wide desktop screenshots, in a simple section or a wide Before / After panel. */
 .cs-simple-section .cs-evidence-columns, .cs-panel[data-size="wide"] .cs-evidence-columns { grid-template-columns: repeat(2, minmax(0, var(--cs-image-width))); justify-content: center; }
 .cs-simple-section .cs-evidence-frame, .cs-panel[data-size="wide"] .cs-evidence-frame { border: 1px solid var(--color-border-default); }
@@ -79,6 +87,8 @@
 /* Shared story text rules, used by text templates. */
 /* Two fixed columns when they fit; otherwise one column, up to the column width. */
 .cs-text-columns { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--cs-text-column-width)), var(--cs-text-column-width))); justify-content: center; gap: var(--cs-column-gap) var(--cs-text-column-gap); }
+/* Content under a pair of text columns, edge to edge with them (two columns and the gap between). */
+.cs-text-columns-width { width: min(100%, calc(var(--cs-text-column-width) * 2 + var(--cs-text-column-gap))); margin-inline: auto; }
 .cs-text-column { min-width: 0; }
 .cs-story-text { display: flex; flex-direction: column; gap: var(--cs-story-body-gap); overflow-wrap: anywhere; }
 /* Smaller section title sits closer to its body: 12px instead of 16px. */

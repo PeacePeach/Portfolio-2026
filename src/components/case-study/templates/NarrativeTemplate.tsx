@@ -7,7 +7,7 @@ import { AnimatePresence, motion, useReducedMotion, useScroll, useTransform } fr
 import { X, ZoomIn, ZoomOut } from "react-feather";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { duration, swap } from "@/design/motion";
-import { caseStudyTokens } from "../shared/caseStudyTokens";
+import { caseStudyControl, caseStudyTokens } from "../shared/caseStudyTokens";
 import { StoryTextBlock } from "../shared/StoryTextBlock";
 import { EvidencePill } from "../shared/EvidencePill";
 import { useStickyNarrative } from "../shared/useStickyNarrative";
@@ -95,7 +95,7 @@ export function NarrativeTemplate({ label, steps, imageLayout = "joined" }: Narr
   return (
     <section aria-label={label} style={caseStudyTokens} className="cs-rules cs-section mx-auto w-full max-w-[1152px]">
       <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,320fr)_minmax(0,704fr)] lg:gap-x-32">
-        <StickyNarrativeText still={single} id={step.id} label={step.label} title={step.title} body={step.body} text={step.text} action={step.details && zoomTarget && (
+        <StickyNarrativeText id={step.id} label={step.label} title={step.title} body={step.body} text={step.text} action={step.details && zoomTarget && (
           <DetailsButton label={step.details} onClick={button => open(button, step.title, zoomTarget)} />
         )} />
         <div ref={stack} className={`min-w-0 ${joined ? "lg:rounded-[20px] lg:bg-surface" : ""} ${imageLayout === "separate" ? `lg:flex lg:flex-col ${labelled ? "lg:gap-16" : "lg:gap-4"}` : ""} ${screens ? "flex flex-col gap-12 lg:gap-10.5" : ""}`}>
@@ -136,10 +136,10 @@ export function NarrativeTemplate({ label, steps, imageLayout = "joined" }: Narr
 }
 
 /** Desktop-only sticky column: the active text swaps with the site swap motion. */
-export function StickyNarrativeText({ id, label, title, body, text, action, still }: { id: string; label?: string; title: string; body?: string; text?: ReactNode; action?: ReactNode; /** Not sticky; centred against the image column. */ still?: boolean }) {
+export function StickyNarrativeText({ id, label, title, body, text, action }: { id: string; label?: string; title: string; body?: string; text?: ReactNode; action?: ReactNode }) {
   const reduce = useReducedMotion();
   return (
-    <div className={`hidden min-w-0 lg:block ${still ? "self-center" : "self-start lg:sticky lg:top-[calc(var(--spacing-header)+1.875rem)]"}`} data-narrative-sticky>
+    <div className={`hidden min-w-0 lg:block self-start lg:sticky lg:top-[calc(var(--spacing-header)+1.875rem)]`} data-narrative-sticky>
       <ScrollReveal>
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
@@ -175,7 +175,7 @@ function ScreenColumns({ columns }: { columns: readonly (readonly NarrativeImage
 
 /** Figma 98:577: opens the active step's high-resolution view. */
 function DetailsButton({ label, onClick }: { label: string; onClick: (button: HTMLButtonElement) => void }) {
-  return <button type="button" aria-haspopup="dialog" onClick={event => onClick(event.currentTarget)} className="type-body-s mt-6 h-[34px] cursor-pointer rounded-control border border-(--cs-secondary) bg-(--cs-tab-selected-fill) px-8 text-(--cs-primary) transition-colors duration-(--duration-base) ease-out-expo hover:border-(--cs-primary)">
+  return <button type="button" aria-haspopup="dialog" onClick={event => onClick(event.currentTarget)} className={`${caseStudyControl} mt-6`}>
     {label}
   </button>;
 }

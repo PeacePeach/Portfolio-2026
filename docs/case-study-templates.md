@@ -24,7 +24,7 @@ A case-study page composes chapters directly in `src/app/work/[slug]/page.tsx`: 
 | --- | --- |
 | Hero band, title, copy and facts | `CaseIntroTemplate` (`hero` slot) |
 | Chapter title and divider | `CaseStudyChapterHeader` |
-| Centered or left text over full-width content | `SimpleSectionTemplate` |
+| Centered or left text over full-width content, or text beside one artifact | `SimpleSectionTemplate` (`layout`) |
 | Two columns of story text or Tell Me About It | `TwoColumnTextTemplate` |
 | Headline + row of captioned media (GIFs, recordings) | `MediaRowTemplate` |
 | Impact numbers | `ImpactTemplate` |
@@ -69,7 +69,7 @@ Every template's text area takes an optional `text` (any React node, e.g. an ico
 
 Text components for the slot live in `shared/`:
 
-- `PersonaQuote` (Figma `43:348`): 48px round avatar over the persona name (chapter-label type, uppercase, one word per line, as wide as its longest word), left-aligned, 12px beside the quote (`caseStudyType.quote` = `type-body-m-italic`, primary). Used by Reimagining Analytics final design (`reimaginingAnalyticsFinalDesign`, `SimpleSectionTemplate` with `align: "left"` and `inset`); at the 561px left text width the quote runs about as tall as avatar and name.
+- `PersonaQuote` (Figma `43:348`): 48px round avatar over the persona name (chapter-label type, uppercase, one word per line, as wide as its longest word), left-aligned, 12px beside the quote (`caseStudyType.quote` = `type-body-m-italic`, primary). Used by Reimagining Analytics final design (`reimaginingAnalyticsFinalDesign`, `SimpleSectionTemplate` with `align: "left"` and `inset`); at the 561px left text width the quote runs about as tall as avatar and name. Optional `tags` add the screens' tasks as muted `Pill`s 16px under the quote (as `PersonaTasks`); used by Brightcove Beacon final design (`brightcoveBeaconFinalDesign`).
 
 - `brightcove-beacon/BeaconTeamMap` (Figma `114:282`, laid out for AI-Portfolio `164:5187`): Xstream.ly's team of teams as an SVG bubble map filling a 704×403 card; the opener step's `visual` in `brightcoveBeaconContext`. Bubble colours are the original illustration's.
 - `PersonaTasks` (Figma `114:2259`): one workflow step's people (48px round avatar, name in Label S, role in Body S secondary), an optional handoff note (Body XS secondary), then their tasks as `muted` Pills. Used by Brightcove Beacon "How They Collaborate?" as each `NarrativeTemplate` step's `text` (`brightcoveBeaconCollaborationFlow`, `separate`).
@@ -78,7 +78,7 @@ Text components for the slot live in `shared/`:
 
 `templates/SimpleSectionTemplate.tsx` · Figma `135:1453` · Preview `/case-study-templates/simple-section`
 
-Contract: `StoryTextBlock` data (`label?`, `title`, `body`, `heading?`) plus `align` and a `variant`. `align: "center"` (default) centres a 400px `StoryTextBlock`; `align: "left"` puts a 561px one on the content's left edge (Figma `150:4909`). `inset` (from 1280px) moves text and content 128px in from each side (`--cs-section-inset`, Figma `43:215`), for screenshots that shouldn't fill the page width. Either sits above full-width content: 96px from the dividers above and below, 64px from text to content. `compact` halves text to content to 32px (`--cs-content-top-compact`). Text uses the case-study text reveal.
+Contract: `StoryTextBlock` data (`label?`, `title`, `body`, `heading?`) plus `align` and a `variant`. `align: "center"` (default) centres a 400px `StoryTextBlock`; `align: "left"` puts a 561px one on the content's left edge (Figma `150:4909`). `inset` (from 1280px) moves text and content 128px in from each side (`--cs-section-inset`, Figma `43:215`), for screenshots that shouldn't fill the page width. Either sits above full-width content: 96px from the dividers above and below, 64px from text to content. `compact` halves text to content to 32px (`--cs-content-top-compact`). `layout: "horizontal"` (Figma `166:5550`) puts the text (320) beside the content (704) from 1024px, 128px apart on the 1152 grid, both vertically centred; the text keeps every `StoryTextBlock` option, and below 1024px it stacks as usual. Use it for one artifact beside text (Brightcove Beacon Diving deeper); scrolling artifacts stay in `NarrativeTemplate`. Text uses the case-study text reveal. Followed directly by another section with no divider (e.g. a `NarrativeTemplate`), it acts as that section's intro: one 96px gap from its text to the next section's content instead of two (Brightcove Beacon How They Collaborate).
 
 | `variant` | Content | Config |
 | --- | --- | --- |
@@ -165,7 +165,7 @@ Text pinned on the left (320) beside images on the right (704), 128px apart. Con
 
 | Steps | Text |
 | --- | --- |
-| 1 | Static: one text block beside all its images. With exactly one image (any layout but `screens`) the text is not pinned: it sits vertically centred on the image and nothing moves on scroll |
+| 1 | Static: one text block pinned beside all its images. For text beside a single artifact that doesn't scroll, use `SimpleSectionTemplate` with `layout: "horizontal"` instead |
 | 2+ | Rolling: the pinned text swaps (site `swap` motion) as each step's images reach it |
 | Held | A step with no `images`, `visual` or `columns` keeps the previous step's visual pinned (desktop) while its own text swaps in; each held step adds 50svh of scroll. The pinned block fills the viewport, so the next visual stays below the fold until the swap is done and the hold releases, then everything scrolls on together. Mobile shows its text in flow. Used by Brightcove Beacon's Customer Problem beside the team map |
 

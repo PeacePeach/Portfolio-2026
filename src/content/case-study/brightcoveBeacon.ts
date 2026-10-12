@@ -1,10 +1,15 @@
 import type { ImageRef } from "@/content/types";
 import type { IntroData } from "@/components/case-study/templates/IntroTemplate";
 import type { SimpleSectionData } from "@/components/case-study/templates/SimpleSectionTemplate";
+import type { TwoColumnTextData } from "@/components/case-study/templates/TwoColumnTextTemplate";
 import type { NarrativeData } from "@/components/case-study/templates/NarrativeTemplate";
 import type { PersonaTasksData } from "@/components/case-study/shared/PersonaTasks";
 import type { NarrativeImage } from "@/components/case-study/templates/NarrativeTemplate";
 import type { ImpactData } from "@/components/case-study/templates/ImpactTemplate";
+import type { BeforeAfterTabsData } from "@/components/case-study/templates/BeforeAfterTemplate";
+import type { PersonaQuoteData } from "@/components/case-study/shared/PersonaQuote";
+import type { ReflectionData } from "@/components/case-study/templates/ReflectionTemplate";
+import type { FollowUpData } from "@/components/case-study/templates/FollowUpTemplate";
 
 /** Brightcove Beacon hero (Figma 924:1766, top 720 px): the angled screen collage, exported as one image. */
 export const brightcoveBeaconHero = {
@@ -187,4 +192,211 @@ export const brightcoveBeaconCollaborationFlow: { label: string; steps: (Omit<Na
       images: [screen("viewer-app", "The Xstream.ly viewer app: Xstream Classics row of shows", 836)],
     },
   ],
+};
+
+/** Diving deeper (Figma AI-Portfolio 166:5550): a simple section, text beside the pricing manager's persona card. */
+export const brightcoveBeaconDivingDeeper = {
+  layout: "horizontal",
+  label: "Diving deeper",
+  title: "Post-MVP, I focused on the pricing manager persona, refining monetization workflows and interactions.",
+} satisfies SimpleSectionData;
+
+export const brightcoveBeaconDivingDeeperImage = img(
+  "persona-brandon-focus.jpg",
+  "Persona card for Brandon, Pricing Manager at Xstream.ly: responsibilities, goals, needs and pain points",
+  1408, 758,
+);
+
+/** Chapter 2 (Figma AI-Portfolio 166:5756, top): challenge and approach, then the discovery process diagram. */
+export const brightcoveBeaconDiscovery = {
+  columns: [
+    {
+      label: "Challenge in discovery",
+      title: "Discrepancy Between Old and New Research Findings",
+      body: "During discovery, conflicting research emerged around monetization ownership. Earlier findings pointed to the pricing manager, while my Monetize interviews suggested the video producer. Resolving this was critical because each model required a fundamentally different data structure and front-end experience.",
+    },
+    {
+      label: "Approach",
+      title: "Sequenced Validation",
+      body: "Upon undertaking subsequent steps, it was discovered that the product primarily catered to small organizations where the content producer monetizes their content. Thus, after validating with customers, we chose to proceed in that direction.",
+    },
+  ],
+} satisfies TwoColumnTextData;
+
+/** Exported on the page background, so it sits unframed, as wide as the two text columns above it. */
+export const brightcoveBeaconDiscoveryImage = img(
+  "discovery-process.jpg",
+  "Discovery process: distill patterns through deeper research (larger orgs: a monetizer makes sure the correct plans exist and content is associated to them; small orgs: a product coordinator uploads content and assigns it to plans at the same time), align with business goals to narrow down solutions, and test the assumption with storyboarding",
+  1762, 1200,
+);
+
+/** Chapter 3 (Figma AI-Portfolio 166:5756, bottom): challenge and approach, then micro-jobs and their user flows. */
+export const brightcoveBeaconIdeation = {
+  columns: [
+    {
+      label: "Challenge in ideation",
+      title: "Complex Collaboration and workflows",
+      body: "In the ideation phase, the team was overwhelmed by research data, and the design process was blocked by the complexities of collaboration and workflows.",
+    },
+    {
+      label: "Approach",
+      title: "Leveraging Granularity",
+      body: "Using the job map as a guide, I broke down the primary job into four distinct micro-jobs, each with its own set of user flows. I assigned each flow to a Junior Designer, while I took on a flow myself. We then iterated on our respective flows based on user feedback gathered from usability tests, creating a collaborative and dynamic design process.",
+    },
+  ],
+} satisfies TwoColumnTextData;
+
+export const brightcoveBeaconMicroJobsImage = img(
+  "micro-jobs.jpg",
+  "Four micro-jobs with their user flows: create or update the monetization model, determine ad placement, make sure video content is monetized correctly, and review video and ad engagement analytics",
+  2304, 568,
+);
+
+export const brightcoveBeaconUserFlowsImage = img(
+  "user-flows.jpg",
+  "User flows for create plan, add plan to videos and determine ad placement, annotated: identify external manual effort and leverage integration, identify touch points and accommodate collaboration, merge similar flows to reduce internal manual effort",
+  2304, 3132,
+);
+
+/** Chapter 4 (Figma AI-Portfolio 166:10574, old layout): challenge and approach, then the sprint flows as tabbed Before / After. */
+export const brightcoveBeaconExecution = {
+  columns: [
+    {
+      label: "Challenge in design execution",
+      title: "Complex Data Structure and Input",
+      body: "When we entered the design execution phase, the team was challenged by the complex data input and structure that a user needs to cope with in order to create a plan.",
+    },
+    {
+      label: "Approach",
+      title: "Rigorous Bi-Weekly Design Sprints",
+      body: "To address the complexity in data input, I spearheaded bi-weekly design sprints. In these sessions, designers selected relevant stories, collaborated with peers, project managers, and developers, conducted usability tests, and refined designs based on the gathered feedback.",
+    },
+  ],
+} satisfies TwoColumnTextData;
+
+const planScreen = (name: string, alt: string) => ({ src: `/case-studies/brightcove-beacon/${name}.jpg`, alt });
+
+/** Figma 166:12072: each screen's caption is folded into its bullets, so a bullet says what the screen does and how it fares. */
+export const brightcoveBeaconSprintFlows = {
+  tabsLabel: "Design sprint flows",
+  tabs: [
+    {
+      id: "flow-1", label: "Flow 1",
+      data: {
+        size: "wide",
+        title: "Horizontal Tabs → Vertical Tabs + Stepper",
+        description: "Plan details: how the tabs guide users through creating a plan.",
+        before: {
+          images: [planScreen("plan-horizontal-tabs", "Premium Plan detail with horizontal tabs for monetization, availability, options and appearance")],
+          bullets: [{ tone: "negative", text: "Horizontal tabs leave the goal invisible" }],
+        },
+        after: {
+          images: [planScreen("plan-vertical-tabs", "Premium Plan detail with vertical tabs and a stepper, on the availability step with Back and Next")],
+          bullets: [
+            { tone: "positive", text: "Vertical tabs and a stepper give a clear call-to-action and more flexibility" },
+            { tone: "negative", text: "More dev work" },
+          ],
+        },
+      },
+    },
+    {
+      id: "flow-2", label: "Flow 2",
+      data: {
+        size: "wide",
+        title: "All Inputs Upfront → Choose First, Then Add Data",
+        description: "Plan setup: when users add each type of data.",
+        before: {
+          images: [planScreen("plan-vertical-tabs", "Availability step showing calendar and location restriction inputs all at once")],
+          bullets: [
+            { tone: "negative", text: "Seeing all data inputs upfront takes more mental effort" },
+            { tone: "negative", text: "Content the user needs stays invisible" },
+          ],
+        },
+        after: {
+          images: [planScreen("plan-choose-first", "Monetization step where the user switches on Web app first, then adds its prices")],
+          bullets: [
+            { tone: "positive", text: "Choosing the option first, then adding data, takes less mental effort" },
+            { tone: "positive", text: "Better visibility" },
+          ],
+        },
+      },
+    },
+    {
+      id: "flow-3", label: "Flow 3",
+      data: {
+        size: "wide",
+        title: "All Inputs Upfront → Preview by Default",
+        description: "Ad tags: how an AVOD plan's rule sets are set up.",
+        before: {
+          images: [planScreen("avod-ad-tags", "My AVOD plan with the ad provider, ad target and every ad tag shown as inputs upfront")],
+          bullets: [{ tone: "negative", text: "With every input upfront, users had to create multiple plans for different combinations of ad tags and restrictions" }],
+        },
+        after: {
+          images: [planScreen("avod-rule-sets", "My AVOD plan previewing rule sets, each with its VOD tag, live tag, devices and locations, plus Add rule set")],
+          bullets: [
+            { tone: "positive", text: "Previewing data by default increases flexibility and control" },
+            { tone: "negative", text: "Increased mental effort" },
+          ],
+        },
+      },
+    },
+  ],
+} satisfies BeforeAfterTabsData;
+
+const finalScreen = (name: string, alt: string, height = 1280): ImageRef => ({ src: `/case-studies/brightcove-beacon/final-${name}.jpg`, alt, width: 2304, height });
+
+/** Final design (Figma AI-Portfolio 167:662): as Reimagining Analytics, one left-aligned inset section per moment, a persona quote with its tasks over the screens. */
+const prototype = "https://www.figma.com/proto/UWsN01gp94fLUAfhIMbku1/Beacon-Monetize_Plans?page-id=42%3A12902&type=design&node-id=42-12903&viewport=227%2C444%2C0.04&scaling=min-zoom&starting-point-node-id=42%3A12903";
+
+export const brightcoveBeaconFinalDesign: readonly { id: string; title: string; persona: PersonaQuoteData; images: readonly ImageRef[]; prototype?: string }[] = [
+  {
+    id: "create-plan",
+    title: "Pricing manager: Create plan",
+    persona: { name: brandon.role, avatar: brandon.avatar, quote: "“I am thrilled to share that I now have the power to choose from a wide array of exciting monetization models and effortlessly create plans, all on my own. No more reliance on external help!”", tags: ["Create plan", "Select monetization model"] },
+    images: [
+      finalScreen("plans", "Monetize: the Plans list with plan name, status, type, price, location and device, and a Create plan button"),
+      finalScreen("monetization-model", "Select monetization model dialog: AuthVOD, AVOD, SVOD and TVOD models, each with a short description"),
+    ],
+    prototype,
+  },
+  {
+    id: "configure-plan",
+    title: "Pricing manager: Configure and publish plan",
+    persona: { name: brandon.role, avatar: brandon.avatar, quote: "“I’m amazed that the time-consuming process of setting up plans that used to take days has been streamlined into a matter of minutes.”", tags: ["Configure plan", "Publish plan"] },
+    images: [
+      finalScreen("configure-plan", "Premium Plan, monetization step: Web app prices, regional prices, billing frequency and enrollment devices, with Next"),
+      finalScreen("publish-plan", "Premium Plan, appearance step with every step checked, a plan preview and a notice that the plan is published"),
+    ],
+    prototype,
+  },
+  {
+    id: "advanced-path",
+    title: "Content producer: Add content to plan, advanced path",
+    persona: { name: sharyn.role, avatar: sharyn.avatar, quote: "“I now effortlessly incorporate video content into plans, considering time and geographical restrictions. It saves me time, adds flexibility, and enhances my content curation.”", tags: ["Add content to plan: advanced path"] },
+    images: [
+      finalScreen("advanced-quick-edit", "Media: Quick Edit for three selected videos, with availability rule sets and a notice that the SVOD plan was created"),
+      finalScreen("advanced-rule-set", "Add Rule Set 2: calendar, location and device restrictions, then the monetization model and plan to apply", 1669),
+    ],
+  },
+  {
+    id: "easy-path",
+    title: "Content producer: Add content to plan, easy path",
+    persona: { name: sharyn.role, avatar: sharyn.avatar, quote: "“I can also swiftly add videos to plans during upload or in the CMS using bulk editing, completely disregarding any content restrictions.”", tags: ["Add content to plan: easy path"] },
+    images: [finalScreen("easy-path", "Monetize three selected videos in bulk: pick a monetization model and a plan, with no restrictions")],
+  },
+];
+
+export const brightcoveBeaconReflection: ReflectionData = {
+  headline: "Design is great not by simplifying solutions, but by making users comfortable with complexity.",
+  body: "Designing the SVOD plan configuration taught me that complexity isn't always something to eliminate. For infrequent, high-stakes tasks, simplifying too much can hide important decisions. By making complex monetization rules clear and manageable, we helped users navigate them with confidence.",
+};
+
+/** Closing follow-up, as the other case studies: feedback beside the next case study. */
+export const brightcoveBeaconFollowUp: FollowUpData = {
+  feedback: {
+    eyebrow: "TELL ME ABOUT IT",
+    title: "How do you like this case study?",
+    quickReplies: ["Loved it!", "Meh ...", "It’s too long"],
+  },
+  current: "brightcove-beacon",
 };
