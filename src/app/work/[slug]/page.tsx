@@ -29,6 +29,7 @@ import { StatCircles } from "@/components/case-study/shared/StatCircles";
 import { caseStudyControl, caseStudyTokens, caseStudyType } from "@/components/case-study/shared/caseStudyTokens";
 import { ArrowRight } from "react-feather";
 import { CaseStudyChapterHeader } from "@/components/case-study/shared/CaseStudyChapterHeader";
+import { CaseStudyHashScroll } from "@/components/case-study/CaseStudyHashScroll";
 import {
   neoAdvanceCoreFlows,
   neoAdvanceDeliveryPanels,
@@ -115,6 +116,7 @@ export default function CaseStudyPage(props: PageProps<"/work/[slug]">) {
       }
     >
       <CaseStudyContent {...props} />
+      <CaseStudyHashScroll />
     </Suspense>
   );
 }
