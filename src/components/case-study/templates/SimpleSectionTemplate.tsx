@@ -4,23 +4,26 @@ import { EvidenceColumn, type EvidenceColumnData } from "../shared/EvidenceColum
 import { caseStudyTokens, caseStudyWideEvidenceTokens } from "../shared/caseStudyTokens";
 import { CaseStudyTextReveal, EvidenceStagger } from "../shared/CaseStudyMotion";
 
-export type SimpleSectionData = StoryTextBlockData & (
+export type SimpleSectionData = StoryTextBlockData & {
+  /** `center` (default): 400px text centred. `left`: 561px text on the content's left edge (Figma 150:4909). */
+  align?: "center" | "left";
+} & (
   | { variant?: "container" }
   | { variant: "before-after"; before: EvidenceColumnData; after: EvidenceColumnData }
 );
 
 /**
- * Figma 135:1453. Structure only: story text (optional label, title, body) centred
- * over full-width content. `container` takes any children; `before-after` pairs
+ * Figma 135:1453. Structure only: story text (optional label, title, body) centred,
+ * or left-aligned (`align`, Figma 150:4909), over full-width content. `container` takes any children; `before-after` pairs
  * two desktop screenshots under Before / After pills (Figma 110:18922). Without
  * children, `container` is the story text alone.
  */
 export function SimpleSectionTemplate({ children, ...props }: SimpleSectionData & { children?: ReactNode }) {
-  const { label, title, body } = props;
+  const { label, title, body, heading, align = "center" } = props;
   const beforeAfter = props.variant === "before-after";
-  return <section className="cs-rules cs-simple-section" style={{ ...caseStudyTokens, ...(beforeAfter ? caseStudyWideEvidenceTokens : {}) }}>
+  return <section className="cs-rules cs-simple-section" data-align={align} style={{ ...caseStudyTokens, ...(beforeAfter ? caseStudyWideEvidenceTokens : {}) }}>
     <CaseStudyTextReveal>
-      <div className="cs-simple-section-text"><StoryTextBlock label={label} title={title} body={body} /></div>
+      <div className="cs-simple-section-text"><StoryTextBlock label={label} title={title} body={body} heading={heading} /></div>
     </CaseStudyTextReveal>
     {(beforeAfter || children) && <div className="cs-simple-section-content">
       {props.variant === "before-after"

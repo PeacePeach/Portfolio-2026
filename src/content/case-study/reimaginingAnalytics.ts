@@ -187,3 +187,19 @@ export const reimaginingAnalyticsRoles = {
     },
   }],
 } satisfies BeforeAfterData;
+
+/** Role insights (Figma 1266:2671): left-aligned simple section, section title, over the role cards (2x export of 1266:2670, cropped). */
+export const reimaginingAnalyticsRoleInsights = {
+  align: "left",
+  heading: "section",
+  title: "Same Vertical, Different Metrics",
+  body:
+    "Usability testing revealed that even within the same vertical, people focus on different metrics, further emphasizing the importance of displaying role-based metrics.",
+} satisfies SimpleSectionData;
+
+export const reimaginingAnalyticsRoleCards: ImageRef = {
+  src: "/case-studies/reimagining-analytics/roles-cards.png",
+  alt: "Role-based insight cards: campaign manager and social media analyst in marketing, video producer and monetizer in video streaming, HR coordinator in enterprise communication, each led by a different metric",
+  width: 2304,
+  height: 1160,
+};

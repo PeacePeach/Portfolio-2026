@@ -34,7 +34,7 @@ Used by Neo Advance (`neo-advance/NeoCaseIntro.tsx`, content `neoAdvanceIntro`).
 
 `templates/SimpleSectionTemplate.tsx` · Figma `135:1453` · Preview `/case-study-templates/simple-section`
 
-Contract: `StoryTextBlock` data (`label?`, `title`, `body`) plus a `variant`. A 400px `StoryTextBlock` centred above full-width content: 96px from the dividers above and below, 64px from text to content. Text uses the case-study text reveal.
+Contract: `StoryTextBlock` data (`label?`, `title`, `body`, `heading?`) plus `align` and a `variant`. `align: "center"` (default) centres a 400px `StoryTextBlock`; `align: "left"` puts a 561px one on the content's left edge (Figma `150:4909`). Either sits above full-width content: 96px from the dividers above and below, 64px from text to content. Text uses the case-study text reveal.
 
 | `variant` | Content | Config |
 | --- | --- | --- |
@@ -73,7 +73,7 @@ The one text block for case-study copy: optional label, title, body. Two switche
 | `label` | Omit for no label; Body XS secondary, 12px above the title |
 | `heading` | `chapter` (default): Display 32 Regular title. `section`: Heading M title |
 
-Title to body is 16px in both. Width belongs to the caller (400 for chapter text, the grid column for section text). Used by `SimpleSectionTemplate`, `TwoColumnTextTemplate`, `TellMeAboutIt` (chapter) and `NarrativeTemplate`, `NeoCoreFlows` (section).
+Title to body is 16px under a chapter title and 12px under a section title. Width belongs to the caller (400 for chapter text, the grid column for section text). Used by `SimpleSectionTemplate`, `TwoColumnTextTemplate`, `TellMeAboutIt` (chapter) and `NarrativeTemplate`, `NeoCoreFlows` (section).
 
 ## NarrativeTemplate
 

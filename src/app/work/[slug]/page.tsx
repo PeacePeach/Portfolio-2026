@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Fragment, Suspense } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import { Footer } from "@/components/Footer";
 import { Media } from "@/components/ui/Media";
@@ -26,6 +27,8 @@ import {
   reimaginingAnalyticsPatternsMockup,
   reimaginingAnalyticsRolesIntro,
   reimaginingAnalyticsRoles,
+  reimaginingAnalyticsRoleInsights,
+  reimaginingAnalyticsRoleCards,
   reimaginingAnalyticsPatternsIntro,
   reimaginingAnalyticsProblem,
   reimaginingAnalyticsReframing,
@@ -157,6 +160,12 @@ async function CaseStudyContent({ params }: PageProps<"/work/[slug]">) {
             <div style={caseStudyTokens} className="cs-section">
               <BeforeAfterTemplate {...reimaginingAnalyticsRoles} />
             </div>
+            <ScrollReveal as="hr" className="border-line" />
+            <SimpleSectionTemplate {...reimaginingAnalyticsRoleInsights}>
+              <ScrollReveal className="overflow-hidden rounded-image border border-border-default">
+                <Image src={reimaginingAnalyticsRoleCards.src} alt={reimaginingAnalyticsRoleCards.alt} width={reimaginingAnalyticsRoleCards.width} height={reimaginingAnalyticsRoleCards.height} sizes="(min-width: 1280px) 1152px, 100vw" className="block h-auto w-full" />
+              </ScrollReveal>
+            </SimpleSectionTemplate>
           </section>
         </AnalyticsCaseIntro>
       </main>

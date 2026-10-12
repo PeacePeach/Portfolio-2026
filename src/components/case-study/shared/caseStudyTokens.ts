@@ -50,6 +50,8 @@ export const caseStudyTokens: CSSProperties & Record<`--cs-${string}`, string> =
   "--cs-pill-radius": "999px",
   "--cs-small-line-height": "1.4",
   "--cs-text-column-width": "400px",
+  // Left-aligned simple-section text (Figma 150:4909).
+  "--cs-text-left-width": "561px",
   "--cs-text-column-gap": "calc(var(--spacing) * 24)",
   // Figma 83:3259: 128px between chapters; 96px from a divider or separator to content.
   "--cs-chapter-gap": "calc(var(--spacing) * 32)",

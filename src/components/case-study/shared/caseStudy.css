@@ -39,6 +39,7 @@
 /* Right after a chapter header, the header already provides the 96px gap. */
 .cs-chapter + .cs-simple-section { padding-top: 0; }
 .cs-simple-section-text { width: min(100%, var(--cs-text-column-width)); margin-inline: auto; }
+.cs-simple-section[data-align="left"] .cs-simple-section-text { width: min(100%, var(--cs-text-left-width)); margin-inline: 0; }
 .cs-simple-section-content { margin-top: var(--cs-content-top); }
 /* Wide desktop screenshots, in a simple section or a wide Before / After panel. */
 .cs-simple-section .cs-evidence-columns, .cs-panel[data-size="wide"] .cs-evidence-columns { grid-template-columns: repeat(2, minmax(0, var(--cs-image-width))); justify-content: center; }
@@ -78,6 +79,8 @@
 .cs-text-columns { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--cs-text-column-width)), var(--cs-text-column-width))); justify-content: center; gap: var(--cs-column-gap) var(--cs-text-column-gap); }
 .cs-text-column { min-width: 0; }
 .cs-story-text { display: flex; flex-direction: column; gap: var(--cs-story-body-gap); overflow-wrap: anywhere; }
+/* Smaller section title sits closer to its body: 12px instead of 16px. */
+.cs-story-text[data-heading="section"] { gap: var(--cs-title-description-gap); }
 .cs-story-text-header { display: flex; flex-direction: column; gap: var(--cs-title-description-gap); }
 .cs-story-text .cs-story-title { color: var(--cs-bullet-text); white-space: pre-line; }
 .cs-story-text-body { color: var(--cs-secondary); white-space: pre-line; }

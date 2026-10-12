@@ -11,7 +11,7 @@ export type StoryTextBlockData = {
 
 /** Shared story typography and spacing; content stays in configuration. */
 export function StoryTextBlock({ label, title, body, heading = "chapter" }: StoryTextBlockData) {
-  return <article className="cs-story-text">
+  return <article className="cs-story-text" data-heading={heading}>
     <header className="cs-story-text-header">
       {label && <p className={caseStudyType.chapterLabel}>{label}</p>}
       <h2 className={heading === "section" ? caseStudyType.sectionTitle : caseStudyType.storyTitle}>{title}</h2>

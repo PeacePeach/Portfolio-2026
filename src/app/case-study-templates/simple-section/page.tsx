@@ -14,6 +14,15 @@ export default function SimpleSectionPreviewPage() {
       <div className="flex h-[25rem] items-center justify-center border border-line bg-surface type-body-m text-secondary">Container</div>
     </SimpleSectionTemplate>
     <hr className="border-line" />
+    <SimpleSectionTemplate
+      align="left"
+      heading="section"
+      title="Doorway Testing"
+      body="I used lightweight doorway tests to challenge high-confidence, low-evidence business ideas—validating whether users understood and valued the concept before investing in the full experience."
+    >
+      <div className="flex h-[25rem] items-center justify-center border border-line bg-surface type-body-m text-secondary">Container</div>
+    </SimpleSectionTemplate>
+    <hr className="border-line" />
     <SimpleSectionTemplate {...reimaginingAnalyticsReframing} />
   </main>;
 }
