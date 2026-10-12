@@ -324,10 +324,12 @@ async function CaseStudyContent({ params }: PageProps<"/work/[slug]">) {
           <SimpleSectionTemplate {...mutexaOpportunity}>
             <StatCircles stats={mutexaOpportunityStats} />
           </SimpleSectionTemplate>
-          <ScrollReveal as="hr" className="border-line" />
-          <NarrativeTemplate {...mutexaKeyExperience} />
+          <section aria-labelledby="mutexa-product">
+            <CaseStudyChapterHeader id="mutexa-product">HOW THE PRODUCT WORKS</CaseStudyChapterHeader>
+            <NarrativeTemplate {...mutexaKeyExperience} />
+          </section>
           <section aria-labelledby="mutexa-relationship">
-            <CaseStudyChapterHeader id="mutexa-relationship">01 _ DESIGN THE RELATIONSHIP BEFORE THE INTELLIGENCE</CaseStudyChapterHeader>
+            <CaseStudyChapterHeader id="mutexa-relationship">01 _ HUMAN–AI COLLABORATION</CaseStudyChapterHeader>
             <SimpleSectionTemplate {...mutexaRelationship} />
             <ScrollReveal as="hr" className="border-line" />
             <SimpleSectionTemplate {...mutexaPrototypes} text={<p className={caseStudyType.storyBody}>{mutexaPrototypes.title}</p>}>
