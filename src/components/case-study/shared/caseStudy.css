@@ -36,6 +36,8 @@
 
 /* Simple section (Figma 135:1453): 96px from the dividers, 400px story text, 64px to full-width content. */
 .cs-simple-section { padding-block: var(--cs-section-gap); }
+/* Right after a chapter header, the header already provides the 96px gap. */
+.cs-chapter + .cs-simple-section { padding-top: 0; }
 .cs-simple-section-text { width: min(100%, var(--cs-text-column-width)); margin-inline: auto; }
 .cs-simple-section-content { margin-top: var(--cs-content-top); }
 .cs-simple-section .cs-evidence-columns { grid-template-columns: repeat(2, minmax(0, var(--cs-image-width))); justify-content: center; }

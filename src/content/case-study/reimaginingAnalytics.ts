@@ -87,36 +87,48 @@ export const reimaginingAnalyticsStrategy = {
   ],
 } satisfies NarrativeData;
 
-/** "UX goal 2" (Figma 5NB8dL3E3HQQtXFRcjaKVd 101:274): story text, then one before/after simple section per pattern (2x exports). */
-const pattern = (name: string) => `/case-studies/reimagining-analytics/pattern-${name}.png`;
+/** "UX goal 2" (Figma 5NB8dL3E3HQQtXFRcjaKVd 101:274): centred story text, then the three patterns as rolling narrative steps (Figma 135:1472), before over after (2x exports). */
+const pattern = (name: string, alt: string, width: number, height: number) => ({
+  src: `/case-studies/reimagining-analytics/pattern-${name}.png`, alt, width, height,
+  pill: name.endsWith("after") ? { label: "After", emphasis: "primary" as const } : { label: "Before" },
+});
+export const reimaginingAnalyticsPatternsIntro = {
+  label: "UX GOAL 2",
+  title: "Consolidating Design Patterns",
+  body:
+    "I audited existing components, identifying 17 design patterns in the Analytics module. I simplified them into three categories, reducing both visual complexity for users and maintenance effort for developers.",
+} satisfies SimpleSectionData;
+
 export const reimaginingAnalyticsPatterns = {
-  intro: {
-    label: "UX GOAL 2",
-    title: "Consolidating Design Patterns",
-    body:
-      "I audited existing components, identifying 17 design patterns in the Analytics module. I simplified them into three categories, reducing both visual complexity for users and maintenance effort for developers.",
-  },
-  sections: [
+  label: "Consolidated design patterns",
+  imageLayout: "separate",
+  steps: [
     {
-      variant: "before-after",
+      id: "hero-graph",
       title: "Hero Graph",
       body: "Displaying critical metrics at the top of the page, associated with a line chart or bar chart to depict changes over the past period.",
-      before: { images: [{ src: pattern("hero-before"), alt: "Before: several unrelated metric strips, bar charts and line charts at the top of different Analytics pages" }] },
-      after: { images: [{ src: pattern("hero-after"), alt: "After: one hero graph with four metric tabs above a line chart, and a comparison state with two series" }] },
+      images: [
+        pattern("hero-before", "Before: several unrelated metric strips, bar charts and line charts at the top of different Analytics pages", 1418, 374),
+        pattern("hero-after", "After: one hero graph with four metric tabs above a line chart, and a comparison state with two series", 1420, 812),
+      ],
     },
     {
-      variant: "before-after",
+      id: "highlight-cards",
       title: "Highlight Cards",
       body: "Displaying highlights across a single metric coupled with a dimension (e.g., top 3 videos by views), users can drill down for details.",
-      before: { images: [{ src: pattern("highlight-before"), alt: "Before: four differently styled highlight widgets, including a donut chart and ranked lists" }] },
-      after: { images: [{ src: pattern("highlight-after"), alt: "After: two consistent highlight cards, Best performing posts and Best performing videos, each with bars and a View more link" }] },
+      images: [
+        pattern("highlight-before", "Before: four differently styled highlight widgets, including a donut chart and ranked lists", 1430, 289),
+        pattern("highlight-after", "After: two consistent highlight cards, Best performing posts and Best performing videos, each with bars and a View more link", 1428, 406),
+      ],
     },
     {
-      variant: "before-after",
+      id: "data-table",
       title: "Data Table",
       body: "Displaying granular data across a dimension and multiple metrics, users can drill down to a single unit for detailed insights.",
-      before: { images: [{ src: pattern("table-before"), alt: "Before: two inconsistent data tables with different columns, thumbnails and progress bars" }] },
-      after: { images: [{ src: pattern("table-after"), alt: "After: one data table with a summary row and consistent video rows across views, minutes, play rate and completion" }] },
+      images: [
+        pattern("table-before", "Before: two inconsistent data tables with different columns, thumbnails and progress bars", 1420, 858),
+        pattern("table-after", "After: one data table with a summary row and consistent video rows across views, minutes, play rate and completion", 1420, 542),
+      ],
     },
   ],
-} satisfies { intro: SimpleSectionData; sections: readonly SimpleSectionData[] };
+} satisfies NarrativeData;

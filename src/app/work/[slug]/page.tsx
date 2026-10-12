@@ -21,6 +21,7 @@ import { neoAdvanceImpact } from "@/content/neoAdvance";
 import {
   reimaginingAnalyticsImpact,
   reimaginingAnalyticsPatterns,
+  reimaginingAnalyticsPatternsIntro,
   reimaginingAnalyticsProblem,
   reimaginingAnalyticsReframing,
   reimaginingAnalyticsStrategy,
@@ -134,8 +135,9 @@ async function CaseStudyContent({ params }: PageProps<"/work/[slug]">) {
           </section>
           <section aria-labelledby="analytics-patterns">
             <CaseStudyChapterHeader id="analytics-patterns">03 _ UX GOAL 2</CaseStudyChapterHeader>
-            <SimpleSectionTemplate {...reimaginingAnalyticsPatterns.intro} />
-            {reimaginingAnalyticsPatterns.sections.map(section => <SimpleSectionTemplate key={section.title} {...section} />)}
+            <SimpleSectionTemplate {...reimaginingAnalyticsPatternsIntro} />
+            <ScrollReveal as="hr" className="border-line" />
+            <NarrativeTemplate {...reimaginingAnalyticsPatterns} />
           </section>
         </AnalyticsCaseIntro>
       </main>

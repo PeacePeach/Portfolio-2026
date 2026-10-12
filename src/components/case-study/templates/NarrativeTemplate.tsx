@@ -9,12 +9,15 @@ import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { duration, swap } from "@/design/motion";
 import { caseStudyTokens } from "../shared/caseStudyTokens";
 import { StoryTextBlock } from "../shared/StoryTextBlock";
+import { EvidencePill } from "../shared/EvidencePill";
 import { useStickyNarrative } from "../shared/useStickyNarrative";
 
 export type NarrativeImage = {
   src: string; alt: string; width: number; height: number;
   /** High-resolution export for the zoom viewer; without it the image is not zoomable. */
   full?: { src: string; width: number; height: number };
+  /** Optional evidence pill above the image, e.g. Before / After (shared `EvidencePill`, 16px above). */
+  pill?: { label: string; emphasis?: "primary" | "secondary" };
 };
 
 /** One text block and the images it sits beside. */
@@ -53,6 +56,8 @@ export function NarrativeTemplate({ label, steps, imageLayout = "joined" }: Narr
   const step = steps[active] ?? steps[0];
   const joined = imageLayout === "joined";
   const allImages = steps.flatMap(s => s.images);
+  // Pill-labelled images read as separate blocks: 48px between blocks, 16px from pill to image.
+  const labelled = allImages.some(image => image.pill);
 
   function open(button: HTMLButtonElement, title: string, image: NarrativeImage) {
     if (!image.full) return;
@@ -71,13 +76,13 @@ export function NarrativeTemplate({ label, steps, imageLayout = "joined" }: Narr
         <StickyNarrativeText id={step.id} label={step.label} title={step.title} body={step.body} action={step.details && zoomTarget && (
           <DetailsButton label={step.details} onClick={button => open(button, step.title, zoomTarget)} />
         )} />
-        <div ref={stack} className={`min-w-0 ${joined ? "lg:rounded-[20px] lg:bg-surface" : ""} ${imageLayout === "separate" ? "lg:flex lg:flex-col lg:gap-4" : ""}`}>
+        <div ref={stack} className={`min-w-0 ${joined ? "lg:rounded-[20px] lg:bg-surface" : ""} ${imageLayout === "separate" ? `lg:flex lg:flex-col ${labelled ? "lg:gap-12" : "lg:gap-4"}` : ""}`}>
           {steps.map(s => (
             <div key={s.id} data-narrative-step={s.id} className="mb-12 lg:mb-0">
               <ScrollReveal className="mb-6 lg:hidden">
                 <StoryTextBlock heading="section" label={s.label} title={s.title} body={s.body} />
               </ScrollReveal>
-              <div className={imageLayout === "separate" ? "flex flex-col gap-4" : ""}>
+              <div className={imageLayout === "separate" ? `flex flex-col ${labelled ? "gap-12" : "gap-4"}` : ""}>
                 {s.images.map(image => (
                   <NarrativeFrame
                     key={image.src}
@@ -144,7 +149,7 @@ function NarrativeFrame({ image, title, layout, first, last, scaleEnabled, onOpe
   const scale = useTransform(scrollYProgress, [0, 0.5, 1], [0.98, 1, 0.98]);
   const joined = layout === "joined";
   const frame = layout === "separate"
-    ? "rounded-[10px] border border-ink/10"
+    ? "rounded-surface border border-ink/10"
     : joined ? `${first ? "rounded-t-[20px]" : ""} ${last ? "rounded-b-[20px]" : ""}` : "";
   const picture = <>
     {joined && !first && <span aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 z-10 hidden h-px bg-ink/10 lg:block" />}
@@ -155,7 +160,8 @@ function NarrativeFrame({ image, title, layout, first, last, scaleEnabled, onOpe
     </div>
   </>;
   return (
-    <div ref={target}>
+    <div ref={target} className={image.pill ? "flex flex-col items-start gap-4" : undefined}>
+      {image.pill && <EvidencePill label={image.pill.label} emphasis={image.pill.emphasis} />}
       {image.full ? (
         <button
           type="button"

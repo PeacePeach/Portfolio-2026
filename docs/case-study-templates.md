@@ -92,7 +92,7 @@ Text pinned on the left (320) beside images on the right (704), 128px apart. Con
 | `separate` | Each image its own 10px-radius card with a 10% ink border, 16px apart |
 | `plain` | Images only: no surface, rounding, divider or scaling |
 
-An image with `full` opens the zoom viewer; `details` adds a text button for the step's first zoomable image. On mobile each step's text sits above its images. `StickyNarrativeText` and `shared/useStickyNarrative` are exported for layouts with other visuals (Neo `NeoCoreFlows`).
+An image with `full` opens the zoom viewer; `pill` puts a shared `EvidencePill` (e.g. Before / After) 16px above it; `details` adds a text button for the step's first zoomable image. On mobile each step's text sits above its images. `StickyNarrativeText` and `shared/useStickyNarrative` are exported for layouts with other visuals (Neo `NeoCoreFlows`).
 
 Used by Neo Advance (`neoAdvanceNarrative`, `neoAdvanceDeliveryPanels` with `plain`) and Reimagining Analytics problem (`reimaginingAnalyticsProblem`, `separate`).
 
