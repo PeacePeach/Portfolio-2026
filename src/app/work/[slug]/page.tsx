@@ -23,6 +23,7 @@ import { neoAdvanceImpact } from "@/content/neoAdvance";
 import {
   reimaginingAnalyticsImpact,
   reimaginingAnalyticsPatterns,
+  reimaginingAnalyticsPatternsMockup,
   reimaginingAnalyticsRolesIntro,
   reimaginingAnalyticsRoles,
   reimaginingAnalyticsPatternsIntro,
@@ -142,6 +143,12 @@ async function CaseStudyContent({ params }: PageProps<"/work/[slug]">) {
             <SimpleSectionTemplate {...reimaginingAnalyticsPatternsIntro} />
             <ScrollReveal as="hr" className="border-line" />
             <NarrativeTemplate {...reimaginingAnalyticsPatterns} />
+            <ScrollReveal as="hr" className="border-line" />
+            <div style={caseStudyTokens} className="cs-section">
+              <ScrollReveal>
+                <Media image={reimaginingAnalyticsPatternsMockup} ratio="1280 / 724" sizes="(min-width: 1280px) 1152px, 100vw" />
+              </ScrollReveal>
+            </div>
           </section>
           <section aria-labelledby="analytics-roles">
             <CaseStudyChapterHeader id="analytics-roles">04 _ ROLE-BASED EXPERIENCE</CaseStudyChapterHeader>

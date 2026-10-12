@@ -1,3 +1,4 @@
+import type { ImageRef } from "@/content/types";
 import type { IntroData } from "@/components/case-study/templates/IntroTemplate";
 import type { SimpleSectionData } from "@/components/case-study/templates/SimpleSectionTemplate";
 import type { ImpactData } from "@/components/case-study/templates/ImpactTemplate";
@@ -132,6 +133,14 @@ export const reimaginingAnalyticsPatterns = {
     },
   ],
 } satisfies NarrativeData;
+
+/** Design system mockup closing "03 _ DESIGN SYSTEM" (Figma 149:4893, 2x export). */
+export const reimaginingAnalyticsPatternsMockup: ImageRef = {
+  src: "/case-studies/reimagining-analytics/ds-mockup.png",
+  alt: "Analytics design system pages: colour palette, bar and line chart guidance, hero metrics and insight cards",
+  width: 2560,
+  height: 1448,
+};
 
 /** "04 _ ROLE-BASED EXPERIENCE" (Figma 116:891): simple-section story text. */
 export const reimaginingAnalyticsRolesIntro = {
