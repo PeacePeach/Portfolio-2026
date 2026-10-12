@@ -7,6 +7,7 @@ import { Footer } from "@/components/Footer";
 import { Media } from "@/components/ui/Media";
 import { NeoHero } from "@/components/case-study/neo-advance/NeoHero";
 import { AnalyticsHero } from "@/components/case-study/reimagining-analytics/AnalyticsHero";
+import { BeaconHero } from "@/components/case-study/brightcove-beacon/BeaconHero";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { CaseIntroTemplate } from "@/components/case-study/templates/CaseIntroTemplate";
 import { MediaRowTemplate } from "@/components/case-study/templates/MediaRowTemplate";
@@ -75,7 +76,6 @@ import {
   brightcoveBeaconReflection,
   brightcoveBeaconFollowUp,
   brightcoveBeaconContext,
-  brightcoveBeaconHero,
   brightcoveBeaconImpact,
   brightcoveBeaconInfoArch,
   brightcoveBeaconInfoArchImage,
@@ -202,7 +202,7 @@ async function CaseStudyContent({ params }: PageProps<"/work/[slug]">) {
       <main id="main">
         <CaseIntroTemplate
           intro={brightcoveBeaconIntro}
-          hero={<Image src={brightcoveBeaconHero.src} alt={brightcoveBeaconHero.alt} width={brightcoveBeaconHero.width} height={brightcoveBeaconHero.height} sizes="100vw" priority className="block h-auto w-full" />}
+          hero={<BeaconHero />}
         >
           <ScrollReveal as="hr" className="mt-24 border-line" />
           <ImpactTemplate {...brightcoveBeaconImpact} className="mt-24" />

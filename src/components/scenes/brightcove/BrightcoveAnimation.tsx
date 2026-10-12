@@ -22,10 +22,8 @@ import {
   type MotionValue,
 } from "motion/react";
 import { useScenePaused } from "../ScenePause";
-import { ASPECT, LOOP, ORIGIN, TILE, WIDTH, beats } from "./timeline";
+import { ASPECT, BACKGROUND as background, LOOP, ORIGIN, TILE, WIDTH, beats } from "./timeline";
 
-/** Rectangle 7: the tile background. */
-const background = "#e2d5ca";
 /** Group 3's Figma drop shadow. */
 const shadow = "0 4px 20px rgba(0,0,0,0.2)";
 

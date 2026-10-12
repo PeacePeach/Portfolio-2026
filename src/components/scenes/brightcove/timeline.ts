@@ -6,6 +6,9 @@
 
 export const TILE = { width: 422, height: 314 } as const;
 
+/** Rectangle 7: the tile background, shared by the case study hero band. */
+export const BACKGROUND = "#e2d5ca";
+
 /** The screenshot's top-left corner in the tile, in both frames. */
 export const ORIGIN = { x: 26, y: 53 } as const;
 

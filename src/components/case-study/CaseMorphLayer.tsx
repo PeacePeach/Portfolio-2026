@@ -6,6 +6,7 @@ import { endCaseMorph, morphElapsed, morphTiming as T, useCaseMorph, type CaseMo
 import { neo } from "@/components/scenes/neo-advance/frames";
 import { NeoHero } from "./neo-advance/NeoHero";
 import { AnalyticsMorph } from "./reimagining-analytics/AnalyticsMorph";
+import { BeaconMorph } from "./brightcove-beacon/BeaconMorph";
 import { HERO, HERO_MIN_UNIT, PRIMARY, PRIMARY_PHONE, SCREEN_SHADOW } from "./neo-advance/hero";
 
 /** The Work tile's design size: its CoverSheet sits 23 px in, in 375-wide phone pixels. */
@@ -32,7 +33,9 @@ const mix = (a: number, b: number, t: number) => a + (b - a) * t;
 export function CaseMorphLayer() {
   const m = useCaseMorph();
   if (!m) return null;
-  return m.slug === "reimagining-analytics" ? <AnalyticsMorph key={m.start} m={m} /> : <Morph key={m.start} m={m} />;
+  if (m.slug === "reimagining-analytics") return <AnalyticsMorph key={m.start} m={m} />;
+  if (m.slug === "brightcove-beacon") return <BeaconMorph key={m.start} m={m} />;
+  return <Morph key={m.start} m={m} />;
 }
 
 function Morph({ m }: { m: CaseMorph }) {

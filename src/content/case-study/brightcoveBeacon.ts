@@ -11,14 +11,6 @@ import type { PersonaQuoteData } from "@/components/case-study/shared/PersonaQuo
 import type { ReflectionData } from "@/components/case-study/templates/ReflectionTemplate";
 import type { FollowUpData } from "@/components/case-study/templates/FollowUpTemplate";
 
-/** Brightcove Beacon hero (Figma 924:1766, top 720 px): the angled screen collage, exported as one image. */
-export const brightcoveBeaconHero = {
-  src: "/case-studies/brightcove-beacon/hero.jpg",
-  alt: "Beacon screens laid out at an angle: the welcome page, a page type picker, a monetization modal and the movie library",
-  width: 2560,
-  height: 1440,
-} satisfies ImageRef;
-
 /** Brightcove Beacon intro (Figma 924:1807, 924:1795): title, copy and facts. */
 export const brightcoveBeaconIntro = {
   title: "Brightcove Beacon",

@@ -13,6 +13,7 @@ import { MutexaAnimation } from "@/components/scenes/mutexa/MutexaAnimation";
 import { BeaconAnalyticsAnimation } from "@/components/scenes/beacon-analytics/BeaconAnalyticsAnimation";
 import { BrightcoveAnimation } from "@/components/scenes/brightcove/BrightcoveAnimation";
 import { HERO_IMAGES } from "@/components/case-study/neo-advance/hero";
+import { BEACON_HERO_IMAGES } from "@/components/case-study/brightcove-beacon/hero";
 import { markCaseFade, morphTargets, morphTiming, startCaseMorph } from "@/lib/caseMorph";
 
 /** Every scene is a 422 × 314 Figma tile. */
@@ -26,12 +27,13 @@ const scenes = {
 
 const tagLabel = (id: string) => caseStudyFilters.find((f) => f.id === id)?.label ?? id;
 
-let preloaded = false;
+const heroImages: Record<string, readonly string[]> = { "neo-advance": HERO_IMAGES, "brightcove-beacon": BEACON_HERO_IMAGES };
+const preloaded = new Set<string>();
 /** Warm the case study hero's screens so they are decoded before the transition shows them. */
-function preloadHero() {
-  if (preloaded) return;
-  preloaded = true;
-  for (const src of HERO_IMAGES) {
+function preloadHero(slug: string) {
+  if (preloaded.has(slug)) return;
+  preloaded.add(slug);
+  for (const src of heroImages[slug] ?? []) {
     const img = new window.Image();
     img.src = src;
     img.decode().catch(() => {});
@@ -86,7 +88,7 @@ export function ProjectCard({ project, revealed = false, className = "aspect-[42
       href={href}
       onClick={open}
       onPointerEnter={(e) => {
-        if (morphs) preloadHero();
+        if (morphs) preloadHero(project.slug);
         if (e.pointerType === "mouse") setHovered(true);
       }}
       onPointerLeave={() => setHovered(false)}

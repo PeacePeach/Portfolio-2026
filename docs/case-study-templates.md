@@ -8,7 +8,7 @@ Central system: `src/components/case-study/`. Preview catalog: `/case-study-temp
 | Interactions | `shared/tell-me-about-it/` | `TellMeAboutIt` (below) |
 | Templates | `templates/` | Structure only |
 | Content | `src/content/case-study/`, `src/content/neoAdvance.ts` | Copy and config (`neoAdvance.ts`, `reimaginingAnalytics.ts`, `templateExamples.ts`) |
-| Project visuals | `neo-advance/`, `reimagining-analytics/` | Only the custom hero artwork and the Work → case morph (`NeoHero`, `AnalyticsHero`, `AnalyticsMorph`) |
+| Project visuals | `neo-advance/`, `reimagining-analytics/`, `brightcove-beacon/` | Only the custom hero artwork and the Work → case morph (`NeoHero`, `AnalyticsHero`, `AnalyticsMorph`, `BeaconHero`, `BeaconMorph`); each hero band is painted in its Work tile's background colour |
 
 ## Where things go
 
@@ -53,7 +53,7 @@ Case-study chapters use `CaseStudyChapterHeader` (`## _ CHAPTER TITLE`, dotted d
 
 The top of a case study: the project's hero band (`hero`, any node), then `IntroTemplate`, then the page's chapters (`children`) in `container-page`. The shell places the hero under the nav bar and keeps it hidden while the Work → case morph layer still covers it; the intro text rises in last (`morphTiming`). Contract: `{ hero, intro: IntroData, children }`. The hero artwork itself stays project-specific.
 
-Used by Neo Advance (`<NeoHero />`, `neoAdvanceIntro`), Reimagining Analytics (`<AnalyticsHero />`, `reimaginingAnalyticsIntro`) and Brightcove Beacon (an exported hero image, `brightcoveBeaconHero` and `brightcoveBeaconIntro`).
+Used by Neo Advance (`<NeoHero />`, `neoAdvanceIntro`), Reimagining Analytics (`<AnalyticsHero />`, `reimaginingAnalyticsIntro`) and Brightcove Beacon (`<BeaconHero />`, `brightcoveBeaconIntro`).
 
 ## IntroTemplate
 
