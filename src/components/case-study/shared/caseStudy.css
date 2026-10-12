@@ -126,5 +126,6 @@
 .cs-slides-stage { top: calc(var(--spacing-header-bar) + var(--spacing) * 5); }
 .cs-slides-viewport { position: relative; margin-top: var(--cs-content-top); margin-right: calc(var(--spacing-margin) * -1); overflow: hidden; }
 .cs-slides-track { display: flex; gap: var(--cs-slide-gap); }
-.cs-slide { flex-shrink: 0; width: min(var(--cs-slide-width), 100% - var(--cs-slides-fade-width) / 2); }
+/* Pinned slides also narrow to --cs-slide-fit-width (set from the screen height) so the bottom never clips. */
+.cs-slide { flex-shrink: 0; width: min(var(--cs-slide-width), 100% - var(--cs-slides-fade-width) / 2, var(--cs-slide-fit-width, 100vw)); }
 .cs-slides-fade { position: absolute; inset-block: 0; right: 0; width: var(--cs-slides-fade-width); background: linear-gradient(to right, transparent, var(--color-background)); pointer-events: none; }

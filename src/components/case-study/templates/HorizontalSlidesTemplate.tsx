@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import Image from "next/image";
 import { motion, useMotionValue, useReducedMotion } from "motion/react";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
@@ -60,8 +60,13 @@ function Slides({ label, slides, compact }: { label: string; slides: readonly Ho
   const pinned = usePinned();
   const [index, setIndex] = useState(0);
   const [step, setStep] = useState(0);
+  const [fit, setFit] = useState<number>();
   const outer = useRef<HTMLDivElement>(null);
+  const stage = useRef<HTMLDivElement>(null);
+  const viewport = useRef<HTMLDivElement>(null);
   const first = useRef<HTMLDivElement>(null);
+  // Tallest slide (height / width) decides how wide slides may be on a short screen.
+  const tallest = Math.max(...slides.map(slide => slide.image.height / slide.image.width));
 
   useEffect(() => {
     if (!pinned) return;
@@ -81,7 +86,14 @@ function Slides({ label, slides, compact }: { label: string; slides: readonly Ho
       if (slide && next) setStep(next.offsetLeft - slide.offsetLeft);
     };
     const schedule = () => { if (!frame) frame = requestAnimationFrame(update); };
-    const resize = () => { measure(); schedule(); };
+    // Slides shrink so the tallest ends SLIDES_BOTTOM_GAP above the screen's bottom edge while pinned.
+    const fitHeight = () => {
+      if (!stage.current || !viewport.current) return;
+      const top = parseFloat(getComputedStyle(stage.current).top) || 0;
+      const offset = viewport.current.getBoundingClientRect().top - stage.current.getBoundingClientRect().top;
+      setFit(Math.max(0, window.innerHeight - top - offset - SLIDES_BOTTOM_GAP) / tallest);
+    };
+    const resize = () => { fitHeight(); measure(); schedule(); };
     resize();
     window.addEventListener("scroll", schedule, { passive: true });
     window.addEventListener("resize", resize);
@@ -90,7 +102,14 @@ function Slides({ label, slides, compact }: { label: string; slides: readonly Ho
       window.removeEventListener("scroll", schedule);
       window.removeEventListener("resize", resize);
     };
-  }, [pinned, slides.length]);
+  }, [pinned, slides.length, tallest]);
+
+  // Re-measure the pitch once a new fitted width has rendered.
+  useEffect(() => {
+    const slide = first.current;
+    const next = slide?.nextElementSibling as HTMLElement | null;
+    if (pinned && slide && next) setStep(next.offsetLeft - slide.offsetLeft);
+  }, [pinned, fit]);
 
   if (!pinned) {
     return <section aria-label={label} style={tokens} className="cs-rules cs-section">
@@ -107,7 +126,7 @@ function Slides({ label, slides, compact }: { label: string; slides: readonly Ho
   return <section aria-label={label} style={tokens} className="cs-rules cs-section">
     {/* One viewport of scroll per slide while the stage stays pinned. */}
     <div ref={outer} style={{ height: `${slides.length * 100}svh` }}>
-      <div className="cs-slides-stage sticky">
+      <div ref={stage} className="cs-slides-stage sticky">
         <ScrollReveal>
           {/* Every slide's text shares one grid cell (hidden), so the tallest sets the height and slides never shift. */}
           <div className="cs-slides-text grid" aria-live="polite">
@@ -118,7 +137,7 @@ function Slides({ label, slides, compact }: { label: string; slides: readonly Ho
               </CaseStudyContentSwap>
             </div>
           </div>
-          <div className="cs-slides-viewport">
+          <div ref={viewport} className="cs-slides-viewport" style={fit ? { "--cs-slide-fit-width": `${fit}px` } as CSSProperties : undefined}>
             <motion.div className="cs-slides-track" animate={{ x: -index * step }} transition={timing.slide}>
               {slides.map((slide, i) => <div key={slide.id} ref={i === 0 ? first : undefined} aria-hidden={i !== index} className="cs-slide">
                 <SlideImage slide={slide} />
@@ -131,6 +150,9 @@ function Slides({ label, slides, compact }: { label: string; slides: readonly Ho
     </div>
   </section>;
 }
+
+/** Space kept between a pinned slide's bottom edge and the bottom of the screen. */
+const SLIDES_BOTTOM_GAP = 48;
 
 function SlideImage({ slide }: { slide: HorizontalSlide }) {
   return <div className="overflow-hidden rounded-image border border-border-default">

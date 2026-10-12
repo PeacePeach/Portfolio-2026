@@ -139,7 +139,7 @@ Used by Neo Advance (`neoAdvanceClosing`) and Reimagining Analytics (`reimaginin
 
 `templates/TwoColumnTextTemplate.tsx` · Figma `83:3445` · Preview `/case-study-templates/two-column-text`
 
-Contract: `title?` and `columns: [column, column]`. `title` adds a centred Display title 64px above both columns, which narrow to 280px and sit 48px apart (Figma `114:2736` scaled to the 16px body) (Figma `114:2736`, Brightcove Beacon customer problem). Each column is either static story text `{ label?, title, body }` (rendered with `StoryTextBlock`) or `{ tellMeAboutIt: TellMeAboutItData }`. One layout covers static + static and static + interactive. Columns use the site scroll reveal with the case-study stagger, stack into one column (at most 400px wide) when two fixed columns don't fit, and omit the label gap when no label is given.
+Contract: `title?` and `columns: [column, column]`. `title` adds a centred Display title 16px above both columns (`--cs-story-body-gap`, as a story title to its body), which narrow to 280px and sit 48px apart (Figma `114:2736` scaled to the 16px body) (Figma `114:2736`, Brightcove Beacon customer problem). Each column is either static story text `{ label?, title, body }` (rendered with `StoryTextBlock`) or `{ tellMeAboutIt: TellMeAboutItData }`. One layout covers static + static and static + interactive. Columns use the site scroll reveal with the case-study stagger, stack into one column (at most 400px wide) when two fixed columns don't fit, and omit the label gap when no label is given.
 
 Used by Neo Advance early discovery, concept exploration, hi-fi exploration and closing (`neoAdvanceEarlyDiscovery`, `neoAdvanceConceptExploration`, `neoAdvanceHiFiExploration`) and, through `FollowUpTemplate`, every closing follow-up.
 

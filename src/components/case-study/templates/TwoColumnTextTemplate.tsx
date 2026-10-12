@@ -10,7 +10,7 @@ import { caseStudyType } from "../shared/caseStudyTokens";
 export type TwoColumnTextColumn = StoryTextBlockData | { tellMeAboutIt: TellMeAboutItData } | { upNext: { after: string } };
 
 export type TwoColumnTextData = {
-  /** Optional Display title centred 64px above two 280px columns 48px apart (Figma 114:2736). */
+  /** Optional Display title centred 16px above two 280px columns (the story title-to-body gap) 48px apart (Figma 114:2736). */
   title?: string;
   columns: readonly [TwoColumnTextColumn, TwoColumnTextColumn];
 };
@@ -24,7 +24,7 @@ export function TwoColumnTextTemplate({ title, columns }: TwoColumnTextData) {
     {"tellMeAboutIt" in column ? <TellMeAboutIt {...column.tellMeAboutIt} /> : "upNext" in column ? <UpNext after={column.upNext.after} /> : <StoryTextBlock {...column} />}
   </CaseStudyTextReveal>);
   if (!title) return <section className="cs-rules cs-section cs-text-columns" style={caseStudyTokens}>{cells}</section>;
-  return <section className="cs-rules cs-section flex flex-col gap-(--cs-content-top)" style={{ ...caseStudyTokens, ...titledColumnTokens }}>
+  return <section className="cs-rules cs-section flex flex-col gap-(--cs-story-body-gap)" style={{ ...caseStudyTokens, ...titledColumnTokens }}>
     <CaseStudyTextReveal><h2 className={`${caseStudyType.storyTitle} text-center`}>{title}</h2></CaseStudyTextReveal>
     <div className="cs-text-columns">{cells}</div>
   </section>;
