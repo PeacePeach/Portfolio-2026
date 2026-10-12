@@ -41,10 +41,10 @@ export const brightcoveBeaconImpact = {
 
 const img = (name: string, alt: string, width: number, height: number): ImageRef => ({ src: `/case-studies/brightcove-beacon/${name}`, alt, width, height });
 
-/** Chapter 1, "The World of Xstream.ly" (Figma 114:282): static text beside the team map in a bordered card (the source image of 117:325, transparent background). */
+/** Chapter 1, "The World of Xstream.ly" (Figma 114:282): static text beside the team map, no card border (the source image of 117:325, transparent background). */
 export const brightcoveBeaconContext = {
   label: "The World of Xstream.ly",
-  imageLayout: "separate",
+  imageLayout: "plain",
   steps: [{
     id: "beacon-context",
     title: "The World of Xstream.ly",
@@ -86,6 +86,15 @@ export const brightcoveBeaconRoles = {
         "persona-sharyn.jpg",
         "Persona card for Sharyn, Content Producer at Xstream.ly: current tools, aptitude and altitude, responsibilities, goals, needs and pain points",
         1818, 1028,
+      ),
+    },
+    {
+      id: "persona-brandon",
+      title: "Brandon, Pricing Manager",
+      image: img(
+        "persona-brandon-card.jpg",
+        "Persona card for Brandon, Pricing Manager at Xstream.ly: current tools, aptitude and altitude, responsibilities, goals, needs and pain points",
+        1818, 1058,
       ),
     },
   ],

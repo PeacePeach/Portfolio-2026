@@ -52,7 +52,7 @@ type Opened = { title: string; image: NarrativeImage & { full: NonNullable<Narra
 
 /**
  * Text pinned beside scrolling images. Several steps roll: the pinned text
- * swaps as each step's images reach it. One step keeps its text static.
+ * swaps as each step's images reach it. One step keeps its text static; one image unpins the text and centres it on the image.
  */
 export function NarrativeTemplate({ label, steps, imageLayout = "joined" }: NarrativeData) {
   const reduce = useReducedMotion();
@@ -66,6 +66,8 @@ export function NarrativeTemplate({ label, steps, imageLayout = "joined" }: Narr
   const allImages = steps.flatMap(imagesOf);
   // Pill-labelled images read as blocks: 16px pill to image, 32px within a step, 64px between steps.
   const labelled = allImages.some(image => image.pill);
+  // One image: nothing to scroll through, so the text stays put, vertically centred on the image.
+  const single = allImages.length === 1 && !screens;
 
   function open(button: HTMLButtonElement, title: string, image: NarrativeImage) {
     if (!image.full) return;
@@ -81,7 +83,7 @@ export function NarrativeTemplate({ label, steps, imageLayout = "joined" }: Narr
   return (
     <section aria-label={label} style={caseStudyTokens} className="cs-rules cs-section mx-auto w-full max-w-[1152px]">
       <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,320fr)_minmax(0,704fr)] lg:gap-x-32">
-        <StickyNarrativeText id={step.id} label={step.label} title={step.title} body={step.body} text={step.text} action={step.details && zoomTarget && (
+        <StickyNarrativeText still={single} id={step.id} label={step.label} title={step.title} body={step.body} text={step.text} action={step.details && zoomTarget && (
           <DetailsButton label={step.details} onClick={button => open(button, step.title, zoomTarget)} />
         )} />
         <div ref={stack} className={`min-w-0 ${joined ? "lg:rounded-[20px] lg:bg-surface" : ""} ${imageLayout === "separate" ? `lg:flex lg:flex-col ${labelled ? "lg:gap-16" : "lg:gap-4"}` : ""} ${screens ? "flex flex-col gap-12 lg:gap-10.5" : ""}`}>
@@ -99,7 +101,7 @@ export function NarrativeTemplate({ label, steps, imageLayout = "joined" }: Narr
                     layout={imageLayout}
                     first={image === allImages[0]}
                     last={image === allImages[allImages.length - 1]}
-                    scaleEnabled={joined && desktop && !reduce}
+                    scaleEnabled={joined && desktop && !reduce && !single}
                     onOpen={button => open(button, s.title, image)}
                   />
                 ))}
@@ -114,10 +116,10 @@ export function NarrativeTemplate({ label, steps, imageLayout = "joined" }: Narr
 }
 
 /** Desktop-only sticky column: the active text swaps with the site swap motion. */
-export function StickyNarrativeText({ id, label, title, body, text, action }: { id: string; label?: string; title: string; body?: string; text?: ReactNode; action?: ReactNode }) {
+export function StickyNarrativeText({ id, label, title, body, text, action, still }: { id: string; label?: string; title: string; body?: string; text?: ReactNode; action?: ReactNode; /** Not sticky; centred against the image column. */ still?: boolean }) {
   const reduce = useReducedMotion();
   return (
-    <div className="hidden min-w-0 self-start lg:sticky lg:top-[calc(var(--spacing-header)+1.875rem)] lg:block" data-narrative-sticky>
+    <div className={`hidden min-w-0 lg:block ${still ? "self-center" : "self-start lg:sticky lg:top-[calc(var(--spacing-header)+1.875rem)]"}`} data-narrative-sticky>
       <ScrollReveal>
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
