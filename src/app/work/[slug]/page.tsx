@@ -10,7 +10,8 @@ import { AnalyticsHero } from "@/components/case-study/reimagining-analytics/Ana
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { CaseIntroTemplate } from "@/components/case-study/templates/CaseIntroTemplate";
 import { MediaRowTemplate } from "@/components/case-study/templates/MediaRowTemplate";
-import { TwoColumnTextTemplate } from "@/components/case-study/templates/TwoColumnTextTemplate";
+import { TwoColumnTextTemplate, type TwoColumnTextData } from "@/components/case-study/templates/TwoColumnTextTemplate";
+import { StoryTextBlock } from "@/components/case-study/shared/StoryTextBlock";
 import { FollowUpTemplate } from "@/components/case-study/templates/FollowUpTemplate";
 import { SimpleSectionTemplate } from "@/components/case-study/templates/SimpleSectionTemplate";
 import { ImpactTemplate } from "@/components/case-study/templates/ImpactTemplate";
@@ -194,9 +195,15 @@ async function CaseStudyContent({ params }: PageProps<"/work/[slug]">) {
           <ImpactTemplate {...brightcoveBeaconImpact} className="mt-24" />
           <section aria-labelledby="beacon-users">
             <CaseStudyChapterHeader id="beacon-users">01 _ USERS AND WORKFLOWS</CaseStudyChapterHeader>
-            <NarrativeTemplate {...brightcoveBeaconContext} />
+            <NarrativeTemplate {...brightcoveBeaconContext} steps={brightcoveBeaconContext.steps.map(step => ({ ...step, text: <StoryTextBlock title={step.title} body={step.body} /> }))} />
             <ScrollReveal as="hr" className="border-line" />
-            <SimpleSectionTemplate {...brightcoveBeaconProblem} />
+            <TwoColumnTextTemplate
+              title={brightcoveBeaconProblem.title}
+              columns={brightcoveBeaconProblem.columns.map(({ title, body }) => ({
+                title,
+                text: <p className="type-body-m text-secondary">{body.split(/\[(.+?)\]/).map((part, i) => i % 2 ? <strong key={i} className="font-normal text-primary">{part}</strong> : part)}</p>,
+              })) as unknown as TwoColumnTextData["columns"]}
+            />
             <ScrollReveal as="hr" className="border-line" />
             <HorizontalSlidesTemplate {...brightcoveBeaconRoles} />
             {([

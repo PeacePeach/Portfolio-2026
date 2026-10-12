@@ -7,7 +7,7 @@ import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { StoryTextBlock } from "../shared/StoryTextBlock";
 import { CaseStudyContentSwap } from "../shared/CaseStudyMotion";
 import { caseStudyMotion } from "../shared/caseStudyMotion";
-import { caseStudyTokens } from "../shared/caseStudyTokens";
+import { caseStudyTokens, caseStudyCompactTokens } from "../shared/caseStudyTokens";
 
 export type HorizontalSlide = {
   id: string;
@@ -25,7 +25,7 @@ export type HorizontalArtifact = { src: string; alt: string; width: number; heig
  * `slides`: a pinned slideshow, one whole slide and its text per viewport of scroll (Figma 89:5440).
  * `artifact`: one long image that pins and moves sideways continuously with scroll (Figma 79:1979).
  */
-export type HorizontalSlidesData = { label: string } & (
+export type HorizontalSlidesData = { label: string; /** Halves the text-to-slides gap (64px to 32px). */ compact?: boolean } & (
   | { slides: readonly HorizontalSlide[]; artifact?: never }
   | { artifact: HorizontalArtifact; slides?: never }
 );
@@ -50,10 +50,11 @@ function usePinned() {
  * slide's. Mobile and reduced motion: slides stack with their text. Artifact: see `ArtifactScroller`.
  */
 export function HorizontalSlidesTemplate(props: HorizontalSlidesData) {
-  return props.artifact ? <ArtifactScroller label={props.label} artifact={props.artifact} /> : <Slides label={props.label} slides={props.slides} />;
+  return props.artifact ? <ArtifactScroller label={props.label} artifact={props.artifact} /> : <Slides label={props.label} slides={props.slides} compact={props.compact} />;
 }
 
-function Slides({ label, slides }: { label: string; slides: readonly HorizontalSlide[] }) {
+function Slides({ label, slides, compact }: { label: string; slides: readonly HorizontalSlide[]; compact?: boolean }) {
+  const tokens = compact ? { ...caseStudyTokens, ...caseStudyCompactTokens } : caseStudyTokens;
   const reduce = useReducedMotion();
   const timing = caseStudyMotion(reduce);
   const pinned = usePinned();
@@ -92,7 +93,7 @@ function Slides({ label, slides }: { label: string; slides: readonly HorizontalS
   }, [pinned, slides.length]);
 
   if (!pinned) {
-    return <section aria-label={label} style={caseStudyTokens} className="cs-rules cs-section">
+    return <section aria-label={label} style={tokens} className="cs-rules cs-section">
       <div className="flex flex-col gap-(--cs-section-gap)">
         {slides.map(slide => <ScrollReveal key={slide.id} className="flex flex-col gap-(--cs-content-top)">
           <div className="cs-slides-text"><StoryTextBlock heading="section" title={slide.title} body={slide.body} text={slide.text} /></div>
@@ -103,7 +104,7 @@ function Slides({ label, slides }: { label: string; slides: readonly HorizontalS
   }
 
   const active = slides[index];
-  return <section aria-label={label} style={caseStudyTokens} className="cs-rules cs-section">
+  return <section aria-label={label} style={tokens} className="cs-rules cs-section">
     {/* One viewport of scroll per slide while the stage stays pinned. */}
     <div ref={outer} style={{ height: `${slides.length * 100}svh` }}>
       <div className="cs-slides-stage sticky">

@@ -77,7 +77,7 @@ Text components for the slot live in `shared/`:
 
 `templates/SimpleSectionTemplate.tsx` · Figma `135:1453` · Preview `/case-study-templates/simple-section`
 
-Contract: `StoryTextBlock` data (`label?`, `title`, `body`, `heading?`) plus `align` and a `variant`. `align: "center"` (default) centres a 400px `StoryTextBlock`; `align: "left"` puts a 561px one on the content's left edge (Figma `150:4909`). `inset` (from 1280px) moves text and content 128px in from each side (`--cs-section-inset`, Figma `43:215`), for screenshots that shouldn't fill the page width. Either sits above full-width content: 96px from the dividers above and below, 64px from text to content. Text uses the case-study text reveal.
+Contract: `StoryTextBlock` data (`label?`, `title`, `body`, `heading?`) plus `align` and a `variant`. `align: "center"` (default) centres a 400px `StoryTextBlock`; `align: "left"` puts a 561px one on the content's left edge (Figma `150:4909`). `inset` (from 1280px) moves text and content 128px in from each side (`--cs-section-inset`, Figma `43:215`), for screenshots that shouldn't fill the page width. Either sits above full-width content: 96px from the dividers above and below, 64px from text to content. `compact` halves text to content to 32px (`--cs-content-top-compact`). Text uses the case-study text reveal.
 
 | `variant` | Content | Config |
 | --- | --- | --- |
@@ -90,7 +90,7 @@ Used by Reimagining Analytics (`reimaginingAnalyticsReframing`, `before-after`; 
 
 `templates/HorizontalSlidesTemplate.tsx` · Figma `89:5440` · Preview `/case-study-templates/horizontal-slides`
 
-Contract: `{ label, slides: [{ id, title, body, image: { src, alt, width, height } }] }`. A 696px section-title `StoryTextBlock` (12px title to body) over 879px slides, 16px apart, 64px below the text; the track bleeds to the right viewport edge and a 337px fade covers the next slide's peek. Images use `radius-image` and `border-default`.
+Contract: `{ label, compact?, slides: [{ id, title, body, image: { src, alt, width, height } }] }`. A 696px section-title `StoryTextBlock` (12px title to body) over 879px slides, 16px apart, 64px below the text (32px with `compact`); the track bleeds to the right viewport edge and a 337px fade covers the next slide's peek. Images use `radius-image` and `border-default`.
 
 Desktop (≥1024px): the stage pins 20px under the nav bar for one viewport of scroll per slide. Each share of that scroll moves one whole slide in (`caseStudyMotion().slide`: site `duration.slow`, `ease.inOutQuart`), never part-way, and the text above swaps to that slide's with `CaseStudyContentSwap`. Mobile and reduced motion: slides stack, each under its own text.
 
@@ -139,7 +139,7 @@ Used by Neo Advance (`neoAdvanceClosing`) and Reimagining Analytics (`reimaginin
 
 `templates/TwoColumnTextTemplate.tsx` · Figma `83:3445` · Preview `/case-study-templates/two-column-text`
 
-Contract: `columns: [column, column]`, where each column is either static story text `{ label?, title, body }` (rendered with `StoryTextBlock`) or `{ tellMeAboutIt: TellMeAboutItData }`. One layout covers static + static and static + interactive. Columns use the site scroll reveal with the case-study stagger, stack into one column (at most 400px wide) when two fixed columns don't fit, and omit the label gap when no label is given.
+Contract: `title?` and `columns: [column, column]`. `title` adds a centred Heading M section title 32px (`--cs-content-top-compact`) above both columns (Figma `114:2736`, Brightcove Beacon customer problem). Each column is either static story text `{ label?, title, body }` (rendered with `StoryTextBlock`) or `{ tellMeAboutIt: TellMeAboutItData }`. One layout covers static + static and static + interactive. Columns use the site scroll reveal with the case-study stagger, stack into one column (at most 400px wide) when two fixed columns don't fit, and omit the label gap when no label is given.
 
 Used by Neo Advance early discovery, concept exploration, hi-fi exploration and closing (`neoAdvanceEarlyDiscovery`, `neoAdvanceConceptExploration`, `neoAdvanceHiFiExploration`) and, through `FollowUpTemplate`, every closing follow-up.
 

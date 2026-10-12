@@ -28,7 +28,9 @@ export const caseStudyTokens: CSSProperties & Record<`--cs-${string}`, string> =
   "--cs-tab-radius": radius.control,
   "--cs-tab-gap": "calc(var(--spacing) * 1.5)",
   "--cs-tab-padding": "calc(var(--spacing) * 8)",
+  // Title to content below it: default 64px; `compact` sections use half (32px).
   "--cs-content-top": "calc(var(--spacing) * 16)",
+  "--cs-content-top-compact": "calc(var(--spacing) * 8)",
   "--cs-title-description-gap": "calc(var(--spacing) * 3)",
   "--cs-header-evidence-gap": "calc(var(--spacing) * 16)",
   "--cs-column-gap": "calc(var(--spacing) * 12)",
@@ -111,3 +113,6 @@ export const caseStudyType = {
   storyBody: "type-body-m",
   quote: "type-body-m-italic",
 } as const;
+
+/** Swaps the title-to-content gap to `--cs-content-top-compact` for a `compact` section. */
+export const caseStudyCompactTokens = { "--cs-content-top": "var(--cs-content-top-compact)" } as CSSProperties;
