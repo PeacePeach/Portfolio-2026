@@ -56,7 +56,7 @@ export function NarrativeTemplate({ label, steps, imageLayout = "joined" }: Narr
   const step = steps[active] ?? steps[0];
   const joined = imageLayout === "joined";
   const allImages = steps.flatMap(s => s.images);
-  // Pill-labelled images read as separate blocks: 48px between blocks, 16px from pill to image.
+  // Pill-labelled images read as blocks: 16px pill to image, 32px within a step, 64px between steps.
   const labelled = allImages.some(image => image.pill);
 
   function open(button: HTMLButtonElement, title: string, image: NarrativeImage) {
@@ -76,13 +76,13 @@ export function NarrativeTemplate({ label, steps, imageLayout = "joined" }: Narr
         <StickyNarrativeText id={step.id} label={step.label} title={step.title} body={step.body} action={step.details && zoomTarget && (
           <DetailsButton label={step.details} onClick={button => open(button, step.title, zoomTarget)} />
         )} />
-        <div ref={stack} className={`min-w-0 ${joined ? "lg:rounded-[20px] lg:bg-surface" : ""} ${imageLayout === "separate" ? `lg:flex lg:flex-col ${labelled ? "lg:gap-12" : "lg:gap-4"}` : ""}`}>
+        <div ref={stack} className={`min-w-0 ${joined ? "lg:rounded-[20px] lg:bg-surface" : ""} ${imageLayout === "separate" ? `lg:flex lg:flex-col ${labelled ? "lg:gap-16" : "lg:gap-4"}` : ""}`}>
           {steps.map(s => (
             <div key={s.id} data-narrative-step={s.id} className="mb-12 lg:mb-0">
               <ScrollReveal className="mb-6 lg:hidden">
                 <StoryTextBlock heading="section" label={s.label} title={s.title} body={s.body} />
               </ScrollReveal>
-              <div className={imageLayout === "separate" ? `flex flex-col ${labelled ? "gap-12" : "gap-4"}` : ""}>
+              <div className={imageLayout === "separate" ? `flex flex-col ${labelled ? "gap-8" : "gap-4"}` : ""}>
                 {s.images.map(image => (
                   <NarrativeFrame
                     key={image.src}

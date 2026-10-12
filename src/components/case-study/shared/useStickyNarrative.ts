@@ -4,8 +4,8 @@ import { useEffect, useState, type RefObject } from "react";
 
 /**
  * Sticky-text-beside-scrolling-visuals behavior: on desktop, the active index is
- * the last child of `stack` whose top has reached the middle of the viewport, so
- * the pinned text changes as the next visual takes over the screen.
+ * the last child of `stack` whose top has reached halfway between the pinned text
+ * (`[data-narrative-sticky]`) and the middle of the viewport.
  */
 export function useStickyNarrative(stack: RefObject<HTMLElement | null>) {
   const [desktop, setDesktop] = useState(false);
@@ -26,9 +26,11 @@ export function useStickyNarrative(stack: RefObject<HTMLElement | null>) {
       frame = 0;
       const bounds = Array.from(stack.current?.children ?? []).map(node => node.getBoundingClientRect());
       if (!bounds.length) return;
-      // Switch when the next visual's top reaches the middle of the viewport, so the
-      // text changes as that visual becomes the main thing on screen.
-      const line = window.innerHeight / 2;
+      // Switch when the next visual's top reaches halfway between the pinned text
+      // and the middle of the viewport: not as late as the text, not as early as the middle.
+      const sticky = stack.current?.parentElement?.querySelector("[data-narrative-sticky]");
+      const top = sticky?.getBoundingClientRect().top ?? window.innerHeight * 0.2;
+      const line = (top + window.innerHeight / 2) / 2;
       const passed = bounds.filter(rect => rect.top <= line).length;
       setActive(Math.max(0, passed - 1));
     };
