@@ -3,7 +3,6 @@ import type { SimpleSectionData } from "@/components/case-study/templates/Simple
 import type { ImageRef } from "@/content/types";
 import type { NarrativeData } from "@/components/case-study/templates/NarrativeTemplate";
 import type { ImpactData } from "@/components/case-study/templates/ImpactTemplate";
-import type { ReflectionData } from "@/components/case-study/templates/ReflectionTemplate";
 import type { FollowUpData } from "@/components/case-study/templates/FollowUpTemplate";
 import type { StatCircleData } from "@/components/case-study/shared/StatCircles";
 
@@ -139,12 +138,6 @@ export const mutexaIterations = {
   ],
 } satisfies NarrativeData;
 
-/** Reflection after chapter 01's iterations, as the other case studies' reflections. */
-export const mutexaReflection: ReflectionData = {
-  headline: "The right autonomy for the situation.",
-  body: "At Mutexa, I started by exploring how much of the scientific workflow AI could automate. But through research and prototyping, I realized that more autonomy wasn't always better. AI could propose workflows, tools, and parameters, while scientists needed to retain control over critical decisions.\n\nThe most intelligent AI isn't the one that takes over the most. It's the one that knows when to lead, when to step back, and when to leave judgment to humans.",
-};
-
 /** Figma Slides 187:3489: Story 2 copy over the tool landscape (187:3505), a transparent diagram. */
 export const mutexaExpertise = {
   label: "Story 2",
@@ -200,8 +193,8 @@ export const mutexaAnomalyTypes: ImageRef = discovery(
 export const mutexaResponseStates: ImageRef = discovery(
   "response-states",
   "Four HTP Copilot responses: Block with how-to-fix steps, Recover with a suggested fix, Warn with model confidence and things to check, and Explore with suggested analyses",
-  1396,
-  872,
+  1874,
+  1182,
 );
 
 /** Figma Slides 187:3533, 187:3538: rolling steps beside separate screens, as `mutexaIterations`. */

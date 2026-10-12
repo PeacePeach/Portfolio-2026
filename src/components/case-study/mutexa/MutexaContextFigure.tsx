@@ -17,7 +17,7 @@ export function MutexaContextFigure({ figure }: { figure: typeof mutexaContextFi
           <Image src={figure.src} alt={figure.alt} width={figure.width} height={figure.height} unoptimized className="block h-auto w-full" />
           <figcaption>
             {figure.steps.map((s) => (
-              <p key={s.caption} className="absolute top-[65.7%] w-[26.5%] -translate-x-1/2 type-body-m text-center text-secondary" style={{ left: `${s.x}%` }}>
+              <p key={s.caption} className="absolute top-[58.5%] w-[26.5%] -translate-x-1/2 type-body-m text-center text-secondary" style={{ left: `${s.x}%` }}>
                 {s.caption}
               </p>
             ))}

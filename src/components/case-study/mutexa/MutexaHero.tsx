@@ -83,6 +83,8 @@ function Card({
           transform: `rotate(${TILT}deg)`,
           borderRadius: c.rounded ? u(CARD_RADIUS) : undefined,
           border: c.framed ? `${u(8)} solid #fff` : undefined,
+          // White behind the image too, so no band shows through at the frame's inner edge.
+          background: c.framed ? "#fff" : undefined,
         }}
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
