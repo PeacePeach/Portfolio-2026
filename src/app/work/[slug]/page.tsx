@@ -16,11 +16,15 @@ import { AnalyticsCaseIntro } from "@/components/case-study/reimagining-analytic
 import { SimpleSectionTemplate } from "@/components/case-study/templates/SimpleSectionTemplate";
 import { ImpactTemplate } from "@/components/case-study/templates/ImpactTemplate";
 import { NarrativeTemplate } from "@/components/case-study/templates/NarrativeTemplate";
+import { BeforeAfterTemplate } from "@/components/case-study/templates/BeforeAfterTemplate";
+import { caseStudyTokens } from "@/components/case-study/shared/caseStudyTokens";
 import { CaseStudyChapterHeader } from "@/components/case-study/shared/CaseStudyChapterHeader";
 import { neoAdvanceImpact } from "@/content/neoAdvance";
 import {
   reimaginingAnalyticsImpact,
   reimaginingAnalyticsPatterns,
+  reimaginingAnalyticsRolesIntro,
+  reimaginingAnalyticsRoles,
   reimaginingAnalyticsPatternsIntro,
   reimaginingAnalyticsProblem,
   reimaginingAnalyticsReframing,
@@ -134,10 +138,18 @@ async function CaseStudyContent({ params }: PageProps<"/work/[slug]">) {
             <NarrativeTemplate {...reimaginingAnalyticsStrategy} />
           </section>
           <section aria-labelledby="analytics-patterns">
-            <CaseStudyChapterHeader id="analytics-patterns">03 _ UX GOAL 2</CaseStudyChapterHeader>
+            <CaseStudyChapterHeader id="analytics-patterns">03 _ DESIGN SYSTEM</CaseStudyChapterHeader>
             <SimpleSectionTemplate {...reimaginingAnalyticsPatternsIntro} />
             <ScrollReveal as="hr" className="border-line" />
             <NarrativeTemplate {...reimaginingAnalyticsPatterns} />
+          </section>
+          <section aria-labelledby="analytics-roles">
+            <CaseStudyChapterHeader id="analytics-roles">04 _ ROLE-BASED EXPERIENCE</CaseStudyChapterHeader>
+            <SimpleSectionTemplate {...reimaginingAnalyticsRolesIntro} />
+            <ScrollReveal as="hr" className="border-line" />
+            <div style={caseStudyTokens} className="cs-section">
+              <BeforeAfterTemplate {...reimaginingAnalyticsRoles} />
+            </div>
           </section>
         </AnalyticsCaseIntro>
       </main>

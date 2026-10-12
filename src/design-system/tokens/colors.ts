@@ -11,6 +11,7 @@ export const colors = {
   "ink-muted": "var(--color-ink-muted)",
   "line": "var(--color-line)",
   "line-strong": "var(--color-line-strong)",
+  "border-default": "var(--color-border-default)",
   "tile": "var(--color-tile)",
   "tag": "var(--color-tag)",
   "card": "var(--color-card)",

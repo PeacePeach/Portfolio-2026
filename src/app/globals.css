@@ -28,6 +28,7 @@
   --color-ink-muted: #898989;       /* arrow icons */
   --color-line: #262626;            /* hairlines */
   --color-line-strong: #3a3a3a;
+  --color-border-default: #303030;  /* default border around images and cards */
   --color-tile: #171717;            /* empty project tile */
   --color-tag: #2c2c2c;             /* tag pill fill */
   --color-card: #151515;            /* super power fragment card */

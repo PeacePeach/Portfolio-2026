@@ -31,6 +31,8 @@ export const caseStudyTokens: CSSProperties & Record<`--cs-${string}`, string> =
   "--cs-title-description-gap": "calc(var(--spacing) * 3)",
   "--cs-header-evidence-gap": "calc(var(--spacing) * 16)",
   "--cs-column-gap": "calc(var(--spacing) * 12)",
+  // Between stacked Before / After rows in one panel (Figma 116:891).
+  "--cs-row-gap": "calc(var(--spacing) * 12)",
   "--cs-evidence-gap": "calc(var(--spacing) * 6)",
   "--cs-final-evidence-gap": "calc(var(--spacing) * 6 - 1px)",
   "--cs-bullet-gap": "calc(var(--spacing) * 3)",
@@ -74,12 +76,14 @@ export const caseStudyTokens: CSSProperties & Record<`--cs-${string}`, string> =
   "--cs-tma-success": "#42be65",
 };
 
-/** Simple section, before/after variant (Figma 110:18926): 568 px desktop screenshots, 16 px apart and 16 px below their pills. */
+/** Simple section before/after and wide Before / After panels (Figma 110:18926, 116:891): 568 px desktop screenshots, 16 px apart and 16 px below their pills. */
 export const caseStudyWideEvidenceTokens: Record<`--cs-${string}`, string> = {
   "--cs-image-width": "568px",
   "--cs-column-gap": "calc(var(--spacing) * 4)",
   "--cs-evidence-gap": "calc(var(--spacing) * 4)",
   "--cs-final-evidence-gap": "calc(var(--spacing) * 4)",
+  // Two 568px columns fill the 1174px panel; the page already provides the side margin.
+  "--cs-content-gutter": "0px",
 };
 
 /** Semantic roles compose existing site utilities. No template owns typography. */

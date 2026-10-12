@@ -40,10 +40,13 @@
 .cs-chapter + .cs-simple-section { padding-top: 0; }
 .cs-simple-section-text { width: min(100%, var(--cs-text-column-width)); margin-inline: auto; }
 .cs-simple-section-content { margin-top: var(--cs-content-top); }
-.cs-simple-section .cs-evidence-columns { grid-template-columns: repeat(2, minmax(0, var(--cs-image-width))); justify-content: center; }
+/* Wide desktop screenshots, in a simple section or a wide Before / After panel. */
+.cs-simple-section .cs-evidence-columns, .cs-panel[data-size="wide"] .cs-evidence-columns { grid-template-columns: repeat(2, minmax(0, var(--cs-image-width))); justify-content: center; }
+.cs-simple-section .cs-evidence-frame, .cs-panel[data-size="wide"] .cs-evidence-frame { border: 1px solid var(--color-border-default); }
 @media (max-width: 767px) {
-  .cs-simple-section .cs-evidence-columns { grid-template-columns: minmax(0, var(--cs-image-width)); }
+  .cs-simple-section .cs-evidence-columns, .cs-panel[data-size="wide"] .cs-evidence-columns { grid-template-columns: minmax(0, var(--cs-image-width)); }
 }
+.cs-evidence-row { margin-top: var(--cs-row-gap); }
 
 /* Structural variants share all evidence styling and motion. */
 .cs-panel[data-layout="before-iterated-after"] .cs-panel-content { width: calc(var(--cs-image-width) * 3 + var(--cs-column-gap) * 2); }

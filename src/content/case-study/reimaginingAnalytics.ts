@@ -2,6 +2,7 @@ import type { IntroData } from "@/components/case-study/templates/IntroTemplate"
 import type { SimpleSectionData } from "@/components/case-study/templates/SimpleSectionTemplate";
 import type { ImpactData } from "@/components/case-study/templates/ImpactTemplate";
 import type { NarrativeData } from "@/components/case-study/templates/NarrativeTemplate";
+import type { BeforeAfterData } from "@/components/case-study/templates/BeforeAfterTemplate";
 
 /** Reimagining Analytics intro (Figma 110:18593): title, copy and facts. The hero is AnalyticsHero. */
 export const reimaginingAnalyticsIntro = {
@@ -87,16 +88,15 @@ export const reimaginingAnalyticsStrategy = {
   ],
 } satisfies NarrativeData;
 
-/** "UX goal 2" (Figma 5NB8dL3E3HQQtXFRcjaKVd 101:274): centred story text, then the three patterns as rolling narrative steps (Figma 135:1472), before over after (2x exports). */
+/** "03 _ DESIGN SYSTEM" (Figma 5NB8dL3E3HQQtXFRcjaKVd 101:274): centred story text, then the three patterns as rolling narrative steps (Figma 135:1472), before over after (2x exports). */
 const pattern = (name: string, alt: string, width: number, height: number) => ({
   src: `/case-studies/reimagining-analytics/pattern-${name}.png`, alt, width, height,
   pill: name.endsWith("after") ? { label: "After", emphasis: "primary" as const } : { label: "Before" },
 });
 export const reimaginingAnalyticsPatternsIntro = {
-  label: "UX GOAL 2",
-  title: "Consolidating Design Patterns",
+  title: "From 17 Patterns to 3 Reusable Building Blocks",
   body:
-    "I audited existing components, identifying 17 design patterns in the Analytics module. I simplified them into three categories, reducing both visual complexity for users and maintenance effort for developers.",
+    "I audited the existing Analytics UI and found 17 different design patterns solving overlapping problems. I consolidated them into three reusable patterns—Hero Graphs, Highlight Cards, and Data Tables—reducing cognitive load for users and maintenance cost for engineering.",
 } satisfies SimpleSectionData;
 
 export const reimaginingAnalyticsPatterns = {
@@ -132,3 +132,41 @@ export const reimaginingAnalyticsPatterns = {
     },
   ],
 } satisfies NarrativeData;
+
+/** "04 _ ROLE-BASED EXPERIENCE" (Figma 116:891): simple-section story text. */
+export const reimaginingAnalyticsRolesIntro = {
+  title: "Designing for Roles, Not Averages",
+  body:
+    "I partnered with a junior designer and ran three rounds of usability testing to combine the new IA and component system into role-based experiences. Testing showed that even people in the same vertical prioritize different metrics, so the system needed a shared structure with tailored starting points.",
+} satisfies SimpleSectionData;
+
+const roles = (name: string, alt: string) => ({ src: `/case-studies/reimagining-analytics/roles-${name}.png`, alt });
+
+/** Example task (Figma 116:891 layout, content and 2x images from 25:1364): wide Before / After, no tabs, with the final design as a second row. */
+export const reimaginingAnalyticsRoles = {
+  size: "wide",
+  title: "Example Task: Finding Videos That Generate Leads",
+  description: "Role: Campaign Manager",
+  before: {
+    images: [roles("before", "Before: Analytics opens on generic trend charts and a video table, with lead metrics buried in separate tabs")],
+    bullets: [{ tone: "negative", text: "Users can’t find the target metrics after looking through each tab" }],
+  },
+  after: {
+    images: [roles("after", "After: Analytics Overview with headline metrics, a trend chart and best performing videos and pages")],
+    bullets: [
+      { tone: "positive", text: "Increased task success" },
+      { tone: "negative", text: "Avg. 32s task time" },
+    ],
+  },
+  rows: [{
+    before: {
+      label: "Final design",
+      images: [roles("final-overview", "Final design: a marketer’s Analytics Overview leading with lead generation and video likes")],
+    },
+    after: {
+      label: "Final design",
+      images: [roles("final-funnel", "Final design: a Funnel view tracing video views to leads and identified viewers")],
+      bullets: [{ tone: "positive", text: "Avg. task time decrease to 11s" }],
+    },
+  }],
+} satisfies BeforeAfterData;

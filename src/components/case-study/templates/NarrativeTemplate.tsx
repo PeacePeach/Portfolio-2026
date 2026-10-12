@@ -149,7 +149,7 @@ function NarrativeFrame({ image, title, layout, first, last, scaleEnabled, onOpe
   const scale = useTransform(scrollYProgress, [0, 0.5, 1], [0.98, 1, 0.98]);
   const joined = layout === "joined";
   const frame = layout === "separate"
-    ? "rounded-surface border border-ink/10"
+    ? "rounded-surface border border-border-default"
     : joined ? `${first ? "rounded-t-[20px]" : ""} ${last ? "rounded-b-[20px]" : ""}` : "";
   const picture = <>
     {joined && !first && <span aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 z-10 hidden h-px bg-ink/10 lg:block" />}
