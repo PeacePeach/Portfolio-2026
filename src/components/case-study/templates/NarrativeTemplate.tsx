@@ -26,7 +26,11 @@ export type NarrativeStep = {
   /** Replaces this step's label, title and body with any component (see `StoryTextBlock`). */
   text?: ReactNode;
   images?: readonly NarrativeImage[];
-  /** Replaces this step's images with any component (e.g. a diagram built in code), framed like a `separate` image. */
+  /**
+   * Replaces this step's images with any component (e.g. a diagram built in code), framed like a `separate` image.
+   * A step with no `images`, `visual` or `columns` holds: on desktop the previous step's visual stays pinned while this
+   * step's text swaps in, then scrolling continues to the next step.
+   */
   visual?: ReactNode;
   /** `screens` layout: phone screenshots in columns, each column after the first set lower. */
   columns?: readonly (readonly NarrativeImage[])[];
@@ -66,6 +70,12 @@ export function NarrativeTemplate({ label, steps, imageLayout = "joined" }: Narr
   const joined = imageLayout === "joined";
   const screens = imageLayout === "screens";
   const allImages = steps.flatMap(imagesOf);
+  // Steps without a visual of their own hold the one before them: [step, ...held steps].
+  const holds = (s: NarrativeStep) => !s.visual && !imagesOf(s).length;
+  const groups = steps.reduce<NarrativeStep[][]>((all, s) => {
+    if (holds(s) && all.length) all[all.length - 1].push(s); else all.push([s]);
+    return all;
+  }, []);
   // Pill-labelled images read as blocks: 16px pill to image, 32px within a step, 64px between steps.
   const labelled = allImages.some(image => image.pill);
   // One image: nothing to scroll through, so the text stays put, vertically centred on the image.
@@ -89,8 +99,9 @@ export function NarrativeTemplate({ label, steps, imageLayout = "joined" }: Narr
           <DetailsButton label={step.details} onClick={button => open(button, step.title, zoomTarget)} />
         )} />
         <div ref={stack} className={`min-w-0 ${joined ? "lg:rounded-[20px] lg:bg-surface" : ""} ${imageLayout === "separate" ? `lg:flex lg:flex-col ${labelled ? "lg:gap-16" : "lg:gap-4"}` : ""} ${screens ? "flex flex-col gap-12 lg:gap-10.5" : ""}`}>
-          {steps.map(s => (
-            <div key={s.id} data-narrative-step={s.id} className={screens ? undefined : "mb-12 lg:mb-0"}>
+          {/* Each group is a step plus any held steps after it; held steps add scroll while the step's visual stays pinned. */}
+          {groups.map(([s, ...held]) => <div key={s.id}>
+            <div data-narrative-step={s.id} className={`${screens ? "" : "mb-12 lg:mb-0"} ${held.length ? "lg:sticky lg:top-[calc(var(--spacing-header)+1.875rem)]" : ""}`}>
               <ScrollReveal className="mb-6 lg:hidden">
                 <StoryTextBlock heading="section" label={s.label} title={s.title} body={s.body} text={s.text} />
               </ScrollReveal>
@@ -110,7 +121,10 @@ export function NarrativeTemplate({ label, steps, imageLayout = "joined" }: Narr
                 ))}
               </div>}
             </div>
-          ))}
+            {held.map(h => <div key={h.id} data-narrative-step={h.id} className="mb-12 lg:mb-0 lg:h-[70svh]">
+              <ScrollReveal className="lg:hidden"><StoryTextBlock heading="section" label={h.label} title={h.title} body={h.body} text={h.text} /></ScrollReveal>
+            </div>)}
+          </div>)}
         </div>
       </div>
       {opened && createPortal(<ImageViewer title={opened.title} image={opened.image} onClose={close} />, document.body)}

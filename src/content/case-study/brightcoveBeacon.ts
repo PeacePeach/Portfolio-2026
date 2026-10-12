@@ -57,6 +57,11 @@ export const brightcoveBeaconContext = {
       // Visual: `BeaconTeamMap`, the bubble map rebuilt in code (set where the page renders this narrative).
     },
     {
+      // No visual: holds the team map while the text swaps (copy and highlights from `brightcoveBeaconProblem`).
+      id: "customer-problem",
+      title: "Customer Problem",
+    },
+    {
       id: "persona-laurel",
       title: "Laurel, Product Manager",
       body: "“I am a trailblazer who takes others with me, like it or not!”",
@@ -88,7 +93,7 @@ export const brightcoveBeaconContext = {
   ],
 } satisfies NarrativeData;
 
-/** Customer problem (Figma 114:2736): a centred section title over two columns of copy; `[...]` marks the highlighted phrases. */
+/** Customer problem (Figma 114:2736), shown as a held step of the opening narrative; `[...]` marks the highlighted phrases. */
 export const brightcoveBeaconProblem = {
   title: "Customer Problem",
   columns: [

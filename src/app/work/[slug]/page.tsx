@@ -10,7 +10,7 @@ import { AnalyticsHero } from "@/components/case-study/reimagining-analytics/Ana
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { CaseIntroTemplate } from "@/components/case-study/templates/CaseIntroTemplate";
 import { MediaRowTemplate } from "@/components/case-study/templates/MediaRowTemplate";
-import { TwoColumnTextTemplate, type TwoColumnTextData } from "@/components/case-study/templates/TwoColumnTextTemplate";
+import { TwoColumnTextTemplate } from "@/components/case-study/templates/TwoColumnTextTemplate";
 import { StoryTextBlock } from "@/components/case-study/shared/StoryTextBlock";
 import { BeaconTeamMap } from "@/components/case-study/brightcove-beacon/BeaconTeamMap";
 import { FollowUpTemplate } from "@/components/case-study/templates/FollowUpTemplate";
@@ -22,7 +22,7 @@ import { HorizontalSlidesTemplate } from "@/components/case-study/templates/Hori
 import { ReflectionTemplate } from "@/components/case-study/templates/ReflectionTemplate";
 import { PersonaQuote } from "@/components/case-study/shared/PersonaQuote";
 import { PersonaTasks } from "@/components/case-study/shared/PersonaTasks";
-import { caseStudyTokens } from "@/components/case-study/shared/caseStudyTokens";
+import { caseStudyTokens, caseStudyType } from "@/components/case-study/shared/caseStudyTokens";
 import { CaseStudyChapterHeader } from "@/components/case-study/shared/CaseStudyChapterHeader";
 import {
   neoAdvanceCoreFlows,
@@ -195,16 +195,14 @@ async function CaseStudyContent({ params }: PageProps<"/work/[slug]">) {
           <ImpactTemplate {...brightcoveBeaconImpact} className="mt-24" />
           <section aria-labelledby="beacon-users">
             <CaseStudyChapterHeader id="beacon-users">01 _ USERS AND WORKFLOWS</CaseStudyChapterHeader>
-            {/* The opener keeps the large story title; the persona steps use the narrative's section title. */}
-            <NarrativeTemplate {...brightcoveBeaconContext} steps={brightcoveBeaconContext.steps.map((step, i) => i ? step : { ...step, text: <StoryTextBlock title={step.title} body={step.body} />, visual: <BeaconTeamMap /> })} />
-            <ScrollReveal as="hr" className="border-line" />
-            <TwoColumnTextTemplate
-              title={brightcoveBeaconProblem.title}
-              columns={brightcoveBeaconProblem.columns.map(({ title, body }) => ({
-                title,
-                text: <p className="type-body-m text-secondary">{body.split(/\[(.+?)\]/).map((part, i) => i % 2 ? <strong key={i} className="font-normal text-primary">{part}</strong> : part)}</p>,
-              })) as unknown as TwoColumnTextData["columns"]}
-            />
+            {/* The opener and the held Customer Problem step keep the large story title; persona steps use the section title. */}
+            <NarrativeTemplate {...brightcoveBeaconContext} steps={brightcoveBeaconContext.steps.map(step =>
+              step.id === "beacon-context" ? { ...step, text: <StoryTextBlock title={step.title} body={step.body} />, visual: <BeaconTeamMap /> }
+              : step.id === "customer-problem" ? { ...step, text: <article className="cs-story-text" aria-label={step.title}>
+                <h2 className={caseStudyType.storyTitle}>{step.title}</h2>
+                {brightcoveBeaconProblem.columns.map(({ body }) => <p key={body} className={caseStudyType.storyBody}>{body.split(/\[(.+?)\]/).map((part, i) => i % 2 ? <strong key={i} className="font-normal text-primary">{part}</strong> : part)}</p>)}
+              </article> }
+              : step)} />
             {([
               [brightcoveBeaconJobMap, brightcoveBeaconJobMapImage],
               [brightcoveBeaconInfoArch, brightcoveBeaconInfoArchImage],
