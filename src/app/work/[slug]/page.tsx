@@ -19,6 +19,7 @@ import { BeforeAfterTemplate } from "@/components/case-study/templates/BeforeAft
 import { HorizontalSlidesTemplate } from "@/components/case-study/templates/HorizontalSlidesTemplate";
 import { ReflectionTemplate } from "@/components/case-study/templates/ReflectionTemplate";
 import { PersonaQuote } from "@/components/case-study/shared/PersonaQuote";
+import { PersonaTasks } from "@/components/case-study/shared/PersonaTasks";
 import { caseStudyTokens } from "@/components/case-study/shared/caseStudyTokens";
 import { CaseStudyChapterHeader } from "@/components/case-study/shared/CaseStudyChapterHeader";
 import {
@@ -55,7 +56,20 @@ import {
   reimaginingAnalyticsReframing,
   reimaginingAnalyticsStrategy,
 } from "@/content/case-study/reimaginingAnalytics";
-import { brightcoveBeaconHero, brightcoveBeaconImpact, brightcoveBeaconIntro } from "@/content/case-study/brightcoveBeacon";
+import {
+  brightcoveBeaconCollaboration,
+  brightcoveBeaconCollaborationFlow,
+  brightcoveBeaconContext,
+  brightcoveBeaconHero,
+  brightcoveBeaconImpact,
+  brightcoveBeaconInfoArch,
+  brightcoveBeaconInfoArchImage,
+  brightcoveBeaconIntro,
+  brightcoveBeaconJobMap,
+  brightcoveBeaconJobMapImage,
+  brightcoveBeaconProblem,
+  brightcoveBeaconRoles,
+} from "@/content/case-study/brightcoveBeacon";
 import { getProject, getProjects } from "@/content";
 import { site } from "@/content/site";
 
@@ -178,6 +192,32 @@ async function CaseStudyContent({ params }: PageProps<"/work/[slug]">) {
         >
           <ScrollReveal as="hr" className="mt-24 border-line" />
           <ImpactTemplate {...brightcoveBeaconImpact} className="mt-24" />
+          <section aria-labelledby="beacon-users">
+            <CaseStudyChapterHeader id="beacon-users">01 _ USERS AND WORKFLOWS</CaseStudyChapterHeader>
+            <NarrativeTemplate {...brightcoveBeaconContext} />
+            <ScrollReveal as="hr" className="border-line" />
+            <SimpleSectionTemplate {...brightcoveBeaconProblem} />
+            <ScrollReveal as="hr" className="border-line" />
+            <HorizontalSlidesTemplate {...brightcoveBeaconRoles} />
+            {([
+              [brightcoveBeaconJobMap, brightcoveBeaconJobMapImage],
+              [brightcoveBeaconInfoArch, brightcoveBeaconInfoArchImage],
+            ] as const).map(([section, image]) => <Fragment key={section.title}>
+              <ScrollReveal as="hr" className="border-line" />
+              <SimpleSectionTemplate {...section}>
+                <ScrollReveal className="overflow-hidden rounded-image border border-border-default">
+                  <Image src={image.src} alt={image.alt} width={image.width} height={image.height} sizes="(min-width: 1280px) 1152px, 100vw" className="block h-auto w-full" />
+                </ScrollReveal>
+              </SimpleSectionTemplate>
+            </Fragment>)}
+            <ScrollReveal as="hr" className="border-line" />
+            <SimpleSectionTemplate {...brightcoveBeaconCollaboration} />
+            <NarrativeTemplate
+              label={brightcoveBeaconCollaborationFlow.label}
+              imageLayout="separate"
+              steps={brightcoveBeaconCollaborationFlow.steps.map(({ persona, ...step }) => ({ ...step, text: <PersonaTasks {...persona} /> }))}
+            />
+          </section>
         </CaseIntroTemplate>
       </main>
     );

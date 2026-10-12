@@ -71,6 +71,8 @@ Text components for the slot live in `shared/`:
 
 - `PersonaQuote` (Figma `43:348`): 48px round avatar over the persona name (chapter-label type, uppercase, one word per line, as wide as its longest word), left-aligned, 12px beside the quote (`caseStudyType.quote` = `type-body-m-italic`, primary). Used by Reimagining Analytics final design (`reimaginingAnalyticsFinalDesign`, `SimpleSectionTemplate` with `align: "left"` and `inset`); at the 561px left text width the quote runs about as tall as avatar and name.
 
+- `PersonaTasks` (Figma `114:2259`): one workflow step's people (48px round avatar, name in Label S, role in Body S secondary), an optional handoff note (Body XS secondary), then their tasks as `muted` Pills. Used by Brightcove Beacon "How They Collaborate?" as each `NarrativeTemplate` step's `text` (`brightcoveBeaconCollaborationFlow`, `separate`).
+
 ## SimpleSectionTemplate
 
 `templates/SimpleSectionTemplate.tsx` · Figma `135:1453` · Preview `/case-study-templates/simple-section`

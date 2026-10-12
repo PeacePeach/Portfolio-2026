@@ -18,7 +18,7 @@ CSS values remain authoritative in `src/app/globals.css`. Do not duplicate them 
 
 - **Button** — deferred; no generic export yet. Reuse existing native-button implementations until a repeated pattern justifies extraction.
 - **Tabs** — theme-tab presentation (Figma 89:3670): a bar with only top and bottom 1px white/10% dividers around a centred `surface-3` group (10px radius, 4px padding, 6px gap). Active tab: transparent fill, 1px secondary border, 8px radius, primary text; inactive: no visible border, secondary text. `outline`/`filled` states and `useRovingTabs` keyboard behavior. Retain distinct mode/capability selector presentations.
-- **Pill** — `project`, `placeholder`, and `evidence` appearances.
+- **Pill** — `project`, `placeholder`, `evidence`, and `muted` appearances. `muted` is `project` on the darker `surface-3` fill with a `border-default` border, for tags inside case-study content (Beacon workflow tasks, `PersonaTasks`).
 - **Input** — deferred; no generic export yet. Existing filter controls, textarea, and range inputs retain their behavior.
 - **Panel** — card surface chrome only, with `div`/`section`/`article` semantics. Callers own layout and interactions. Evidence templates have no surface: content sits on the page background.
 
