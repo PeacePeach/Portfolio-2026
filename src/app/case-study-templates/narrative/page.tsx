@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { NarrativeTemplate } from "@/components/case-study/templates/NarrativeTemplate";
-import { neoAdvanceDeliveryPanels, neoAdvanceNarrative } from "@/content/neoAdvance";
+import { neoAdvanceCoreFlows, neoAdvanceDeliveryPanels, neoAdvanceNarrative } from "@/content/neoAdvance";
 import { reimaginingAnalyticsProblem } from "@/content/case-study/reimaginingAnalytics";
 
 export const metadata: Metadata = { title: "Narrative template", robots: { index: false } };
@@ -12,5 +12,7 @@ export default function NarrativePreviewPage() {
     <NarrativeTemplate {...reimaginingAnalyticsProblem} />
     <hr className="border-line" />
     <NarrativeTemplate label="Rolling, plain images" steps={neoAdvanceDeliveryPanels} imageLayout="plain" />
+    <hr className="border-line" />
+    <NarrativeTemplate {...neoAdvanceCoreFlows} label="Rolling, staggered phone screens" />
   </main>;
 }

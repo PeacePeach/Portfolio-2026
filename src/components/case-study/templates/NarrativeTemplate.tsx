@@ -22,8 +22,12 @@ export type NarrativeImage = {
 
 /** One text block and the images it sits beside. */
 export type NarrativeStep = {
-  id: string; label?: string; title: string; body: string;
-  images: readonly NarrativeImage[];
+  id: string; label?: string; title: string; body?: string;
+  /** Replaces this step's label, title and body with any component (see `StoryTextBlock`). */
+  text?: ReactNode;
+  images?: readonly NarrativeImage[];
+  /** `screens` layout: phone screenshots in columns, each column after the first set lower. */
+  columns?: readonly (readonly NarrativeImage[])[];
   /** Optional text action that opens the first image's high-resolution view. */
   details?: string;
 };
@@ -32,8 +36,11 @@ export type NarrativeStep = {
  * `joined`: one rounded surface, dividers between images, scroll scaling (Figma 83:3560).
  * `separate`: each image its own bordered card, 16px apart (Figma 116:667).
  * `plain`: images only, no surface, rounding or scaling (Figma 89:5173).
+ * `screens`: each step's `columns` of mobile screens side by side, the second column 235px lower on desktop (Figma 94:5545).
  */
-export type NarrativeImageLayout = "joined" | "separate" | "plain";
+export type NarrativeImageLayout = "joined" | "separate" | "plain" | "screens";
+
+const imagesOf = (step: NarrativeStep) => step.images ?? step.columns?.flat() ?? [];
 
 export type NarrativeData = {
   label: string;
@@ -55,7 +62,8 @@ export function NarrativeTemplate({ label, steps, imageLayout = "joined" }: Narr
   const { desktop, active } = useStickyNarrative(stack);
   const step = steps[active] ?? steps[0];
   const joined = imageLayout === "joined";
-  const allImages = steps.flatMap(s => s.images);
+  const screens = imageLayout === "screens";
+  const allImages = steps.flatMap(imagesOf);
   // Pill-labelled images read as blocks: 16px pill to image, 32px within a step, 64px between steps.
   const labelled = allImages.some(image => image.pill);
 
@@ -68,22 +76,22 @@ export function NarrativeTemplate({ label, steps, imageLayout = "joined" }: Narr
     setOpened(null);
     trigger.current?.focus({ preventScroll: true });
   }
-  const zoomTarget = step.images.find(image => image.full);
+  const zoomTarget = imagesOf(step).find(image => image.full);
 
   return (
     <section aria-label={label} style={caseStudyTokens} className="cs-rules cs-section mx-auto w-full max-w-[1152px]">
       <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,320fr)_minmax(0,704fr)] lg:gap-x-32">
-        <StickyNarrativeText id={step.id} label={step.label} title={step.title} body={step.body} action={step.details && zoomTarget && (
+        <StickyNarrativeText id={step.id} label={step.label} title={step.title} body={step.body} text={step.text} action={step.details && zoomTarget && (
           <DetailsButton label={step.details} onClick={button => open(button, step.title, zoomTarget)} />
         )} />
-        <div ref={stack} className={`min-w-0 ${joined ? "lg:rounded-[20px] lg:bg-surface" : ""} ${imageLayout === "separate" ? `lg:flex lg:flex-col ${labelled ? "lg:gap-16" : "lg:gap-4"}` : ""}`}>
+        <div ref={stack} className={`min-w-0 ${joined ? "lg:rounded-[20px] lg:bg-surface" : ""} ${imageLayout === "separate" ? `lg:flex lg:flex-col ${labelled ? "lg:gap-16" : "lg:gap-4"}` : ""} ${screens ? "flex flex-col gap-12 lg:gap-10.5" : ""}`}>
           {steps.map(s => (
-            <div key={s.id} data-narrative-step={s.id} className="mb-12 lg:mb-0">
+            <div key={s.id} data-narrative-step={s.id} className={screens ? undefined : "mb-12 lg:mb-0"}>
               <ScrollReveal className="mb-6 lg:hidden">
-                <StoryTextBlock heading="section" label={s.label} title={s.title} body={s.body} />
+                <StoryTextBlock heading="section" label={s.label} title={s.title} body={s.body} text={s.text} />
               </ScrollReveal>
-              <div className={imageLayout === "separate" ? `flex flex-col ${labelled ? "gap-8" : "gap-4"}` : ""}>
-                {s.images.map(image => (
+              {screens ? <ScreenColumns columns={s.columns ?? [imagesOf(s)]} /> : <div className={imageLayout === "separate" ? `flex flex-col ${labelled ? "gap-8" : "gap-4"}` : ""}>
+                {imagesOf(s).map(image => (
                   <NarrativeFrame
                     key={image.src}
                     image={image}
@@ -95,7 +103,7 @@ export function NarrativeTemplate({ label, steps, imageLayout = "joined" }: Narr
                     onOpen={button => open(button, s.title, image)}
                   />
                 ))}
-              </div>
+              </div>}
             </div>
           ))}
         </div>
@@ -106,7 +114,7 @@ export function NarrativeTemplate({ label, steps, imageLayout = "joined" }: Narr
 }
 
 /** Desktop-only sticky column: the active text swaps with the site swap motion. */
-export function StickyNarrativeText({ id, label, title, body, action }: { id: string; label?: string; title: string; body: string; action?: ReactNode }) {
+export function StickyNarrativeText({ id, label, title, body, text, action }: { id: string; label?: string; title: string; body?: string; text?: ReactNode; action?: ReactNode }) {
   const reduce = useReducedMotion();
   return (
     <div className="hidden min-w-0 self-start lg:sticky lg:top-[calc(var(--spacing-header)+1.875rem)] lg:block" data-narrative-sticky>
@@ -119,13 +127,28 @@ export function StickyNarrativeText({ id, label, title, body, action }: { id: st
             exit={{ opacity: 0, y: reduce ? 0 : -swap.offset, transition: reduce ? { duration: duration.fast } : swap.exit }}
             transition={reduce ? { duration: duration.fast } : swap.enter}
           >
-            <StoryTextBlock heading="section" label={label} title={title} body={body} />
+            <StoryTextBlock heading="section" label={label} title={title} body={body} text={text} />
             {action}
           </motion.div>
         </AnimatePresence>
       </ScrollReveal>
     </div>
   );
+}
+
+/** `screens` layout: columns at the screens' own width; each column after the first runs 235px lower on desktop, into the next step. */
+function ScreenColumns({ columns }: { columns: readonly (readonly NarrativeImage[])[] }) {
+  return <div className="flex items-start gap-4 lg:gap-8">
+    {columns.map((column, index) => (
+      <div key={index} style={{ width: column[0]?.width }} className={`flex min-w-0 shrink flex-col gap-4 lg:gap-10.5 ${index ? "lg:translate-y-[235px]" : ""}`}>
+        {column.map(screen => (
+          <ScrollReveal key={screen.src}>
+            <Image src={screen.src} alt={screen.alt} width={screen.width} height={screen.height} unoptimized className="block h-auto w-full" />
+          </ScrollReveal>
+        ))}
+      </div>
+    ))}
+  </div>;
 }
 
 /** Figma 98:577: opens the active step's high-resolution view. */

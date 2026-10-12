@@ -300,6 +300,14 @@
   font-weight: var(--text-body-m-tight--font-weight);
   letter-spacing: 0;
 }
+@utility type-body-m-italic {
+  font-family: var(--font-sans);
+  font-size: var(--text-body-m);
+  line-height: var(--text-body-m--line-height);
+  font-weight: var(--text-body-m--font-weight);
+  font-style: italic;
+  letter-spacing: 0;
+}
 @utility type-body-s {
   font-family: var(--font-sans);
   font-size: var(--text-body-s);

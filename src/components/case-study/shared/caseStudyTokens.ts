@@ -52,6 +52,11 @@ export const caseStudyTokens: CSSProperties & Record<`--cs-${string}`, string> =
   "--cs-text-column-width": "400px",
   // Left-aligned simple-section text (Figma 150:4909).
   "--cs-text-left-width": "561px",
+  // Horizontal slides (Figma 89:5440): 696px text, 879px slides 16px apart, 337px fade over the next slide.
+  "--cs-slides-text-width": "696px",
+  "--cs-slide-width": "879px",
+  "--cs-slide-gap": "calc(var(--spacing) * 4)",
+  "--cs-slides-fade-width": "337px",
   "--cs-text-column-gap": "calc(var(--spacing) * 24)",
   // Figma 83:3259: 128px between chapters; 96px from a divider or separator to content.
   "--cs-chapter-gap": "calc(var(--spacing) * 32)",
@@ -77,6 +82,8 @@ export const caseStudyTokens: CSSProperties & Record<`--cs-${string}`, string> =
   "--cs-tma-toast-height": "48px",
   "--cs-tma-toast-icon-size": "20px",
   "--cs-tma-success": "#42be65",
+  // Reflection accent bar (Figma 99:38841): 4px, this blue fading to 20%.
+  "--cs-reflection-accent": "#357dfb",
 };
 
 /** Simple section before/after and wide Before / After panels (Figma 110:18926, 116:891): 568 px desktop screenshots, 16 px apart and 16 px below their pills. */
@@ -100,4 +107,5 @@ export const caseStudyType = {
   storyTitle: "type-display-s cs-story-title",
   sectionTitle: "type-heading-m text-(--cs-bullet-text)",
   storyBody: "type-body-m",
+  quote: "type-body-m-italic",
 } as const;

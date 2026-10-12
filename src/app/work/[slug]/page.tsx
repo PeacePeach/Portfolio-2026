@@ -5,30 +5,51 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { Footer } from "@/components/Footer";
 import { Media } from "@/components/ui/Media";
-import { NeoCaseIntro } from "@/components/case-study/neo-advance/NeoCaseIntro";
-import { NeoHowItWorks } from "@/components/case-study/neo-advance/NeoHowItWorks";
-import { NeoEarlyDiscovery } from "@/components/case-study/neo-advance/NeoEarlyDiscovery";
-import { NeoConceptExploration } from "@/components/case-study/neo-advance/NeoConceptExploration";
-import { NeoHiFiExploration } from "@/components/case-study/neo-advance/NeoHiFiExploration";
-import { NeoFinalDelivery } from "@/components/case-study/neo-advance/NeoFinalDelivery";
-import { NeoReflection } from "@/components/case-study/neo-advance/NeoReflection";
+import { NeoHero } from "@/components/case-study/neo-advance/NeoHero";
+import { AnalyticsHero } from "@/components/case-study/reimagining-analytics/AnalyticsHero";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
-import { AnalyticsCaseIntro } from "@/components/case-study/reimagining-analytics/AnalyticsCaseIntro";
+import { CaseIntroTemplate } from "@/components/case-study/templates/CaseIntroTemplate";
+import { MediaRowTemplate } from "@/components/case-study/templates/MediaRowTemplate";
+import { TwoColumnTextTemplate } from "@/components/case-study/templates/TwoColumnTextTemplate";
+import { FollowUpTemplate } from "@/components/case-study/templates/FollowUpTemplate";
 import { SimpleSectionTemplate } from "@/components/case-study/templates/SimpleSectionTemplate";
 import { ImpactTemplate } from "@/components/case-study/templates/ImpactTemplate";
 import { NarrativeTemplate } from "@/components/case-study/templates/NarrativeTemplate";
 import { BeforeAfterTemplate } from "@/components/case-study/templates/BeforeAfterTemplate";
+import { HorizontalSlidesTemplate } from "@/components/case-study/templates/HorizontalSlidesTemplate";
+import { ReflectionTemplate } from "@/components/case-study/templates/ReflectionTemplate";
+import { PersonaQuote } from "@/components/case-study/shared/PersonaQuote";
 import { caseStudyTokens } from "@/components/case-study/shared/caseStudyTokens";
 import { CaseStudyChapterHeader } from "@/components/case-study/shared/CaseStudyChapterHeader";
-import { neoAdvanceImpact } from "@/content/neoAdvance";
+import {
+  neoAdvanceCoreFlows,
+  neoAdvanceDeliveryPanels,
+  neoAdvanceHow,
+  neoAdvanceImpact,
+  neoAdvanceIntro,
+  neoAdvanceJourneyMap,
+  neoAdvanceNarrative,
+  neoAdvanceReflection,
+} from "@/content/neoAdvance";
+import {
+  neoAdvanceClosing,
+  neoAdvanceConceptExploration,
+  neoAdvanceEarlyDiscovery,
+  neoAdvanceHiFiExploration,
+  neoAdvanceValidation,
+} from "@/content/case-study/neoAdvance";
 import {
   reimaginingAnalyticsImpact,
+  reimaginingAnalyticsIntro,
   reimaginingAnalyticsPatterns,
   reimaginingAnalyticsPatternsMockup,
   reimaginingAnalyticsRolesIntro,
   reimaginingAnalyticsRoles,
   reimaginingAnalyticsRoleInsights,
   reimaginingAnalyticsRoleCards,
+  reimaginingAnalyticsFinalDesign,
+  reimaginingAnalyticsReflection,
+  reimaginingAnalyticsFollowUp,
   reimaginingAnalyticsPatternsIntro,
   reimaginingAnalyticsProblem,
   reimaginingAnalyticsReframing,
@@ -108,18 +129,40 @@ async function CaseStudyContent({ params }: PageProps<"/work/[slug]">) {
     return (
       <>
         <main id="main">
-          <NeoCaseIntro>
+          <CaseIntroTemplate intro={neoAdvanceIntro} hero={<NeoHero />}>
             {/* Each piece reveals on its own: divider, then heading, then each card. */}
             <ScrollReveal as="hr" className="mt-24 border-line" />
-            <NeoHowItWorks className="mt-24" />
+            <MediaRowTemplate {...neoAdvanceHow} className="mt-24" />
             <ScrollReveal as="hr" className="mt-24 border-line" />
             <ImpactTemplate {...neoAdvanceImpact} className="mt-24" />
-            <NeoEarlyDiscovery />
-            <NeoConceptExploration />
-            <NeoHiFiExploration />
-            <NeoFinalDelivery />
-            <NeoReflection />
-          </NeoCaseIntro>
+            <section aria-labelledby="neo-discovery">
+              <CaseStudyChapterHeader id="neo-discovery">01 _ EARLY DISCOVERY</CaseStudyChapterHeader>
+              <TwoColumnTextTemplate {...neoAdvanceEarlyDiscovery} />
+              <NarrativeTemplate label="Lending platform research and frameworks" steps={neoAdvanceNarrative} />
+            </section>
+            <section aria-labelledby="neo-concept">
+              <CaseStudyChapterHeader id="neo-concept">02 _ CONCEPT EXPLORATION</CaseStudyChapterHeader>
+              <TwoColumnTextTemplate {...neoAdvanceConceptExploration} />
+              <HorizontalSlidesTemplate {...neoAdvanceJourneyMap} />
+            </section>
+            <section aria-labelledby="neo-hifi">
+              <CaseStudyChapterHeader id="neo-hifi">03 _ HI-FI EXPLORATION</CaseStudyChapterHeader>
+              <TwoColumnTextTemplate {...neoAdvanceHiFiExploration} />
+              <div style={caseStudyTokens} className="cs-section">
+                <BeforeAfterTemplate {...neoAdvanceValidation} />
+              </div>
+            </section>
+            <section aria-labelledby="neo-final">
+              <CaseStudyChapterHeader id="neo-final">04 _ FINAL DESIGN</CaseStudyChapterHeader>
+              <NarrativeTemplate {...neoAdvanceCoreFlows} />
+              <NarrativeTemplate label="Delivery frameworks" steps={neoAdvanceDeliveryPanels} imageLayout="plain" />
+            </section>
+            <section aria-labelledby="neo-reflection">
+              <CaseStudyChapterHeader id="neo-reflection">05 _ REFLECTION</CaseStudyChapterHeader>
+              <ReflectionTemplate {...neoAdvanceReflection} />
+              <FollowUpTemplate {...neoAdvanceClosing} />
+            </section>
+          </CaseIntroTemplate>
         </main>
       </>
     );
@@ -128,7 +171,7 @@ async function CaseStudyContent({ params }: PageProps<"/work/[slug]">) {
   if (project.slug === "reimagining-analytics") {
     return (
       <main id="main">
-        <AnalyticsCaseIntro>
+        <CaseIntroTemplate intro={reimaginingAnalyticsIntro} hero={<AnalyticsHero />}>
           <ScrollReveal as="hr" className="mt-24 border-line" />
           <SimpleSectionTemplate {...reimaginingAnalyticsReframing} />
           <ScrollReveal as="hr" className="border-line" />
@@ -167,7 +210,19 @@ async function CaseStudyContent({ params }: PageProps<"/work/[slug]">) {
               </ScrollReveal>
             </SimpleSectionTemplate>
           </section>
-        </AnalyticsCaseIntro>
+          <section aria-labelledby="analytics-final">
+            <CaseStudyChapterHeader id="analytics-final">05 _ FINAL DESIGN</CaseStudyChapterHeader>
+            <HorizontalSlidesTemplate
+              label={reimaginingAnalyticsFinalDesign.label}
+              slides={reimaginingAnalyticsFinalDesign.slides.map(({ persona, ...slide }) => ({ ...slide, text: <PersonaQuote {...persona} /> }))}
+            />
+          </section>
+          <section aria-labelledby="analytics-reflection">
+            <CaseStudyChapterHeader id="analytics-reflection">06 _ REFLECTION</CaseStudyChapterHeader>
+            <ReflectionTemplate {...reimaginingAnalyticsReflection} />
+            <FollowUpTemplate {...reimaginingAnalyticsFollowUp} />
+          </section>
+        </CaseIntroTemplate>
       </main>
     );
   }

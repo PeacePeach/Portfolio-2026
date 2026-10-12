@@ -3,7 +3,10 @@ import type { IntroData } from "@/components/case-study/templates/IntroTemplate"
 import type { SimpleSectionData } from "@/components/case-study/templates/SimpleSectionTemplate";
 import type { ImpactData } from "@/components/case-study/templates/ImpactTemplate";
 import type { NarrativeData } from "@/components/case-study/templates/NarrativeTemplate";
+import type { PersonaQuoteData } from "@/components/case-study/shared/PersonaQuote";
 import type { BeforeAfterData } from "@/components/case-study/templates/BeforeAfterTemplate";
+import type { FollowUpData } from "@/components/case-study/templates/FollowUpTemplate";
+import type { ReflectionData } from "@/components/case-study/templates/ReflectionTemplate";
 
 /** Reimagining Analytics intro (Figma 110:18593): title, copy and facts. The hero is AnalyticsHero. */
 export const reimaginingAnalyticsIntro = {
@@ -202,4 +205,56 @@ export const reimaginingAnalyticsRoleCards: ImageRef = {
   alt: "Role-based insight cards: campaign manager and social media analyst in marketing, video producer and monetizer in video streaming, HR coordinator in enterprise communication, each led by a different metric",
   width: 2304,
   height: 1160,
+};
+
+const persona = {
+  campaignManager: { name: "Campaign manager", avatar: "/case-studies/reimagining-analytics/avatar-campaign-manager.png" },
+  videoProducer: { name: "Video producer", avatar: "/case-studies/reimagining-analytics/avatar-video-producer.png" },
+};
+const finalScreen = (name: string, alt: string) => ({ src: `/case-studies/reimagining-analytics/final-${name}.png`, alt, width: 2026, height: 1264 });
+
+/** "05 _ FINAL DESIGN" (Figma 43:215): horizontal slides, each led by a persona quote. */
+export const reimaginingAnalyticsFinalDesign = {
+  label: "Final design",
+  slides: [
+    {
+      id: "marketer-overview",
+      title: "Campaign manager: Analytics Overview",
+      persona: { ...persona.campaignManager, quote: "“The new design instantly showcases my key metrics, highlighting both achievements and concerns, thereby saving significant time. No more sifting through tabs!”" },
+      image: finalScreen("marketer-overview", "Analytics Overview for a campaign manager: lead generation and video likes up front, with best performing video and page"),
+    },
+    {
+      id: "marketer-funnel",
+      title: "Campaign manager: Funnel",
+      persona: { ...persona.campaignManager, quote: "“The ‘View More’ feature on the previous page conveniently lets me delve into detailed data, pinpointing the videos driving my lead generation increase. What a timesaver!”" },
+      image: finalScreen("marketer-funnel", "Funnel view tracing video views to leads, with a per-video breakdown"),
+    },
+    {
+      id: "producer-overview",
+      title: "Video producer: Analytics Overview",
+      persona: { ...persona.videoProducer, quote: "“Now I see my tailored north star metrics - Engagement scores and Returning Viewers - upfront, a refreshing change from the generic version. Plus, I can customize it based on my needs!”" },
+      image: finalScreen("producer-overview", "Analytics Overview for a video producer: engagement score and returning viewers up front"),
+    },
+    {
+      id: "producer-viewers",
+      title: "Video producer: Viewers",
+      persona: { ...persona.videoProducer, quote: "“Seeing Returning Viewers drop, I clicked ‘View More’ and drilled down to the viewer’s page, pinpointing when and who contributed to the dip.”" },
+      image: finalScreen("producer-viewers", "Viewers page showing when returning viewers dropped and which viewers contributed"),
+    },
+  ],
+} satisfies { label: string; slides: readonly { id: string; title: string; persona: PersonaQuoteData; image: { src: string; alt: string; width: number; height: number } }[] };
+
+export const reimaginingAnalyticsReflection: ReflectionData = {
+  headline: "Consistency isn’t making every user follow the same mental model. It’s deciding what should stay invariant—and what should adapt.",
+  body: "Analytics served campaign managers, producers, and other roles with different questions. I initially treated consistency as one shared IA. The stronger system separated invariants—navigation, interaction patterns, and hierarchy—from role-specific starting points and metrics. That made the experience predictable without forcing every user into the same workflow.",
+};
+
+/** Closing follow-up, as Neo Advance: feedback beside the next case study (picked by `upNextOrder`). */
+export const reimaginingAnalyticsFollowUp: FollowUpData = {
+  feedback: {
+    eyebrow: "TELL ME ABOUT IT",
+    title: "How do you like this case study?",
+    quickReplies: ["Loved it!", "Meh ...", "It’s too long"],
+  },
+  current: "reimagining-analytics",
 };

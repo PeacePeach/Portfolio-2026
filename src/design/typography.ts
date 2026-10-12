@@ -16,6 +16,7 @@ export const typeStyles = [
   { token: "type-heading-s", figma: "Heading_S", spec: "Geist SemiBold 16 / 120%", use: "Small headings" },
   { token: "type-body-l", figma: "Body_L", spec: "Geist Regular 20 / 150%", use: "Lead paragraphs" },
   { token: "type-body-m", figma: "Body_M_1.5", spec: "Geist Regular 16 / 150%", use: "Body copy, navigation" },
+  { token: "type-body-m-italic", figma: "Body_M_1.5 Italic", spec: "Geist Italic 16 / 150%", use: "Quotes (persona quotes)" },
   { token: "type-body-m-tight", figma: "Body_M_1.2", spec: "Geist Regular 16 / 120%", use: "Hero supporting copy, Know me by panel" },
   { token: "type-body-s", figma: "Body_S", spec: "Geist Regular 14 / 150%", use: "Hints, secondary copy" },
   { token: "type-body-xs", figma: "Body_XS", spec: "Geist Regular 12 / 120%", use: "Fine print" },

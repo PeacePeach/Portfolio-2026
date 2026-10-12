@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { BarChart2 } from "react-feather";
 import { SimpleSectionTemplate } from "@/components/case-study/templates/SimpleSectionTemplate";
 import { reimaginingAnalyticsReframing } from "@/content/case-study/reimaginingAnalytics";
 
@@ -19,6 +20,14 @@ export default function SimpleSectionPreviewPage() {
       heading="section"
       title="Doorway Testing"
       body="I used lightweight doorway tests to challenge high-confidence, low-evidence business ideas—validating whether users understood and valued the concept before investing in the full experience."
+    >
+      <div className="flex h-[25rem] items-center justify-center border border-line bg-surface type-body-m text-secondary">Container</div>
+    </SimpleSectionTemplate>
+    <hr className="border-line" />
+    <SimpleSectionTemplate
+      align="left"
+      title="Custom text slot"
+      text={<p className="flex items-center gap-3 type-heading-m"><BarChart2 aria-hidden="true" size={20} />Any component can replace the text</p>}
     >
       <div className="flex h-[25rem] items-center justify-center border border-line bg-surface type-body-m text-secondary">Container</div>
     </SimpleSectionTemplate>

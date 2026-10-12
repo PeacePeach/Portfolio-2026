@@ -119,3 +119,11 @@
 .cs-tma-thinking { display: flex; align-items: center; gap: calc(var(--spacing) * 2); color: var(--cs-secondary); }
 .cs-tma-thinking-mark { width: var(--cs-icon-size); height: var(--cs-icon-size); flex-shrink: 0; color: var(--color-line-strong); }
 .cs-tma-thinking:focus-visible, .cs-tma-resolved:focus-visible { outline: none; }
+
+/* Horizontal slides (Figma 89:5440). The stage pins under the nav bar; the track bleeds to the right viewport edge. */
+.cs-slides-text { width: min(100%, var(--cs-slides-text-width)); }
+.cs-slides-stage { top: calc(var(--spacing-header-bar) + var(--spacing) * 5); }
+.cs-slides-viewport { position: relative; margin-top: var(--cs-content-top); margin-right: calc(var(--spacing-margin) * -1); overflow: hidden; }
+.cs-slides-track { display: flex; gap: var(--cs-slide-gap); }
+.cs-slide { flex-shrink: 0; width: min(var(--cs-slide-width), 100% - var(--cs-slides-fade-width) / 2); }
+.cs-slides-fade { position: absolute; inset-block: 0; right: 0; width: var(--cs-slides-fade-width); background: linear-gradient(to right, transparent, var(--color-background)); pointer-events: none; }

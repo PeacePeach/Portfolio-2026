@@ -4,8 +4,8 @@ import { CaseStudyTextReveal } from "../shared/CaseStudyMotion";
 import { TellMeAboutIt, type TellMeAboutItData } from "../shared/tell-me-about-it/TellMeAboutIt";
 import { UpNext } from "../shared/UpNext";
 
-/** A column is static story text, a Tell Me About It interaction, or the next case study (project slug). */
-export type TwoColumnTextColumn = StoryTextBlockData | { tellMeAboutIt: TellMeAboutItData } | { upNext: string };
+/** A column is static story text, a Tell Me About It interaction, or Up Next (`after`: this case study's slug). */
+export type TwoColumnTextColumn = StoryTextBlockData | { tellMeAboutIt: TellMeAboutItData } | { upNext: { after: string } };
 
 export type TwoColumnTextData = {
   columns: readonly [TwoColumnTextColumn, TwoColumnTextColumn];
@@ -15,7 +15,7 @@ export type TwoColumnTextData = {
 export function TwoColumnTextTemplate({ columns }: TwoColumnTextData) {
   return <section className="cs-rules cs-section cs-text-columns" style={caseStudyTokens}>
     {columns.map((column, index) => <CaseStudyTextReveal key={index} index={index}>
-      {"tellMeAboutIt" in column ? <TellMeAboutIt {...column.tellMeAboutIt} /> : "upNext" in column ? <UpNext slug={column.upNext} /> : <StoryTextBlock {...column} />}
+      {"tellMeAboutIt" in column ? <TellMeAboutIt {...column.tellMeAboutIt} /> : "upNext" in column ? <UpNext after={column.upNext.after} /> : <StoryTextBlock {...column} />}
     </CaseStudyTextReveal>)}
   </section>;
 }

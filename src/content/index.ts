@@ -5,7 +5,7 @@
  */
 import { capabilities, evidence } from "./capabilities";
 import { powers } from "./powers";
-import { projects } from "./projects";
+import { projects, upNextOrder } from "./projects";
 import type { Capability, Evidence, Project, SuperPower } from "./types";
 
 export type { Capability, Evidence, PowerFragment, Project, SuperPower } from "./types";
@@ -20,6 +20,11 @@ export function getSuperPowers(): SuperPower[] {
 
 export function getProject(slug: string): Project | undefined {
   return projects.find((p) => p.slug === slug);
+}
+
+/** Up Next candidates after `current`, in priority order (see `upNextOrder`). */
+export function getUpNextCandidates(current: string): Project[] {
+  return upNextOrder.filter((slug) => slug !== current).map(getProject).filter((p): p is Project => !!p);
 }
 
 export function getCapabilities(): Capability[] {

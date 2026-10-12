@@ -7,7 +7,7 @@ Codex, Claude Code, and future coding agents must read this file before implemen
 ## Tokens
 
 - **colors** — CSS-variable references in `tokens/colors.ts`. `surface-3` (#1D1D1D) is the case-study tab group fill. `border-default` (#303030) is the default 1px border around images and cards.
-- **typography** — existing `typeStyles` catalog; use the existing `type-*` CSS utilities. Fonts remain in `src/design/fonts.ts`.
+- **typography** — existing `typeStyles` catalog; use the existing `type-*` CSS utilities. Fonts remain in `src/design/fonts.ts` (Geist loads normal and italic). `type-body-m-italic` (Geist Italic 16/150%) is the quote style.
 - **spacing** — references to the existing base unit and layout tokens.
 - **radius** — existing surface (10px) and control (8px) values, plus `image` (5px) for desktop screenshots in case studies (wide evidence, Narrative `separate` cards).
 - **motion** — re-exports `src/design/motion.ts`; no second motion system.

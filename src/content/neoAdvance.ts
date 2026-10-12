@@ -1,4 +1,7 @@
-import type { NarrativeStep } from "@/components/case-study/templates/NarrativeTemplate";
+import type { NarrativeData, NarrativeStep } from "@/components/case-study/templates/NarrativeTemplate";
+import type { MediaRowData } from "@/components/case-study/templates/MediaRowTemplate";
+import type { HorizontalSlidesData } from "@/components/case-study/templates/HorizontalSlidesTemplate";
+import type { ReflectionData } from "@/components/case-study/templates/ReflectionTemplate";
 
 /** Neo Advance case study intro (Figma 51:24883), Han's own copy. */
 export const neoAdvanceIntro = {
@@ -23,26 +26,29 @@ export const neoAdvanceIntro = {
  * "How Neo Advance Works?" (Figma 68:712): three steps, each a caption over a
  * flow recording (animated GIFs exported from Figma).
  */
-export const neoAdvanceHow: {
-  title: string;
-  steps: { caption: string; alt: string; src: string }[];
-} = {
+export const neoAdvanceHow: MediaRowData = {
   title: "How Neo Advance Works?",
-  steps: [
+  items: [
     {
       caption: "Use Advance when a chequing balance falls short.",
       alt: "Neo app flow: drawing an advance when the chequing balance runs short",
       src: "/case-studies/neo-advance/how-use-advance.gif",
+      width: 230,
+      height: 475,
     },
     {
       caption: "Pay Advance when balance is due, with payment options.",
       alt: "Neo app flow: repaying an advance and choosing a payment option",
       src: "/case-studies/neo-advance/how-pay.gif",
+      width: 230,
+      height: 475,
     },
     {
       caption: "Build credit when use, repay, and grow with Advance.",
       alt: "Neo app flow: building credit by using, repaying and growing the advance limit",
       src: "/case-studies/neo-advance/how-build-credit.gif",
+      width: 230,
+      height: 475,
     },
   ],
 };
@@ -115,12 +121,14 @@ export const neoAdvanceNarrative = ([
 ]).map(narrativeStep);
 
 /** Figma 79:1979, exported at 2x as one image. */
-export const neoAdvanceJourneyMap = {
+export const neoAdvanceJourneyMap: HorizontalSlidesData = {
   label: "End-to-end credit journey",
-  src: "/images/neo/credit-journey.webp",
-  alt: "End-to-end Neo Advance journey across marketing channels, profile creation, credit onboarding, Advance activation and use, marking which screens were refined, new, removed or unchanged, with notes on the key refinements.",
-  width: 4628, height: 1720,
-} as const;
+  artifact: {
+    src: "/images/neo/credit-journey.webp",
+    alt: "End-to-end Neo Advance journey across marketing channels, profile creation, credit onboarding, Advance activation and use, marking which screens were refined, new, removed or unchanged, with notes on the key refinements.",
+    width: 4628, height: 1720,
+  },
+};
 
 /** Figma 94:5545: final delivery, 2x exports. Each group's text stays pinned beside its screens (two staggered columns). */
 const screen = (id: string, alt: string, height = 493) => ({ src: `/images/neo/final/${id}.png`, alt, width: 231, height });
@@ -169,6 +177,9 @@ export const neoAdvanceFinalDelivery = [
   },
 ] as const;
 
+/** Figma 94:5545: the core flows on the shared narrative template, `screens` layout. */
+export const neoAdvanceCoreFlows: NarrativeData = { label: "Core flows", imageLayout: "screens", steps: neoAdvanceFinalDelivery };
+
 /** Figma 89:5173: delivery frameworks, on the same rolling narrative as early discovery (2x exports). */
 export const neoAdvanceDeliveryPanels = ([
   {
@@ -189,7 +200,7 @@ export const neoAdvanceDeliveryPanels = ([
 ]).map(narrativeStep);
 
 /** Figma 99:38841. */
-export const neoAdvanceReflection = {
-  quote: "Designers navigate ambiguity not by eliminating uncertainty, but resolving the few uncertainties every downstream decision inherits.",
+export const neoAdvanceReflection: ReflectionData = {
+  headline: "Designers navigate ambiguity not by eliminating uncertainty, but resolving the few uncertainties every downstream decision inherits.",
   body: "In Neo Advance, the real risk wasn’t unanswered questions—it was letting unresolved decisions about account IA, entry points, and lending patterns propagate across 200+ screens and future products. I focused the team on resolving those structural questions first, using cross-product benchmarking and targeted research to turn them into shared rules before the design scaled.",
-} as const;
+};

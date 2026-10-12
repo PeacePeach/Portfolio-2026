@@ -19,11 +19,11 @@ export type SimpleSectionData = StoryTextBlockData & {
  * children, `container` is the story text alone.
  */
 export function SimpleSectionTemplate({ children, ...props }: SimpleSectionData & { children?: ReactNode }) {
-  const { label, title, body, heading, align = "center" } = props;
+  const { label, title, body, heading, text, align = "center" } = props;
   const beforeAfter = props.variant === "before-after";
   return <section className="cs-rules cs-simple-section" data-align={align} style={{ ...caseStudyTokens, ...(beforeAfter ? caseStudyWideEvidenceTokens : {}) }}>
     <CaseStudyTextReveal>
-      <div className="cs-simple-section-text"><StoryTextBlock label={label} title={title} body={body} heading={heading} /></div>
+      <div className="cs-simple-section-text"><StoryTextBlock label={label} title={title} body={body} heading={heading} text={text} /></div>
     </CaseStudyTextReveal>
     {(beforeAfter || children) && <div className="cs-simple-section-content">
       {props.variant === "before-after"

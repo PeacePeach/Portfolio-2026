@@ -3,20 +3,21 @@
 import { useEffect, useState, type ReactNode } from "react";
 import { motion } from "motion/react";
 import { cameByFade, landCaseMorph, morphElapsed, morphTiming, useCaseMorph } from "@/lib/caseMorph";
-import { IntroTemplate, type IntroData } from "./templates/IntroTemplate";
+import { IntroTemplate, type IntroData } from "./IntroTemplate";
 
 /**
- * Top of a case study the Work tile morphs into: the hero band, then the
- * intro. Arriving from the tile, the band stays hidden until the transition
- * layer hands it over, and the text rises in last.
+ * Case intro shell: the project's hero band (a slot, the artwork stays
+ * project-specific), then the intro and the page's chapters. Arriving from the
+ * Work tile, the band stays hidden until the transition layer hands it over,
+ * and the text rises in last.
  */
-export function MorphCaseIntro({
+export function CaseIntroTemplate({
   hero,
   intro,
   children,
 }: {
-  /** the page's hero; `hidden` while the transition layer still covers it */
-  hero: (hidden: boolean) => ReactNode;
+  /** The project's own hero artwork; hidden while the transition layer still covers it. */
+  hero: ReactNode;
   intro: IntroData;
   children?: ReactNode;
 }) {
@@ -33,7 +34,7 @@ export function MorphCaseIntro({
       animate={{ opacity: 1 }}
       transition={{ duration: 0.2, ease: "easeOut" }}
     >
-      {hero(!!morph)}
+      <div className="mt-(--spacing-header-bar)" style={{ visibility: morph ? "hidden" : undefined }}>{hero}</div>
       <div className="container-page">
         <IntroTemplate
           {...intro}

@@ -11,8 +11,12 @@ export default function CaseStudyTemplatesPage() {
       <li><Link className="hover-underline" href="/case-study-templates/intro">Intro — title, copy and facts</Link></li>
       <li><Link className="hover-underline" href="/case-study-templates/simple-section">Simple section — story text over full-width content, or before/after</Link></li>
       <li><Link className="hover-underline" href="/case-study-templates/story-text">Story text block — optional label, chapter or section title</Link></li>
-      <li><Link className="hover-underline" href="/case-study-templates/narrative">Narrative — text pinned beside images, rolling or static, joined, separate or plain</Link></li>
+      <li><Link className="hover-underline" href="/case-study-templates/narrative">Narrative — text pinned beside images, rolling or static, joined, separate, plain or phone screens</Link></li>
+      <li><Link className="hover-underline" href="/case-study-templates/horizontal-slides">Horizontal slides — pinned slideshow, or one long artifact moving sideways</Link></li>
+      <li><Link className="hover-underline" href="/case-study-templates/media-row">Media row — heading over captioned media</Link></li>
       <li><Link className="hover-underline" href="/case-study-templates/impact">Impact — section header and impact cards</Link></li>
+      <li><Link className="hover-underline" href="/case-study-templates/reflection">Reflection — quote with gradient bar, then body</Link></li>
+      <li><Link className="hover-underline" href="/case-study-templates/follow-up">Follow-up — feedback beside the next case study</Link></li>
       <li><Link className="hover-underline" href="/case-study-templates/two-column-text">Two-column text — static or Tell Me About It columns</Link></li>
       <li><Link className="hover-underline" href="/case-study-templates/tell-me-about-it">Tell Me About It — prompt and feedback variants</Link></li>
     </ul>

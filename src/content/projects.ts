@@ -69,3 +69,9 @@ export const projects: Project[] = [
     ],
   },
 ];
+
+/**
+ * Up Next priority: a case study's closing recommends the first of these that
+ * isn't the current one and hasn't been opened this session.
+ */
+export const upNextOrder = ["neo-advance", "mutexa", "brightcove-beacon", "reimagining-analytics"] as const;

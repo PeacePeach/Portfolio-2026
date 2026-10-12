@@ -5,7 +5,7 @@
  * variables).
  *
  *   display  Fraunces (SOFT 0, WONK 1): hero statement, loader name, HX logo
- *   sans     Geist: body, nav, loader percentage, Know me by panel
+ *   sans     Geist (normal + italic): body, nav, loader percentage, Know me by panel, quotes
  */
 import { Fraunces, Geist } from "next/font/google";
 
@@ -18,6 +18,7 @@ export const displayFont = Fraunces({
 
 export const bodyFont = Geist({
   subsets: ["latin"],
+  style: ["normal", "italic"],
   variable: "--font-body-family",
   display: "swap",
 });

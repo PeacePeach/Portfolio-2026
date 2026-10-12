@@ -1,5 +1,6 @@
 import { Header } from "@/components/Header";
 import { CaseMorphLayer } from "@/components/case-study/CaseMorphLayer";
+import { CaseStudyViewTracker } from "@/components/case-study/CaseStudyViewTracker";
 
 /**
  * Work and the case studies share one top nav, so it never remounts or moves
@@ -12,6 +13,7 @@ export default function WorkLayout({ children }: LayoutProps<"/work">) {
       <Header />
       {children}
       <CaseMorphLayer />
+      <CaseStudyViewTracker />
     </>
   );
 }

@@ -1,5 +1,6 @@
 import type { TwoColumnTextData } from "@/components/case-study/templates/TwoColumnTextTemplate";
-import type { BeforeAfterData } from "@/components/case-study/templates/BeforeAfterTemplate";
+import type { FollowUpData } from "@/components/case-study/templates/FollowUpTemplate";
+import type { BeforeAfterData, BeforeAfterTabsData } from "@/components/case-study/templates/BeforeAfterTemplate";
 
 /** Early discovery: the stuck point, then a Tell Me About It prompt that reveals how it was unblocked. */
 export const neoAdvanceEarlyDiscovery = {
@@ -112,17 +113,15 @@ export const neoAdvanceValidationThemes = themes.map((theme, index) => {
   return { id: theme.id, label: `Theme ${theme.id}`, data };
 });
 
+/** Figma 79:2211: one tabbed Before / After panel, a tab per research theme. */
+export const neoAdvanceValidation: BeforeAfterTabsData = { tabsLabel: "Research themes", tabs: neoAdvanceValidationThemes };
+
 /** Figma 99:39434 / 99:39393: feedback beside the next case study. */
-export const neoAdvanceClosing = {
-  columns: [
-    {
-      tellMeAboutIt: {
-        variant: "feedback",
-        eyebrow: "TELL ME ABOUT IT",
-        title: "How do you like this case study?",
-        quickReplies: ["Loved it!", "Meh ...", "It’s too long"],
-      },
-    },
-    { upNext: "mutexa" },
-  ],
-} satisfies TwoColumnTextData;
+export const neoAdvanceClosing: FollowUpData = {
+  feedback: {
+    eyebrow: "TELL ME ABOUT IT",
+    title: "How do you like this case study?",
+    quickReplies: ["Loved it!", "Meh ...", "It’s too long"],
+  },
+  current: "neo-advance",
+};

@@ -1,4 +1,4 @@
-import { swap } from "@/design/motion";
+import { duration, ease, swap } from "@/design/motion";
 
 /** Case-study behavior only; all durations/easing come from site motion. */
 export function caseStudyMotion(reduce: boolean | null) {
@@ -8,5 +8,7 @@ export function caseStudyMotion(reduce: boolean | null) {
     hidden: { opacity: 0, y: reduce ? 0 : swap.offset },
     shown: { opacity: 1, y: 0 },
     stagger: reduce ? 0 : swap.stagger,
+    /** One whole slide sliding in (HorizontalSlidesTemplate). */
+    slide: reduce ? { duration: 0 } : { duration: duration.slow, ease: ease.inOutQuart },
   };
 }
