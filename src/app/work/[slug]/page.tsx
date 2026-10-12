@@ -24,6 +24,7 @@ import { HorizontalSlidesTemplate } from "@/components/case-study/templates/Hori
 import { ReflectionTemplate } from "@/components/case-study/templates/ReflectionTemplate";
 import { PersonaQuote } from "@/components/case-study/shared/PersonaQuote";
 import { PersonaTasks } from "@/components/case-study/shared/PersonaTasks";
+import { StatCircles } from "@/components/case-study/shared/StatCircles";
 import { caseStudyControl, caseStudyTokens, caseStudyType } from "@/components/case-study/shared/caseStudyTokens";
 import { ArrowRight } from "react-feather";
 import { CaseStudyChapterHeader } from "@/components/case-study/shared/CaseStudyChapterHeader";
@@ -85,7 +86,7 @@ import {
   brightcoveBeaconJobMapImage,
   brightcoveBeaconProblem,
 } from "@/content/case-study/brightcoveBeacon";
-import { mutexaIntro } from "@/content/case-study/mutexa";
+import { mutexaContext, mutexaIntro, mutexaKeyExperience, mutexaRelationship, mutexaPrototypes, mutexaPrototypesImage, mutexaIterations, mutexaOpportunity, mutexaOpportunityStats } from "@/content/case-study/mutexa";
 import { getProject, getProjects } from "@/content";
 import { site } from "@/content/site";
 
@@ -303,7 +304,29 @@ async function CaseStudyContent({ params }: PageProps<"/work/[slug]">) {
         <CaseIntroTemplate
           intro={mutexaIntro}
           hero={<MutexaHero />}
-        />
+        >
+          {/* Context, opportunity and key experience open the case study before chapter 01, as on Reimagining Analytics. */}
+          <ScrollReveal as="hr" className="mt-24 border-line" />
+          <SimpleSectionTemplate {...mutexaContext} />
+          <ScrollReveal as="hr" className="border-line" />
+          <SimpleSectionTemplate {...mutexaOpportunity}>
+            <StatCircles stats={mutexaOpportunityStats} />
+          </SimpleSectionTemplate>
+          <ScrollReveal as="hr" className="border-line" />
+          <NarrativeTemplate {...mutexaKeyExperience} />
+          <section aria-labelledby="mutexa-relationship">
+            <CaseStudyChapterHeader id="mutexa-relationship">01 _ DESIGN THE RELATIONSHIP BEFORE THE INTELLIGENCE</CaseStudyChapterHeader>
+            <SimpleSectionTemplate {...mutexaRelationship} />
+            <ScrollReveal as="hr" className="border-line" />
+            <SimpleSectionTemplate {...mutexaPrototypes} text={<p className={caseStudyType.storyBody}>{mutexaPrototypes.title}</p>}>
+              <ScrollReveal>
+                <Image src={mutexaPrototypesImage.src} alt={mutexaPrototypesImage.alt} width={mutexaPrototypesImage.width} height={mutexaPrototypesImage.height} sizes="(min-width: 1280px) 1152px, 100vw" className="block h-auto w-full" />
+              </ScrollReveal>
+            </SimpleSectionTemplate>
+            <ScrollReveal as="hr" className="border-line" />
+            <NarrativeTemplate {...mutexaIterations} />
+          </section>
+        </CaseIntroTemplate>
       </main>
     );
   }
