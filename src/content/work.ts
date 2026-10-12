@@ -28,11 +28,10 @@ export const caseStudyFilters: WorkFilter[] = [
 ];
 
 export const superPowerFilters: WorkFilter[] = [
-  { id: "untangle-complexity", label: "Untangle complexity" },
-  { id: "navigate-ambiguity", label: "Navigate ambiguity" },
-  { id: "set-people-up", label: "Set people for success" },
-  { id: "smart-research", label: "Smart research" },
-  { id: "ai-assisted-design", label: "AI-assisted design" },
+  { id: "navigate-ambiguity", label: "Navigate Ambiguity" },
+  { id: "bring-people-together", label: "Bring People Together" },
+  { id: "calibrate-decisions", label: "Calibrate Decisions" },
+  { id: "ai-assisted-design", label: "AI-assisted Design" },
 ];
 
 export const workCopy = {

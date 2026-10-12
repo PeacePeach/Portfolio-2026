@@ -19,7 +19,8 @@ const kinds = {
  * Super power fragment (Figma 25:538, wide layout 27:1695). Every card in a
  * breakpoint has the same size: the image box and row height are fixed and
  * the copy is clamped (title 2 lines, body 6). Image size steps up at sm.
- * Hover lightens the card and turns the call to action white.
+ * Hover lightens the card and turns the call to action white. An optional
+ * summary line leads the metrics row (Figma 176:3804).
  */
 export function PowerFragmentCard({ fragment }: { fragment: PowerFragment }) {
   const kind = kinds[fragment.kind];
@@ -28,14 +29,14 @@ export function PowerFragmentCard({ fragment }: { fragment: PowerFragment }) {
 
   // The whole card is clickable through the stretched link; the like button sits above it.
   return (
-    <article className="group relative flex flex-col rounded-[10px] border border-ink/10 bg-card transition-colors duration-(--duration-underline) ease-out-expo hover:bg-card-hover has-focus-visible:bg-card-hover [--frag-img-w:6.5rem] sm:[--frag-img-w:8.1875rem]">
+    <article className="group relative flex h-full flex-col rounded-[10px] border border-ink/10 bg-card transition-colors duration-(--duration-underline) ease-out-expo hover:bg-card-hover has-focus-visible:bg-card-hover [--frag-img-w:6.5rem] sm:[--frag-img-w:8.1875rem]">
       <div className="flex items-start justify-between gap-4 border-b border-ink/10 px-5 pt-5 pb-3 type-body-s text-secondary">
         <span className="flex items-center gap-2">
           <Icon size={18} strokeWidth={1.33} aria-hidden />
           {kind.label}
         </span>
         <Link
-          href={`/work/${fragment.project}`}
+          href={`/work/${fragment.project}${fragment.section ? `#${fragment.section}` : ""}`}
           aria-label={`${kind.action}: ${fragment.title}`}
           className="flex items-center gap-1 rounded-[10px] outline-offset-4 transition-colors duration-(--duration-underline) ease-out-expo group-hover:text-primary group-has-focus-visible:text-primary after:absolute after:inset-0 after:z-[1] after:rounded-[10px]"
         >
@@ -68,22 +69,27 @@ export function PowerFragmentCard({ fragment }: { fragment: PowerFragment }) {
             <h3 className="line-clamp-2 type-display-xs text-primary">{fragment.title}</h3>
             <p className="line-clamp-6 type-body-s text-secondary">{fragment.body}</p>
           </div>
-          <div className="flex h-[1.125rem] items-center gap-1.5 type-body-xs text-primary">
-            <button
-              type="button"
-              onClick={toggle}
-              aria-pressed={liked}
-              aria-label={`Like ${fragment.title}`}
-              className="relative z-[2] flex cursor-pointer items-center gap-1 transition-transform duration-(--duration-fast) active:scale-90"
-            >
-              <Heart size={16} strokeWidth={1.33} fill={liked ? "currentColor" : "none"} aria-hidden />
-              <span className={count}>{fragment.likes + (liked ? 1 : 0)}</span>
-            </button>
-            {/* Visitor responses, added on the detail page (planned). Display only here. */}
-            <span className="flex items-center gap-1" aria-label={`${fragment.notes} responses`}>
-              <Edit2 size={16} strokeWidth={1.33} aria-hidden />
-              <span className={count}>{fragment.notes}</span>
-            </span>
+          {/* Optional summary, then the metrics 24 px after it. When both no longer fit,
+              the metrics wrap together onto a second row 12 px below; the summary keeps its size. */}
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
+            {fragment.summary ? <p className="type-label-s normal-case text-secondary">{fragment.summary}</p> : null}
+            <div className="flex h-[1.125rem] items-center gap-1.5 type-body-xs text-primary">
+              <button
+                type="button"
+                onClick={toggle}
+                aria-pressed={liked}
+                aria-label={`Like ${fragment.title}`}
+                className="relative z-[2] flex cursor-pointer items-center gap-1 transition-transform duration-(--duration-fast) active:scale-90"
+              >
+                <Heart size={16} strokeWidth={1.33} fill={liked ? "currentColor" : "none"} aria-hidden />
+                <span className={count}>{fragment.likes + (liked ? 1 : 0)}</span>
+              </button>
+              {/* Visitor responses, added on the detail page (planned). Display only here. */}
+              <span className="flex items-center gap-1" aria-label={`${fragment.notes} responses`}>
+                <Edit2 size={16} strokeWidth={1.33} aria-hidden />
+                <span className={count}>{fragment.notes}</span>
+              </span>
+            </div>
           </div>
         </div>
       </div>

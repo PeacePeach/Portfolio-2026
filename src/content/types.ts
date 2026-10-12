@@ -76,7 +76,11 @@ export type PowerFragment = {
   body: string;
   /** Case study slug the fragment links to. */
   project: string;
+  /** Section id on that case study to land on, e.g. "neo-hifi". */
+  section?: string;
   image?: ImageRef;
+  /** Optional short stat line before the metrics, e.g. "3 STUDIES · 3 DAYS · 200+ SCREENS" (Figma 176:3804). Shown as written. */
+  summary?: string;
   /** Likes so far (heart). Visitors can add theirs; see src/lib/likes.ts. */
   likes: number;
   /** Visitor responses on the detail page (pencil); the input is planned. */
