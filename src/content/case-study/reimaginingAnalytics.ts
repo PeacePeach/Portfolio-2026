@@ -142,31 +142,39 @@ export const reimaginingAnalyticsRolesIntro = {
 
 const roles = (name: string, alt: string) => ({ src: `/case-studies/reimagining-analytics/roles-${name}.png`, alt });
 
-/** Example task (Figma 116:891 layout, content and 2x images from 25:1364): wide Before / After, no tabs, with the final design as a second row. */
+/** Example task (Figma 116:891 layout, content and 2x images from 25:1364): wide Before / After, no tabs, with the final design as a second row under one Final Design pill. */
 export const reimaginingAnalyticsRoles = {
   size: "wide",
   title: "Example Task: Finding Videos That Generate Leads",
   description: "Role: Campaign Manager",
   before: {
     images: [roles("before", "Before: Analytics opens on generic trend charts and a video table, with lead metrics buried in separate tabs")],
-    bullets: [{ tone: "negative", text: "Users can’t find the target metrics after looking through each tab" }],
+    bullets: [
+      { tone: "negative", text: "Feature-based IA hid key metrics" },
+      { tone: "negative", text: "Users can’t find the target metrics after looking through each tab" },
+    ],
   },
   after: {
     images: [roles("after", "After: Analytics Overview with headline metrics, a trend chart and best performing videos and pages")],
     bullets: [
+      { tone: "positive", text: "Grouped key metrics for faster scanning" },
       { tone: "positive", text: "Increased task success" },
       { tone: "negative", text: "Avg. 32s task time" },
     ],
   },
   rows: [{
     before: {
-      label: "Final design",
+      label: "Final Design",
       images: [roles("final-overview", "Final design: a marketer’s Analytics Overview leading with lead generation and video likes")],
+      bullets: [{ tone: "positive", text: "Prioritized metrics around user goals" }],
     },
     after: {
-      label: "Final design",
+      label: null,
       images: [roles("final-funnel", "Final design: a Funnel view tracing video views to leads and identified viewers")],
-      bullets: [{ tone: "positive", text: "Avg. task time decrease to 11s" }],
+      bullets: [
+        { tone: "positive", text: "Connected stages to reveal drop-offs" },
+        { tone: "positive", text: "Avg. task time decreased to 11s" },
+      ],
     },
   }],
 } satisfies BeforeAfterData;

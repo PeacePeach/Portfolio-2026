@@ -5,7 +5,8 @@ import { EvidenceReveal } from "./CaseStudyMotion";
 export type EvidenceImage = { src: string; alt: string; width?: number; height?: number; overlay?: string; baseHeight?: number };
 
 export type EvidenceColumnData = {
-  label?: string;
+  /** Renames the pill; `null` hides it but keeps its space, so a pill can label the whole row. */
+  label?: string | null;
   images: readonly EvidenceImage[];
   bullets?: readonly EvidenceBulletData[];
 };
@@ -13,7 +14,9 @@ export type EvidenceColumnData = {
 export function EvidenceColumn({ data, label, emphasis = "secondary", imageLayout = "stack" }: { data: EvidenceColumnData; label: string; emphasis?: "primary" | "secondary"; imageLayout?: "stack" | "pair" }) {
   return <EvidenceReveal>
     <div className="cs-column" data-emphasis={emphasis} data-image-layout={imageLayout}>
-      <EvidencePill label={data.label ?? label} emphasis={emphasis} />
+      {data.label === null
+        ? <span aria-hidden="true" className="invisible"><EvidencePill label={label} emphasis={emphasis} /></span>
+        : <EvidencePill label={data.label ?? label} emphasis={emphasis} />}
       <div className="cs-evidence-images">
         {data.images.map((image, index) => (
           // Intrinsic aspect ratio supports config-only image swaps; no fixed phone crop.

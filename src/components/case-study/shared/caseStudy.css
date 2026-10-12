@@ -10,7 +10,7 @@
 .cs-column[data-emphasis='primary'] { gap: var(--cs-final-evidence-gap); }
 .cs-small-text { line-height: var(--cs-small-line-height); }
 .cs-evidence-images { display: flex; flex-direction: column; gap: var(--cs-evidence-gap); width: 100%; }
-.cs-evidence-image { display: block; width: var(--cs-image-width); max-width: 100%; height: auto; border-radius: var(--cs-radius); }
+.cs-evidence-image { display: block; width: var(--cs-image-width); max-width: 100%; height: auto; border-radius: var(--cs-image-radius); }
 .cs-bullets { display: flex; flex-direction: column; gap: var(--cs-bullet-gap); list-style: none; padding: 0; margin: 0; width: 100%; }
 .cs-bullet { display: flex; align-items: flex-start; gap: var(--cs-icon-gap); color: var(--cs-bullet-text); }
 /* Centred on the first line box: centred beside one line, level with the first of several. */
@@ -65,7 +65,7 @@
   .cs-panel[data-layout="grouped-before-after"] .cs-evidence-columns { grid-template-columns: minmax(0, var(--cs-image-width)); }
 }
 
-.cs-evidence-frame { position: relative; width: var(--cs-image-width); max-width: 100%; flex-shrink: 0; overflow: hidden; border-radius: var(--cs-radius); }
+.cs-evidence-frame { position: relative; width: var(--cs-image-width); max-width: 100%; flex-shrink: 0; overflow: hidden; border-radius: var(--cs-image-radius); }
 .cs-evidence-frame img { object-fit: cover; }
 .cs-evidence-overlay { position: absolute; inset: 0; max-width: 100%; }
 .cs-column[data-image-layout="pair"] { gap: var(--cs-evidence-gap); }

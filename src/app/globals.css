@@ -135,6 +135,7 @@
   /* Existing repeated surface and tab radii. */
   --radius-surface: 10px;
   --radius-control: 8px;
+  --radius-image: 5px;   /* desktop screenshots in case studies */
 
   /* ---- Motion (mirrors src/design/motion.ts) ------------------------ */
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);

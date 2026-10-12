@@ -14,6 +14,7 @@ export const caseStudyTokens: CSSProperties & Record<`--cs-${string}`, string> =
   // No exact shared border token. Keep RGB alpha: color-mix changed corner pixels.
   "--cs-border": "1px solid rgb(255 255 255 / 10%)",
   "--cs-radius": radius.surface,
+  "--cs-image-radius": "var(--cs-radius)",
   "--cs-primary": "#f5f5f5",
   "--cs-secondary": "#a3a3a3",
   "--cs-bullet-text": "#f9f9f9",
@@ -84,6 +85,7 @@ export const caseStudyWideEvidenceTokens: Record<`--cs-${string}`, string> = {
   "--cs-final-evidence-gap": "calc(var(--spacing) * 4)",
   // Two 568px columns fill the 1174px panel; the page already provides the side margin.
   "--cs-content-gutter": "0px",
+  "--cs-image-radius": radius.image,
 };
 
 /** Semantic roles compose existing site utilities. No template owns typography. */

@@ -89,7 +89,7 @@ Text pinned on the left (320) beside images on the right (704), 128px apart. Con
 | `imageLayout` | Images |
 | --- | --- |
 | `joined` (default) | One 20px-radius surface, dividers between images, scroll scale 0.98 → 1 |
-| `separate` | Each image its own 10px `radius-surface` card with a `border-default` border, 16px apart |
+| `separate` | Each image its own 5px `radius-image` card with a `border-default` border, 16px apart |
 | `plain` | Images only: no surface, rounding, divider or scaling |
 
 An image with `full` opens the zoom viewer; `pill` puts a shared `EvidencePill` (e.g. Before / After) 16px above it, and labelled blocks sit 32px apart within a step and 64px between steps; `details` adds a text button for the step's first zoomable image. On mobile each step's text sits above its images. `StickyNarrativeText` and `shared/useStickyNarrative` are exported for layouts with other visuals (Neo `NeoCoreFlows`).
@@ -110,7 +110,7 @@ Structure only, built from the evidence primitives in `shared/`. Contract: `titl
 
 Bullets are optional; a column with none renders only its pill and images.
 
-`size: "wide"` uses the simple-section screenshot width (568px columns, 16px gaps, `border-default` frames). `rows` (`before-after` only) stacks more Before / After pairs under the same header, 48px apart (`--cs-row-gap`); a column's `label` renames its pill. Without `navigation` the panel drops the tab-bar spacing and fixed min height. Used by Reimagining Analytics role-based experience (`reimaginingAnalyticsRoles`, Figma `116:891`).
+`size: "wide"` uses the simple-section screenshot width (568px columns, 16px gaps, 5px `radius-image` corners, `border-default` frames). `rows` (`before-after` only) stacks more Before / After pairs under the same header, 48px apart (`--cs-row-gap`); a column's `label` renames its pill, and `label: null` hides the pill but keeps its space, so one pill can label a whole row. Without `navigation` the panel drops the tab-bar spacing and fixed min height. Used by Reimagining Analytics role-based experience (`reimaginingAnalyticsRoles`, Figma `116:891`).
 
 Optional tabs: pass `navigation` (`CaseStudyTabs`), `contentId`, `activeTabId` and `contentKey`; only the inner content swaps. Used by Neo Advance hi-fi exploration (`neo-advance/NeoThemePanel.tsx`, content `neoAdvanceValidationThemes`).
 
