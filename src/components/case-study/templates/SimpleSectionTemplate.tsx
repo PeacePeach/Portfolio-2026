@@ -7,6 +7,8 @@ import { CaseStudyTextReveal, EvidenceStagger } from "../shared/CaseStudyMotion"
 export type SimpleSectionData = StoryTextBlockData & {
   /** `center` (default): 400px text centred. `left`: 561px text on the content's left edge (Figma 150:4909). */
   align?: "center" | "left";
+  /** From 1280px: text and content sit 128px in from each side, for screenshots smaller than full width (Figma 43:215). */
+  inset?: boolean;
 } & (
   | { variant?: "container" }
   | { variant: "before-after"; before: EvidenceColumnData; after: EvidenceColumnData }
@@ -19,9 +21,9 @@ export type SimpleSectionData = StoryTextBlockData & {
  * children, `container` is the story text alone.
  */
 export function SimpleSectionTemplate({ children, ...props }: SimpleSectionData & { children?: ReactNode }) {
-  const { label, title, body, heading, text, align = "center" } = props;
+  const { label, title, body, heading, text, align = "center", inset } = props;
   const beforeAfter = props.variant === "before-after";
-  return <section className="cs-rules cs-simple-section" data-align={align} style={{ ...caseStudyTokens, ...(beforeAfter ? caseStudyWideEvidenceTokens : {}) }}>
+  return <section className="cs-rules cs-simple-section" data-align={align} data-inset={inset || undefined} style={{ ...caseStudyTokens, ...(beforeAfter ? caseStudyWideEvidenceTokens : {}) }}>
     <CaseStudyTextReveal>
       <div className="cs-simple-section-text"><StoryTextBlock label={label} title={title} body={body} heading={heading} text={text} /></div>
     </CaseStudyTextReveal>

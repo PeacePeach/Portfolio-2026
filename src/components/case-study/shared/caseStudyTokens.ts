@@ -53,7 +53,9 @@ export const caseStudyTokens: CSSProperties & Record<`--cs-${string}`, string> =
   // Left-aligned simple-section text (Figma 150:4909).
   "--cs-text-left-width": "561px",
   // Horizontal slides (Figma 89:5440): 696px text, 879px slides 16px apart, 337px fade over the next slide.
-  "--cs-slides-text-width": "696px",
+  "--cs-text-wide-width": "696px",
+  // Inset simple section (Figma 43:215): text and content 128px in from each side of the content on desktop.
+  "--cs-section-inset": "calc(var(--spacing) * 32)",
   "--cs-slide-width": "879px",
   "--cs-slide-gap": "calc(var(--spacing) * 4)",
   "--cs-slides-fade-width": "337px",

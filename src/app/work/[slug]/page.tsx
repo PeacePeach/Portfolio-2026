@@ -212,10 +212,14 @@ async function CaseStudyContent({ params }: PageProps<"/work/[slug]">) {
           </section>
           <section aria-labelledby="analytics-final">
             <CaseStudyChapterHeader id="analytics-final">05 _ FINAL DESIGN</CaseStudyChapterHeader>
-            <HorizontalSlidesTemplate
-              label={reimaginingAnalyticsFinalDesign.label}
-              slides={reimaginingAnalyticsFinalDesign.slides.map(({ persona, ...slide }) => ({ ...slide, text: <PersonaQuote {...persona} /> }))}
-            />
+            {reimaginingAnalyticsFinalDesign.map(({ id, title, persona, image }, index) => <Fragment key={id}>
+              {index > 0 && <ScrollReveal as="hr" className="border-line" />}
+              <SimpleSectionTemplate title={title} align="left" inset text={<PersonaQuote {...persona} />}>
+                <ScrollReveal className="overflow-hidden rounded-image border border-border-default">
+                  <Image src={image.src} alt={image.alt} width={image.width} height={image.height} sizes="(min-width: 1280px) 1040px, 100vw" className="block h-auto w-full" />
+                </ScrollReveal>
+              </SimpleSectionTemplate>
+            </Fragment>)}
           </section>
           <section aria-labelledby="analytics-reflection">
             <CaseStudyChapterHeader id="analytics-reflection">06 _ REFLECTION</CaseStudyChapterHeader>

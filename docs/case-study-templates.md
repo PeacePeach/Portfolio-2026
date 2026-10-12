@@ -69,20 +69,20 @@ Every template's text area takes an optional `text` (any React node, e.g. an ico
 
 Text components for the slot live in `shared/`:
 
-- `PersonaQuote` (Figma `43:348`): 48px round avatar over the persona name (chapter-label type, uppercase), left-aligned with the content below, 24px beside the quote (`caseStudyType.quote` = `type-body-m-italic`, primary). Used by Reimagining Analytics final design (`reimaginingAnalyticsFinalDesign`, `HorizontalSlidesTemplate`).
+- `PersonaQuote` (Figma `43:348`): 48px round avatar over the persona name (chapter-label type, uppercase, one word per line, as wide as its longest word), left-aligned, 12px beside the quote (`caseStudyType.quote` = `type-body-m-italic`, primary). Used by Reimagining Analytics final design (`reimaginingAnalyticsFinalDesign`, `SimpleSectionTemplate` with `align: "left"` and `inset`); at the 561px left text width the quote runs about as tall as avatar and name.
 
 ## SimpleSectionTemplate
 
 `templates/SimpleSectionTemplate.tsx` · Figma `135:1453` · Preview `/case-study-templates/simple-section`
 
-Contract: `StoryTextBlock` data (`label?`, `title`, `body`, `heading?`) plus `align` and a `variant`. `align: "center"` (default) centres a 400px `StoryTextBlock`; `align: "left"` puts a 561px one on the content's left edge (Figma `150:4909`). Either sits above full-width content: 96px from the dividers above and below, 64px from text to content. Text uses the case-study text reveal.
+Contract: `StoryTextBlock` data (`label?`, `title`, `body`, `heading?`) plus `align` and a `variant`. `align: "center"` (default) centres a 400px `StoryTextBlock`; `align: "left"` puts a 561px one on the content's left edge (Figma `150:4909`). `inset` (from 1280px) moves text and content 128px in from each side (`--cs-section-inset`, Figma `43:215`), for screenshots that shouldn't fill the page width. Either sits above full-width content: 96px from the dividers above and below, 64px from text to content. Text uses the case-study text reveal.
 
 | `variant` | Content | Config |
 | --- | --- | --- |
 | `container` (default) | Any children | `children` |
 | `before-after` | Two 568px desktop screenshots, 16px apart, each 16px under its Before / After pill (Figma `110:18926`); stacks below `md` | `before`, `after` (`EvidenceColumn` data, bullets optional) |
 
-Used by Reimagining Analytics (`reimaginingAnalyticsReframing`, `before-after`).
+Used by Reimagining Analytics (`reimaginingAnalyticsReframing`, `before-after`; role insights, left; final design, one left-aligned `inset` section per screen with a `PersonaQuote` text slot over the screen, `reimaginingAnalyticsFinalDesign`).
 
 ## HorizontalSlidesTemplate
 
@@ -94,7 +94,7 @@ Desktop (≥1024px): the stage pins 20px under the nav bar for one viewport of s
 
 Long artifact (Figma `79:1979`): pass `{ label, artifact: { src, alt, width, height } }` instead of `slides`. One image wider than the page (a journey map, an end-to-end flow) starts at the page margin and bleeds to both viewport edges, at most 860px tall and never taller than the viewport under the nav. Desktop pins it 20px under the nav bar and moves it sideways one pixel per pixel of scroll, continuously, until its right edge meets the page margin. Mobile and reduced motion get a native horizontal scroller.
 
-Used by Reimagining Analytics final design (`reimaginingAnalyticsFinalDesign`, slides) and Neo Advance concept exploration (`neoAdvanceJourneyMap`, artifact).
+Used by Neo Advance concept exploration (`neoAdvanceJourneyMap`, artifact). Slides crop tall screens to the viewport; when a whole screen must show, use `SimpleSectionTemplate`s stacked vertically instead (as Reimagining Analytics final design).
 
 ## MediaRowTemplate
 

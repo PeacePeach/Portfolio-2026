@@ -213,36 +213,35 @@ const persona = {
 };
 const finalScreen = (name: string, alt: string) => ({ src: `/case-studies/reimagining-analytics/final-${name}.png`, alt, width: 2026, height: 1264 });
 
-/** "05 _ FINAL DESIGN" (Figma 43:215): horizontal slides, each led by a persona quote. */
-export const reimaginingAnalyticsFinalDesign = {
-  label: "Final design",
-  slides: [
-    {
-      id: "marketer-overview",
-      title: "Campaign manager: Analytics Overview",
-      persona: { ...persona.campaignManager, quote: "“The new design instantly showcases my key metrics, highlighting both achievements and concerns, thereby saving significant time. No more sifting through tabs!”" },
-      image: finalScreen("marketer-overview", "Analytics Overview for a campaign manager: lead generation and video likes up front, with best performing video and page"),
-    },
-    {
-      id: "marketer-funnel",
-      title: "Campaign manager: Funnel",
-      persona: { ...persona.campaignManager, quote: "“The ‘View More’ feature on the previous page conveniently lets me delve into detailed data, pinpointing the videos driving my lead generation increase. What a timesaver!”" },
-      image: finalScreen("marketer-funnel", "Funnel view tracing video views to leads, with a per-video breakdown"),
-    },
-    {
-      id: "producer-overview",
-      title: "Video producer: Analytics Overview",
-      persona: { ...persona.videoProducer, quote: "“Now I see my tailored north star metrics - Engagement scores and Returning Viewers - upfront, a refreshing change from the generic version. Plus, I can customize it based on my needs!”" },
-      image: finalScreen("producer-overview", "Analytics Overview for a video producer: engagement score and returning viewers up front"),
-    },
-    {
-      id: "producer-viewers",
-      title: "Video producer: Viewers",
-      persona: { ...persona.videoProducer, quote: "“Seeing Returning Viewers drop, I clicked ‘View More’ and drilled down to the viewer’s page, pinpointing when and who contributed to the dip.”" },
-      image: finalScreen("producer-viewers", "Viewers page showing when returning viewers dropped and which viewers contributed"),
-    },
-  ],
-} satisfies { label: string; slides: readonly { id: string; title: string; persona: PersonaQuoteData; image: { src: string; alt: string; width: number; height: number } }[] };
+/** "05 _ FINAL DESIGN" (Figma 43:215, 135:1453): each screen in its own left-aligned, inset simple section, led by a persona quote. */
+type ReimaginingAnalyticsScreen = { id: string; title: string; persona: PersonaQuoteData; image: ImageRef };
+
+export const reimaginingAnalyticsFinalDesign = [
+  {
+    id: "marketer-overview",
+    title: "Campaign manager: Analytics Overview",
+    persona: { ...persona.campaignManager, quote: "“The new design instantly showcases my key metrics, highlighting both achievements and concerns, thereby saving significant time. No more sifting through tabs!”" },
+    image: finalScreen("marketer-overview", "Analytics Overview for a campaign manager: lead generation and video likes up front, with best performing video and page"),
+  },
+  {
+    id: "marketer-funnel",
+    title: "Campaign manager: Funnel",
+    persona: { ...persona.campaignManager, quote: "“The ‘View More’ feature on the previous page conveniently lets me delve into detailed data, pinpointing the videos driving my lead generation increase. What a timesaver!”" },
+    image: finalScreen("marketer-funnel", "Funnel view tracing video views to leads, with a per-video breakdown"),
+  },
+  {
+    id: "producer-overview",
+    title: "Video producer: Analytics Overview",
+    persona: { ...persona.videoProducer, quote: "“Now I see my tailored north star metrics - Engagement scores and Returning Viewers - upfront, a refreshing change from the generic version. Plus, I can customize it based on my needs!”" },
+    image: finalScreen("producer-overview", "Analytics Overview for a video producer: engagement score and returning viewers up front"),
+  },
+  {
+    id: "producer-viewers",
+    title: "Video producer: Viewers",
+    persona: { ...persona.videoProducer, quote: "“Seeing Returning Viewers drop, I clicked ‘View More’ and drilled down to the viewer’s page, pinpointing when and who contributed to the dip.”" },
+    image: finalScreen("producer-viewers", "Viewers page showing when returning viewers dropped and which viewers contributed"),
+  },
+] satisfies readonly ReimaginingAnalyticsScreen[];
 
 export const reimaginingAnalyticsReflection: ReflectionData = {
   headline: "Consistency isn’t making every user follow the same mental model. It’s deciding what should stay invariant—and what should adapt.",
