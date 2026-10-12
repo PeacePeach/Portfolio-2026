@@ -84,6 +84,7 @@ import {
   brightcoveBeaconJobMapImage,
   brightcoveBeaconProblem,
 } from "@/content/case-study/brightcoveBeacon";
+import { mutexaIntro } from "@/content/case-study/mutexa";
 import { getProject, getProjects } from "@/content";
 import { site } from "@/content/site";
 
@@ -291,6 +292,17 @@ async function CaseStudyContent({ params }: PageProps<"/work/[slug]">) {
             <FollowUpTemplate {...brightcoveBeaconFollowUp} />
           </section>
         </CaseIntroTemplate>
+      </main>
+    );
+  }
+
+  if (project.slug === "mutexa") {
+    return (
+      <main id="main">
+        <CaseIntroTemplate
+          intro={mutexaIntro}
+          hero={<Media ratio="1280 / 595" sizes="100vw" label="Hero — AI-assisted experiment workflow" />}
+        />
       </main>
     );
   }
