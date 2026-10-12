@@ -115,30 +115,51 @@ export function LeadershipPhysics() {
 
     // ---- Layout ------------------------------------------------------------
 
+    // Layout follows the diagram's own width (it sits inside the 1152 content
+    // column): a staggered row on desktop, 2 x 2 on tablet, one column on phones.
+    function layoutMode() {
+      return W >= 880 ? "row" : W >= 540 ? "grid" : "column";
+    }
+
     function anchors() {
-      // 2 x 2 everywhere; on tall portrait screens the cells are tall, so blobs
-      // are sized by the short side of each cell.
-      const padX = W * 0.06;
-      const padTop = H * 0.1;
-      const padBottom = H * 0.06;
-      const cw = (W - padX * 2) / 2;
-      const ch = (H - padTop - padBottom) / 2;
-      const R = Math.min(cw, ch) * 0.34;
-      const jitter = [
-        [-0.05, 0.02],
-        [0.04, -0.03],
-        [0.03, 0.04],
-        [-0.04, -0.02],
-      ];
-      return BOUNDARIES.map((_, i) => {
-        const col = i % 2;
-        const row = Math.floor(i / 2);
-        return {
-          x: padX + cw * (col + 0.5) + jitter[i][0] * cw,
-          y: padTop + ch * (row + 0.5) + jitter[i][1] * ch,
+      const mode = layoutMode();
+      if (mode === "row") {
+        const R = Math.min(W * 0.11, H * 0.25);
+        const pos = [
+          [0.18, 0.37],
+          [0.395, 0.63],
+          [0.605, 0.37],
+          [0.82, 0.63],
+        ];
+        return pos.map(([x, y]) => ({ x: x * W, y: y * H, R }));
+      }
+      if (mode === "grid") {
+        const padX = W * 0.04;
+        const padTop = H * 0.07;
+        const padBottom = H * 0.07;
+        const cw = (W - padX * 2) / 2;
+        const ch = (H - padTop - padBottom) / 2;
+        const R = Math.min(cw, ch) * 0.37;
+        const jitter = [
+          [-0.05, 0.02],
+          [0.04, -0.03],
+          [0.03, 0.04],
+          [-0.04, -0.02],
+        ];
+        return BOUNDARIES.map((_, i) => ({
+          x: padX + cw * ((i % 2) + 0.5) + jitter[i][0] * cw,
+          y: padTop + ch * (Math.floor(i / 2) + 0.5) + jitter[i][1] * ch,
           R,
-        };
-      });
+        }));
+      }
+      const padTop = H * 0.02;
+      const ch = (H - padTop * 2) / 4;
+      const R = Math.min(W * 0.33, ch * 0.36);
+      return BOUNDARIES.map((_, i) => ({
+        x: W * (0.5 + (i % 2 ? 0.07 : -0.07)),
+        y: padTop + ch * (i + 0.5),
+        R,
+      }));
     }
 
     function build() {
@@ -244,6 +265,16 @@ export function LeadershipPhysics() {
           ring.target[i] = ring.R * m;
         }
       }
+    }
+
+    /** Distance from a ring's centre to the canvas edge along an angle, minus a margin. */
+    function edgeDistance(ring: Ring, angle: number) {
+      const ux = Math.cos(angle);
+      const uy = Math.sin(angle);
+      const m = 6;
+      const tx = ux > 0 ? (W - m - ring.cx) / ux : ux < 0 ? (m - ring.cx) / ux : Infinity;
+      const ty = uy > 0 ? (H - m - ring.cy) / uy : uy < 0 ? (m - ring.cy) / uy : Infinity;
+      return Math.min(tx, ty);
     }
 
     function step(dt: number) {
@@ -355,7 +386,8 @@ export function LeadershipPhysics() {
             const idx = (((c0 + o) % RING_POINTS) + RING_POINTS) % RING_POINTS;
             const da = ((c0 + o - centre) / RING_POINTS) * TAU;
             const g = Math.exp(-(da * da) / (sigma * sigma));
-            const cap = ring.target[idx] + ring.R * 0.38;
+            // never bulge past the diagram's edge (no clipping inside the page)
+            const cap = Math.min(ring.target[idx] + ring.R * 0.38, edgeDistance(ring, (idx / RING_POINTS) * TAU));
             ring.rho[idx] = Math.min(cap, ring.rho[idx] + pen * g * yieldShare);
             if (n === drag && ring.vel[idx] < 0) ring.vel[idx] *= 1 - g * 0.6;
           }
@@ -420,9 +452,12 @@ export function LeadershipPhysics() {
       ctx.font = `500 11px ${fontFamily}`;
       ctx.textBaseline = "top";
       ctx.textAlign = "left";
-      ctx.fillText("COMPLEXITY", Math.max(16, W * 0.03), Math.max(16, H * 0.03));
+      // Field label sits in a corner the blobs leave free in each layout.
+      const lx = 16;
+      const ly = layoutMode() === "row" ? H - 16 - 26 : 16;
+      ctx.fillText("COMPLEXITY", lx, ly);
       ctx.fillStyle = "rgba(137,135,130,0.6)";
-      ctx.fillText("system-wide field", Math.max(16, W * 0.03), Math.max(16, H * 0.03) + 15);
+      ctx.fillText("system-wide field", lx, ly + 15);
     }
 
     function drawLabel(ring: Ring, index: number) {
