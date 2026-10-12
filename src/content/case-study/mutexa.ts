@@ -25,6 +25,23 @@ export const mutexaContext = {
   title: "How enzyme mutation works?",
 } satisfies SimpleSectionData;
 
+/**
+ * The Context figure (Figma AI-Portfolio 176:3670): one prototype recording of the three steps, 822 × 318,
+ * with each caption centred under its step's enzyme.
+ */
+export const mutexaContextFigure = {
+  src: "/case-studies/mutexa/context/enzyme-mutation.webp",
+  alt: "Three steps of enzyme mutation: a starch chain in the enzyme's active site, a hand reshaping the site, and the mutated enzyme splitting the chain",
+  width: 822,
+  height: 318,
+  /** `x`: caption centre under the step's enzyme, % of the figure's width; `src`: the step alone, stacked below `md`. */
+  steps: [
+    { caption: "The original enzyme (wild type) breaks down starch at its natural speed.", x: 11.2, src: "/case-studies/mutexa/context/wild-type.webp" },
+    { caption: "Scientists mutate the active site to alter its structure.", x: 51.93, src: "/case-studies/mutexa/context/mutation.webp" },
+    { caption: "The mutated enzyme is tested to see if it works faster.", x: 87.9, src: "/case-studies/mutexa/context/testing.webp" },
+  ],
+} as const;
+
 /** "The Opportunity" (Figma Slides 187:3402). */
 export const mutexaOpportunity = {
   label: "The Opportunity",

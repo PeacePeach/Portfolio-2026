@@ -9,6 +9,7 @@ import { NeoHero } from "@/components/case-study/neo-advance/NeoHero";
 import { AnalyticsHero } from "@/components/case-study/reimagining-analytics/AnalyticsHero";
 import { BeaconHero } from "@/components/case-study/brightcove-beacon/BeaconHero";
 import { MutexaHero } from "@/components/case-study/mutexa/MutexaHero";
+import { MutexaContextFigure } from "@/components/case-study/mutexa/MutexaContextFigure";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { CaseIntroTemplate } from "@/components/case-study/templates/CaseIntroTemplate";
 import { MediaRowTemplate } from "@/components/case-study/templates/MediaRowTemplate";
@@ -86,7 +87,7 @@ import {
   brightcoveBeaconJobMapImage,
   brightcoveBeaconProblem,
 } from "@/content/case-study/brightcoveBeacon";
-import { mutexaContext, mutexaIntro, mutexaKeyExperience, mutexaRelationship, mutexaPrototypes, mutexaPrototypesImage, mutexaIterations, mutexaOpportunity, mutexaOpportunityStats } from "@/content/case-study/mutexa";
+import { mutexaContext, mutexaContextFigure, mutexaIntro, mutexaKeyExperience, mutexaRelationship, mutexaPrototypes, mutexaPrototypesImage, mutexaIterations, mutexaOpportunity, mutexaOpportunityStats } from "@/content/case-study/mutexa";
 import { getProject, getProjects } from "@/content";
 import { site } from "@/content/site";
 
@@ -307,7 +308,18 @@ async function CaseStudyContent({ params }: PageProps<"/work/[slug]">) {
         >
           {/* Context, opportunity and key experience open the case study before chapter 01, as on Reimagining Analytics. */}
           <ScrollReveal as="hr" className="mt-24 border-line" />
-          <SimpleSectionTemplate {...mutexaContext} />
+          {/* As Figma 176:3642: the heading block hugs the title and sits on the centre line, over the middle step. */}
+          <SimpleSectionTemplate
+            {...mutexaContext}
+            text={
+              <header className="cs-story-text-header relative left-1/2 w-max max-w-[calc(100vw-2.5rem)] -translate-x-1/2">
+                <p className={caseStudyType.chapterLabel}>{mutexaContext.label}</p>
+                <h2 className={caseStudyType.storyTitle}>{mutexaContext.title}</h2>
+              </header>
+            }
+          >
+            <MutexaContextFigure figure={mutexaContextFigure} />
+          </SimpleSectionTemplate>
           <ScrollReveal as="hr" className="border-line" />
           <SimpleSectionTemplate {...mutexaOpportunity}>
             <StatCircles stats={mutexaOpportunityStats} />
