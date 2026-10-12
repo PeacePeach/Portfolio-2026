@@ -2,7 +2,6 @@ import type { ImageRef } from "@/content/types";
 import type { IntroData } from "@/components/case-study/templates/IntroTemplate";
 import type { SimpleSectionData } from "@/components/case-study/templates/SimpleSectionTemplate";
 import type { NarrativeData } from "@/components/case-study/templates/NarrativeTemplate";
-import type { HorizontalSlidesData } from "@/components/case-study/templates/HorizontalSlidesTemplate";
 import type { PersonaTasksData } from "@/components/case-study/shared/PersonaTasks";
 import type { NarrativeImage } from "@/components/case-study/templates/NarrativeTemplate";
 import type { ImpactData } from "@/components/case-study/templates/ImpactTemplate";
@@ -41,17 +40,52 @@ export const brightcoveBeaconImpact = {
 
 const img = (name: string, alt: string, width: number, height: number): ImageRef => ({ src: `/case-studies/brightcove-beacon/${name}`, alt, width, height });
 
-/** Chapter 1, "The World of Xstream.ly" (Figma 114:282): static text beside the team map, no card border (the source image of 117:325, transparent background). */
+/**
+ * Chapter 1 opener (Figma AI-Portfolio 164:5169, "Rolling artifacts"): the world of Xstream.ly, then its
+ * three key roles, as one scrolling narrative. The team map is `BeaconTeamMap` (code);
+ * the personas are full-width cards (2x exports of 114:2425, 114:2579 and Brandon's new card).
+ */
 export const brightcoveBeaconContext = {
   label: "The World of Xstream.ly",
-  imageLayout: "plain",
-  steps: [{
-    id: "beacon-context",
-    title: "The World of Xstream.ly",
-    body:
-      "Xstream.ly is a video streaming company with the goal of growing audience with engaging content. The company operates with a 'team of teams' structure, involving extensive cross-team collaborations with various internal and external roles.",
-    images: [img("xstreamly-world.png", "Xstream.ly's team of teams: internal and external roles clustered around the company", 2880, 1438)],
-  }],
+  imageLayout: "separate",
+  steps: [
+    {
+      id: "beacon-context",
+      title: "The World of Xstream.ly",
+      body:
+        "Xstream.ly is a video streaming company with the goal of growing audience with engaging content. The company operates with a 'team of teams' structure, involving extensive cross-team collaborations with various internal and external roles.",
+      // Visual: `BeaconTeamMap`, the bubble map rebuilt in code (set where the page renders this narrative).
+    },
+    {
+      id: "persona-laurel",
+      title: "Laurel, Product Manager",
+      body: "“I am a trailblazer who takes others with me, like it or not!”",
+      images: [img(
+        "persona-laurel-card.jpg",
+        "Persona card for Laurel, Product Manager at Xstream.ly: current tools, aptitude and altitude, responsibilities, goals, needs and pain points",
+        1818, 1028,
+      )],
+    },
+    {
+      id: "persona-sharyn",
+      title: "Sharyn, Content Producer",
+      body: "“I always thrive to give the best for producing engaging videos.”",
+      images: [img(
+        "persona-sharyn.jpg",
+        "Persona card for Sharyn, Content Producer at Xstream.ly: current tools, aptitude and altitude, responsibilities, goals, needs and pain points",
+        1818, 1028,
+      )],
+    },
+    {
+      id: "persona-brandon",
+      title: "Brandon, Pricing Manager",
+      images: [img(
+        "persona-brandon-card.jpg",
+        "Persona card for Brandon, Pricing Manager at Xstream.ly: current tools, aptitude and altitude, responsibilities, goals, needs and pain points",
+        1818, 1028,
+      )],
+    },
+  ],
 } satisfies NarrativeData;
 
 /** Customer problem (Figma 114:2736): a centred section title over two columns of copy; `[...]` marks the highlighted phrases. */
@@ -62,43 +96,6 @@ export const brightcoveBeaconProblem = {
     { title: "Manual content work", body: "The sheer amount of [manual work] in curating, publishing, and monetizing video content greatly [reduces efficiency]." },
   ],
 } as const;
-
-/** Key roles (Figma 114:2411): one slide per persona card (2x exports of 114:2425 and 114:2579, background cropped off; the template rounds the corners). */
-export const brightcoveBeaconRoles = {
-  label: "There are 3 key roles involved",
-  compact: true,
-  slides: [
-    {
-      id: "persona-laurel",
-      title: "Laurel, Product Manager",
-      body: "“I am a trailblazer who takes others with me, like it or not!”",
-      image: img(
-        "persona-laurel-card.jpg",
-        "Persona card for Laurel, Product Manager at Xstream.ly: current tools, aptitude and altitude, responsibilities, goals, needs and pain points",
-        1818, 1028,
-      ),
-    },
-    {
-      id: "persona-sharyn",
-      title: "Sharyn, Content Producer",
-      body: "“I always thrive to give the best for producing engaging videos.”",
-      image: img(
-        "persona-sharyn.jpg",
-        "Persona card for Sharyn, Content Producer at Xstream.ly: current tools, aptitude and altitude, responsibilities, goals, needs and pain points",
-        1818, 1028,
-      ),
-    },
-    {
-      id: "persona-brandon",
-      title: "Brandon, Pricing Manager",
-      image: img(
-        "persona-brandon-card.jpg",
-        "Persona card for Brandon, Pricing Manager at Xstream.ly: current tools, aptitude and altitude, responsibilities, goals, needs and pain points",
-        1818, 1058,
-      ),
-    },
-  ],
-} satisfies HorizontalSlidesData;
 
 /** Job mapping (Figma 114:2763), over the job map (2x export, cropped). */
 export const brightcoveBeaconJobMap = {

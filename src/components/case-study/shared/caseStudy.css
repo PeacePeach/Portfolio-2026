@@ -22,7 +22,8 @@
 /* A section within a chapter. Consecutive sections: 96px, separator, 96px (Figma 83:3259). */
 .cs-section { margin-block: var(--cs-section-gap); }
 .cs-section + .cs-section { padding-top: var(--cs-section-gap); border-top: 1px solid var(--color-line); }
-.cs-chapter-label { color: var(--cs-secondary); line-height: var(--cs-small-line-height); }
+/* Labels above titles are always all caps; content can be written in any case. */
+.cs-chapter-label { color: var(--cs-secondary); line-height: var(--cs-small-line-height); text-transform: uppercase; }
 .cs-chapter-divider { margin-top: var(--cs-title-description-gap); border: 0; border-top: 1px dotted var(--color-line-strong); }
 .cs-story-title { font-size: var(--cs-story-title-size); font-weight: 400; }
 .cs-template-preview { max-width: 1302px; margin-inline: auto; padding: calc(var(--spacing) * 16); }

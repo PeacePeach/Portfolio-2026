@@ -26,6 +26,8 @@ export type NarrativeStep = {
   /** Replaces this step's label, title and body with any component (see `StoryTextBlock`). */
   text?: ReactNode;
   images?: readonly NarrativeImage[];
+  /** Replaces this step's images with any component (e.g. a diagram built in code), framed like a `separate` image. */
+  visual?: ReactNode;
   /** `screens` layout: phone screenshots in columns, each column after the first set lower. */
   columns?: readonly (readonly NarrativeImage[])[];
   /** Optional text action that opens the first image's high-resolution view. */
@@ -67,7 +69,7 @@ export function NarrativeTemplate({ label, steps, imageLayout = "joined" }: Narr
   // Pill-labelled images read as blocks: 16px pill to image, 32px within a step, 64px between steps.
   const labelled = allImages.some(image => image.pill);
   // One image: nothing to scroll through, so the text stays put, vertically centred on the image.
-  const single = allImages.length === 1 && !screens;
+  const single = allImages.length + steps.filter(s => s.visual).length === 1 && !screens;
 
   function open(button: HTMLButtonElement, title: string, image: NarrativeImage) {
     if (!image.full) return;
@@ -93,6 +95,7 @@ export function NarrativeTemplate({ label, steps, imageLayout = "joined" }: Narr
                 <StoryTextBlock heading="section" label={s.label} title={s.title} body={s.body} text={s.text} />
               </ScrollReveal>
               {screens ? <ScreenColumns columns={s.columns ?? [imagesOf(s)]} /> : <div className={imageLayout === "separate" ? `flex flex-col ${labelled ? "gap-8" : "gap-4"}` : ""}>
+                {s.visual && <ScrollReveal><div className="overflow-hidden rounded-image border border-border-default">{s.visual}</div></ScrollReveal>}
                 {imagesOf(s).map(image => (
                   <NarrativeFrame
                     key={image.src}

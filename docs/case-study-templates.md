@@ -71,6 +71,7 @@ Text components for the slot live in `shared/`:
 
 - `PersonaQuote` (Figma `43:348`): 48px round avatar over the persona name (chapter-label type, uppercase, one word per line, as wide as its longest word), left-aligned, 12px beside the quote (`caseStudyType.quote` = `type-body-m-italic`, primary). Used by Reimagining Analytics final design (`reimaginingAnalyticsFinalDesign`, `SimpleSectionTemplate` with `align: "left"` and `inset`); at the 561px left text width the quote runs about as tall as avatar and name.
 
+- `brightcove-beacon/BeaconTeamMap` (Figma `114:282`, laid out for AI-Portfolio `164:5187`): Xstream.ly's team of teams as an SVG bubble map filling a 704×403 card; the opener step's `visual` in `brightcoveBeaconContext`. Bubble colours are the original illustration's.
 - `PersonaTasks` (Figma `114:2259`): one workflow step's people (48px round avatar, name in Label S, role in Body S secondary), an optional handoff note (Body XS secondary), then their tasks as `muted` Pills. Used by Brightcove Beacon "How They Collaborate?" as each `NarrativeTemplate` step's `text` (`brightcoveBeaconCollaborationFlow`, `separate`).
 
 ## SimpleSectionTemplate
@@ -154,13 +155,13 @@ The one text block for case-study copy: optional label, title, body. Two switche
 | `label` | Omit for no label; Body XS secondary, 12px above the title |
 | `heading` | `chapter` (default): Display 32 Regular title. `section`: Heading M title |
 
-Title to body is 16px under a chapter title and 12px under a section title. Width belongs to the caller (400 for chapter text, the grid column for section text). Used by `SimpleSectionTemplate`, `TwoColumnTextTemplate`, `TellMeAboutIt` (chapter) and `NarrativeTemplate`, `HorizontalSlidesTemplate` (section).
+The optional label above the title is always rendered all caps (`.cs-chapter-label`), whatever case the content uses. Title to body is 16px under a chapter title and 12px under a section title. Width belongs to the caller (400 for chapter text, the grid column for section text). Used by `SimpleSectionTemplate`, `TwoColumnTextTemplate`, `TellMeAboutIt` (chapter) and `NarrativeTemplate`, `HorizontalSlidesTemplate` (section).
 
 ## NarrativeTemplate
 
 `templates/NarrativeTemplate.tsx` · Figma `83:3560` (joined), `116:667` (separate), `89:5173` (plain), `94:5545` (screens) · Preview `/case-study-templates/narrative`
 
-Text pinned on the left (320) beside images on the right (704), 128px apart. Contract: `label`, `steps: [{ id, title, body, images, details? }]`, each image `{ src, alt, width, height, full? }`, plus `imageLayout`:
+Text pinned on the left (320) beside images on the right (704), 128px apart. Contract: `label`, `steps: [{ id, title, body, images, visual?, details? }]`; `visual` replaces a step's images with any component (e.g. a diagram built in code), framed like a `separate` image, each image `{ src, alt, width, height, full? }`, plus `imageLayout`:
 
 | Steps | Text |
 | --- | --- |

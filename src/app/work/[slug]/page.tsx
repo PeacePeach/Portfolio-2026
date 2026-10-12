@@ -12,6 +12,7 @@ import { CaseIntroTemplate } from "@/components/case-study/templates/CaseIntroTe
 import { MediaRowTemplate } from "@/components/case-study/templates/MediaRowTemplate";
 import { TwoColumnTextTemplate, type TwoColumnTextData } from "@/components/case-study/templates/TwoColumnTextTemplate";
 import { StoryTextBlock } from "@/components/case-study/shared/StoryTextBlock";
+import { BeaconTeamMap } from "@/components/case-study/brightcove-beacon/BeaconTeamMap";
 import { FollowUpTemplate } from "@/components/case-study/templates/FollowUpTemplate";
 import { SimpleSectionTemplate } from "@/components/case-study/templates/SimpleSectionTemplate";
 import { ImpactTemplate } from "@/components/case-study/templates/ImpactTemplate";
@@ -69,7 +70,6 @@ import {
   brightcoveBeaconJobMap,
   brightcoveBeaconJobMapImage,
   brightcoveBeaconProblem,
-  brightcoveBeaconRoles,
 } from "@/content/case-study/brightcoveBeacon";
 import { getProject, getProjects } from "@/content";
 import { site } from "@/content/site";
@@ -195,7 +195,8 @@ async function CaseStudyContent({ params }: PageProps<"/work/[slug]">) {
           <ImpactTemplate {...brightcoveBeaconImpact} className="mt-24" />
           <section aria-labelledby="beacon-users">
             <CaseStudyChapterHeader id="beacon-users">01 _ USERS AND WORKFLOWS</CaseStudyChapterHeader>
-            <NarrativeTemplate {...brightcoveBeaconContext} steps={brightcoveBeaconContext.steps.map(step => ({ ...step, text: <StoryTextBlock title={step.title} body={step.body} /> }))} />
+            {/* The opener keeps the large story title; the persona steps use the narrative's section title. */}
+            <NarrativeTemplate {...brightcoveBeaconContext} steps={brightcoveBeaconContext.steps.map((step, i) => i ? step : { ...step, text: <StoryTextBlock title={step.title} body={step.body} />, visual: <BeaconTeamMap /> })} />
             <ScrollReveal as="hr" className="border-line" />
             <TwoColumnTextTemplate
               title={brightcoveBeaconProblem.title}
@@ -204,8 +205,6 @@ async function CaseStudyContent({ params }: PageProps<"/work/[slug]">) {
                 text: <p className="type-body-m text-secondary">{body.split(/\[(.+?)\]/).map((part, i) => i % 2 ? <strong key={i} className="font-normal text-primary">{part}</strong> : part)}</p>,
               })) as unknown as TwoColumnTextData["columns"]}
             />
-            <ScrollReveal as="hr" className="border-line" />
-            <HorizontalSlidesTemplate {...brightcoveBeaconRoles} />
             {([
               [brightcoveBeaconJobMap, brightcoveBeaconJobMapImage],
               [brightcoveBeaconInfoArch, brightcoveBeaconInfoArchImage],
