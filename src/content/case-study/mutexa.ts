@@ -135,3 +135,39 @@ export const mutexaIterations = {
     },
   ],
 } satisfies NarrativeData;
+
+/** Figma Slides 187:3489: Story 2 copy over the tool landscape (187:3505), a transparent diagram. */
+export const mutexaExpertise = {
+  label: "Story 2",
+  title: "Protect the expertise AI cannot generalize",
+  body: "As I tested the shared workflow, I found expert cases that couldn't be safely standardized. Instead of forcing them into the AI flow, I designed clear off-ramps so scientists could use their own tools and bring the results back.",
+} satisfies SimpleSectionData;
+
+export const mutexaToolLandscape: ImageRef = {
+  src: "/case-studies/mutexa/expertise/tool-landscape.webp",
+  alt: "Scientists' own tools at each workflow stage, from PyMOL and Chimera to Amber and MDAnalysis, passing customized code, PDB, trajectory and JSON files into and out of EnzyHTP",
+  width: 2304,
+  height: 1177,
+};
+
+const expertise = (name: string, alt: string, width: number, height: number) => ({ src: `/case-studies/mutexa/expertise/${name}.webp`, alt, width, height });
+
+/** Figma Slides 187:3507, 187:3512: rolling steps beside separate screens, as `mutexaIterations`. */
+export const mutexaExitPoints = {
+  label: "Designing exits and re-entry",
+  imageLayout: "separate",
+  steps: [
+    {
+      id: "exit-points",
+      title: "Good AI knows when to leave",
+      body: "I identified steps where scientists already had trusted tools and didn't need AI to take over. I designed clear exit and re-entry points so they could use their own tools, then return without losing workflow context.",
+      images: [expertise("exit-points", "The AI Planner's confirmed four-step workflow beside the progress tracker and the protein in the GUI view", 1600, 861)],
+    },
+    {
+      id: "modular-workflow",
+      title: "Compose, don't conform.",
+      body: "Instead of replacing expert workflows, I made the system modular, letting scientists combine default workflows or plug in their own code when needed.",
+      images: [expertise("modular-workflow", "A modular workflow canvas: Gap Detection branching into Residue Modeling, Loop Refinement and Structure Optimization, with each step's parameters in the side panel", 1600, 923)],
+    },
+  ],
+} satisfies NarrativeData;

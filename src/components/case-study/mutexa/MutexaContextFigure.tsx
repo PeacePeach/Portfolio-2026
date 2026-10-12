@@ -17,7 +17,7 @@ export function MutexaContextFigure({ figure }: { figure: typeof mutexaContextFi
           <Image src={figure.src} alt={figure.alt} width={figure.width} height={figure.height} unoptimized className="block h-auto w-full" />
           <figcaption>
             {figure.steps.map((s) => (
-              <p key={s.caption} className="absolute top-[65.7%] w-[26.5%] -translate-x-1/2 type-body-m text-center text-primary" style={{ left: `${s.x}%` }}>
+              <p key={s.caption} className="absolute top-[65.7%] w-[26.5%] -translate-x-1/2 type-body-m text-center text-secondary" style={{ left: `${s.x}%` }}>
                 {s.caption}
               </p>
             ))}
@@ -28,7 +28,7 @@ export function MutexaContextFigure({ figure }: { figure: typeof mutexaContextFi
         {figure.steps.map((s) => (
           <ScrollReveal as="li" key={s.caption} className="flex w-[16rem] flex-col items-center gap-4">
             <Image src={s.src} alt="" width={256} height={131} unoptimized className="block h-auto w-full" />
-            <p className="w-[13.625rem] type-body-m text-center text-primary">{s.caption}</p>
+            <p className="w-[13.625rem] type-body-m text-center text-secondary">{s.caption}</p>
           </ScrollReveal>
         ))}
       </ol>

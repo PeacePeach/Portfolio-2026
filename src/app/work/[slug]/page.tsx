@@ -87,7 +87,7 @@ import {
   brightcoveBeaconJobMapImage,
   brightcoveBeaconProblem,
 } from "@/content/case-study/brightcoveBeacon";
-import { mutexaContext, mutexaContextFigure, mutexaIntro, mutexaKeyExperience, mutexaRelationship, mutexaPrototypes, mutexaPrototypesImage, mutexaIterations, mutexaOpportunity, mutexaOpportunityStats } from "@/content/case-study/mutexa";
+import { mutexaContext, mutexaContextFigure, mutexaIntro, mutexaKeyExperience, mutexaRelationship, mutexaPrototypes, mutexaPrototypesImage, mutexaIterations, mutexaOpportunity, mutexaOpportunityStats, mutexaExpertise, mutexaToolLandscape, mutexaExitPoints } from "@/content/case-study/mutexa";
 import { getProject, getProjects } from "@/content";
 import { site } from "@/content/site";
 
@@ -321,8 +321,19 @@ async function CaseStudyContent({ params }: PageProps<"/work/[slug]">) {
             <MutexaContextFigure figure={mutexaContextFigure} />
           </SimpleSectionTemplate>
           <ScrollReveal as="hr" className="border-line" />
-          <SimpleSectionTemplate {...mutexaOpportunity}>
-            <StatCircles stats={mutexaOpportunityStats} />
+          {/* As Figma 176:4627: a 318px heading block centred over the circles, 96px above them. */}
+          <SimpleSectionTemplate
+            {...mutexaOpportunity}
+            text={
+              <header className="cs-story-text-header mx-auto w-full max-w-[19.875rem]">
+                <p className={caseStudyType.chapterLabel}>{mutexaOpportunity.label}</p>
+                <h2 className={caseStudyType.storyTitle}>{mutexaOpportunity.title}</h2>
+              </header>
+            }
+          >
+            <div className="pt-8">
+              <StatCircles stats={mutexaOpportunityStats} />
+            </div>
           </SimpleSectionTemplate>
           <section aria-labelledby="mutexa-product">
             <CaseStudyChapterHeader id="mutexa-product">HOW THE PRODUCT WORKS</CaseStudyChapterHeader>
@@ -339,6 +350,17 @@ async function CaseStudyContent({ params }: PageProps<"/work/[slug]">) {
             </SimpleSectionTemplate>
             <ScrollReveal as="hr" className="border-line" />
             <NarrativeTemplate {...mutexaIterations} />
+          </section>
+          <section aria-labelledby="mutexa-expertise">
+            <CaseStudyChapterHeader id="mutexa-expertise">02 _ PROTECTING EXPERTISE</CaseStudyChapterHeader>
+            <SimpleSectionTemplate {...mutexaExpertise}>
+              {/* 128px from text to diagram: the template's 64px plus 64px. */}
+              <ScrollReveal className="pt-16">
+                <Image src={mutexaToolLandscape.src} alt={mutexaToolLandscape.alt} width={mutexaToolLandscape.width} height={mutexaToolLandscape.height} sizes="(min-width: 1280px) 1152px, 100vw" className="block h-auto w-full" />
+              </ScrollReveal>
+            </SimpleSectionTemplate>
+            <ScrollReveal as="hr" className="border-line" />
+            <NarrativeTemplate {...mutexaExitPoints} />
           </section>
         </CaseIntroTemplate>
       </main>
