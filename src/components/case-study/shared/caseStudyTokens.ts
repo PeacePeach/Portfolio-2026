@@ -90,5 +90,6 @@ export const caseStudyType = {
   evidenceBullet: "type-body-xs cs-small-text",
   chapterLabel: "type-body-xs cs-chapter-label",
   storyTitle: "type-display-s cs-story-title",
+  sectionTitle: "type-heading-m text-(--cs-bullet-text)",
   storyBody: "type-body-m",
 } as const;

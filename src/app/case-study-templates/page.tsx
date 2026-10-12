@@ -10,6 +10,7 @@ export default function CaseStudyTemplatesPage() {
     <ul className="mt-12 flex flex-col gap-6 type-body-m">
       <li><Link className="hover-underline" href="/case-study-templates/intro">Intro — title, copy and facts</Link></li>
       <li><Link className="hover-underline" href="/case-study-templates/simple-section">Simple section — story text over full-width content, or before/after</Link></li>
+      <li><Link className="hover-underline" href="/case-study-templates/story-text">Story text block — optional label, chapter or section title</Link></li>
       <li><Link className="hover-underline" href="/case-study-templates/narrative">Narrative — text pinned beside images, rolling or static, joined, separate or plain</Link></li>
       <li><Link className="hover-underline" href="/case-study-templates/impact">Impact — section header and impact cards</Link></li>
       <li><Link className="hover-underline" href="/case-study-templates/two-column-text">Two-column text — static or Tell Me About It columns</Link></li>

@@ -56,3 +56,33 @@ export const reimaginingAnalyticsProblem = {
     ],
   }],
 } satisfies NarrativeData;
+
+/** "02 _ UX STRATEGY" (Figma 116:714): two rolling steps beside separate cards (2x exports of 140:2183, 140:2235). */
+export const reimaginingAnalyticsStrategy = {
+  label: "UX strategy",
+  imageLayout: "separate",
+  steps: [
+    {
+      id: "okrs",
+      title: "Mapping UX Back to Business",
+      body:
+        "With the PM, I used OKRs to translate a broad engagement problem into measurable outcomes, three value propositions, and three UX goals the team could design and test against.",
+      images: [{
+        src: "/case-studies/reimagining-analytics/okr-map.png",
+        alt: "OKR map: the business objective to increase engagement with analytics, three key results, the value props Efficient, Consistent and Purposeful, and three UX goals: findability, cohesive patterns and role-based surfaces",
+        width: 1404, height: 822,
+      }],
+    },
+    {
+      id: "findability",
+      title: "Proving Findability Before Rebuilding the UI",
+      body:
+        "With the PM, I used OKRs to translate a broad engagement problem into measurable outcomes, three value propositions, and three UX goals the team could design and test against.",
+      images: [{
+        src: "/case-studies/reimagining-analytics/tree-test.png",
+        alt: "Tree test of three navigation structures for finding leads from the last 28 days: average task success rose from 54% to 76% to 87%, and task time fell from 68s to 42s to 12s",
+        width: 1404, height: 802,
+      }],
+    },
+  ],
+} satisfies NarrativeData;

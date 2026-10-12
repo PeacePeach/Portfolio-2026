@@ -5,7 +5,8 @@ import Image from "next/image";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { neoAdvanceFinalDelivery as groups } from "@/content/neoAdvance";
 import { caseStudyTokens } from "../shared/caseStudyTokens";
-import { NarrativeText, StickyNarrativeText } from "../templates/NarrativeTemplate";
+import { StickyNarrativeText } from "../templates/NarrativeTemplate";
+import { StoryTextBlock } from "../shared/StoryTextBlock";
 import { useStickyNarrative } from "../shared/useStickyNarrative";
 
 /**
@@ -25,7 +26,7 @@ export function NeoCoreFlows() {
           {groups.map(group => (
             <div key={group.id} data-neo-group={group.id}>
               <ScrollReveal className="mb-6 lg:hidden">
-                <NarrativeText title={group.title} body={group.body} />
+                <StoryTextBlock heading="section" title={group.title} body={group.body} />
               </ScrollReveal>
               <div className="flex items-start gap-4 lg:gap-8">
                 {group.columns.map((column, index) => (

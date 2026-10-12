@@ -7,7 +7,8 @@ import { AnimatePresence, motion, useReducedMotion, useScroll, useTransform } fr
 import { X, ZoomIn, ZoomOut } from "react-feather";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { duration, swap } from "@/design/motion";
-import { caseStudyTokens, caseStudyType } from "../shared/caseStudyTokens";
+import { caseStudyTokens } from "../shared/caseStudyTokens";
+import { StoryTextBlock } from "../shared/StoryTextBlock";
 import { useStickyNarrative } from "../shared/useStickyNarrative";
 
 export type NarrativeImage = {
@@ -18,7 +19,7 @@ export type NarrativeImage = {
 
 /** One text block and the images it sits beside. */
 export type NarrativeStep = {
-  id: string; title: string; body: string;
+  id: string; label?: string; title: string; body: string;
   images: readonly NarrativeImage[];
   /** Optional text action that opens the first image's high-resolution view. */
   details?: string;
@@ -67,14 +68,14 @@ export function NarrativeTemplate({ label, steps, imageLayout = "joined" }: Narr
   return (
     <section aria-label={label} style={caseStudyTokens} className="cs-rules cs-section mx-auto w-full max-w-[1152px]">
       <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,320fr)_minmax(0,704fr)] lg:gap-x-32">
-        <StickyNarrativeText id={step.id} title={step.title} body={step.body} action={step.details && zoomTarget && (
+        <StickyNarrativeText id={step.id} label={step.label} title={step.title} body={step.body} action={step.details && zoomTarget && (
           <DetailsButton label={step.details} onClick={button => open(button, step.title, zoomTarget)} />
         )} />
         <div ref={stack} className={`min-w-0 ${joined ? "lg:rounded-[20px] lg:bg-surface" : ""} ${imageLayout === "separate" ? "lg:flex lg:flex-col lg:gap-4" : ""}`}>
           {steps.map(s => (
             <div key={s.id} data-narrative-step={s.id} className="mb-12 lg:mb-0">
               <ScrollReveal className="mb-6 lg:hidden">
-                <NarrativeText title={s.title} body={s.body} />
+                <StoryTextBlock heading="section" label={s.label} title={s.title} body={s.body} />
               </ScrollReveal>
               <div className={imageLayout === "separate" ? "flex flex-col gap-4" : ""}>
                 {s.images.map(image => (
@@ -100,7 +101,7 @@ export function NarrativeTemplate({ label, steps, imageLayout = "joined" }: Narr
 }
 
 /** Desktop-only sticky column: the active text swaps with the site swap motion. */
-export function StickyNarrativeText({ id, title, body, action }: { id: string; title: string; body: string; action?: ReactNode }) {
+export function StickyNarrativeText({ id, label, title, body, action }: { id: string; label?: string; title: string; body: string; action?: ReactNode }) {
   const reduce = useReducedMotion();
   return (
     <div className="hidden min-w-0 self-start lg:sticky lg:top-[calc(var(--spacing-header)+1.875rem)] lg:block" data-narrative-sticky>
@@ -113,21 +114,13 @@ export function StickyNarrativeText({ id, title, body, action }: { id: string; t
             exit={{ opacity: 0, y: reduce ? 0 : -swap.offset, transition: reduce ? { duration: duration.fast } : swap.exit }}
             transition={reduce ? { duration: duration.fast } : swap.enter}
           >
-            <NarrativeText title={title} body={body} />
+            <StoryTextBlock heading="section" label={label} title={title} body={body} />
             {action}
           </motion.div>
         </AnimatePresence>
       </ScrollReveal>
     </div>
   );
-}
-
-/** Figma 83:3560: Heading M title over Body M, on the shared story-text spacing. */
-export function NarrativeText({ title, body }: { title: string; body: string }) {
-  return <article className="cs-story-text">
-    <h2 className="type-heading-m text-(--cs-bullet-text)">{title}</h2>
-    <p className={`${caseStudyType.storyBody} cs-story-text-body`}>{body}</p>
-  </article>;
 }
 
 /** Figma 98:577: opens the active step's high-resolution view. */

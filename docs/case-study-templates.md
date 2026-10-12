@@ -62,6 +62,19 @@ Contract: `columns: [column, column]`, where each column is either static story 
 
 Used by Neo Advance early discovery (`neo-advance/NeoEarlyDiscovery.tsx`, content `neoAdvanceEarlyDiscovery`).
 
+## StoryTextBlock
+
+`shared/StoryTextBlock.tsx` · Figma `138:1719` · Preview `/case-study-templates/story-text`
+
+The one text block for case-study copy: optional label, title, body. Two switches:
+
+| Switch | Options |
+| --- | --- |
+| `label` | Omit for no label; Body XS secondary, 12px above the title |
+| `heading` | `chapter` (default): Display 32 Regular title. `section`: Heading M title |
+
+Title to body is 16px in both. Width belongs to the caller (400 for chapter text, the grid column for section text). Used by `SimpleSectionTemplate`, `TwoColumnTextTemplate`, `TellMeAboutIt` (chapter) and `NarrativeTemplate`, `NeoCoreFlows` (section).
+
 ## NarrativeTemplate
 
 `templates/NarrativeTemplate.tsx` · Figma `83:3560` (joined), `116:667` (separate), `89:5173` (plain) · Preview `/case-study-templates/narrative`
@@ -79,7 +92,7 @@ Text pinned on the left (320) beside images on the right (704), 128px apart. Con
 | `separate` | Each image its own 10px-radius card with a 10% ink border, 16px apart |
 | `plain` | Images only: no surface, rounding, divider or scaling |
 
-An image with `full` opens the zoom viewer; `details` adds a text button for the step's first zoomable image. On mobile each step's text sits above its images. `NarrativeText`, `StickyNarrativeText` and `shared/useStickyNarrative` are exported for layouts with other visuals (Neo `NeoCoreFlows`).
+An image with `full` opens the zoom viewer; `details` adds a text button for the step's first zoomable image. On mobile each step's text sits above its images. `StickyNarrativeText` and `shared/useStickyNarrative` are exported for layouts with other visuals (Neo `NeoCoreFlows`).
 
 Used by Neo Advance (`neoAdvanceNarrative`, `neoAdvanceDeliveryPanels` with `plain`) and Reimagining Analytics problem (`reimaginingAnalyticsProblem`, `separate`).
 

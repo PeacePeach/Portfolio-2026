@@ -22,6 +22,7 @@ import {
   reimaginingAnalyticsImpact,
   reimaginingAnalyticsProblem,
   reimaginingAnalyticsReframing,
+  reimaginingAnalyticsStrategy,
 } from "@/content/case-study/reimaginingAnalytics";
 import { getProject, getProjects } from "@/content";
 import { site } from "@/content/site";
@@ -125,6 +126,10 @@ async function CaseStudyContent({ params }: PageProps<"/work/[slug]">) {
           <section aria-labelledby="analytics-problem">
             <CaseStudyChapterHeader id="analytics-problem">01 _ PROBLEM</CaseStudyChapterHeader>
             <NarrativeTemplate {...reimaginingAnalyticsProblem} />
+          </section>
+          <section aria-labelledby="analytics-strategy">
+            <CaseStudyChapterHeader id="analytics-strategy">02 _ UX STRATEGY</CaseStudyChapterHeader>
+            <NarrativeTemplate {...reimaginingAnalyticsStrategy} />
           </section>
         </AnalyticsCaseIntro>
       </main>
