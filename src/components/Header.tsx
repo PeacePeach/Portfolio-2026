@@ -59,10 +59,12 @@ export function Header() {
           <ul className="flex gap-10">
             {site.nav.map((item) => {
               const current = isCurrent(item.href);
+              const external = "external" in item && item.external;
               return (
                 <li key={item.href}>
                   <Link
-                    href={item.href}
+                    href={external ? site.resumeUrl : item.href}
+                    {...(external ? { target: "_blank", rel: "noreferrer" } : {})}
                     aria-current={current ? "page" : undefined}
                     {...(item.href === "/work" ? slideForward : {})}
                     onClick={() => {

@@ -3,6 +3,8 @@
  */
 export const site = {
   name: "Han Xu",
+  /** Production origin: canonical URLs, social previews and the sitemap. */
+  url: "https://hx-portfolio.com",
   /** Header logo; the loader collapses the name into it. */
   shortName: "HX",
   role: "Product Design Lead",
@@ -10,6 +12,9 @@ export const site = {
   description:
     "Product Design Lead with 10+ years across fintech and B2B SaaS. I turn ambiguity into momentum through clarity, alignment, and evidence.",
   email: "hello@example.com",
+  /** The resume PDF, shared from Dropbox; the Resume link opens it in a new tab. */
+  resumeUrl:
+    "https://www.dropbox.com/scl/fi/z4s2ouc2l0hcwcz2jd37v/Han-Xu_Resume_2026m.pdf?rlkey=5eh0fgalezutw667h7ktj22sg&st=l825v147&dl=0",
 
   /** Opening loader. Each word's first letter stays and forms the logo. */
   loader: {
@@ -21,8 +26,7 @@ export const site = {
   nav: [
     { label: "Work", href: "/work" },
     { label: "Leadership", href: "/leadership" },
-    // Placeholder until the resume file is added (e.g. /public/resume.pdf).
-    { label: "Resume", href: "/resume" },
+    { label: "Resume", href: "/resume", external: true },
   ],
 
   hero: {
