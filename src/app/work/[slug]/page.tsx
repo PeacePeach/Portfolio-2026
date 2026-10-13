@@ -3,7 +3,6 @@ import { Fragment, Suspense } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { Footer } from "@/components/Footer";
 import { Media } from "@/components/ui/Media";
 import { NeoHero } from "@/components/case-study/neo-advance/NeoHero";
 import { AnalyticsHero } from "@/components/case-study/reimagining-analytics/AnalyticsHero";
@@ -476,7 +475,6 @@ async function CaseStudyContent({ params }: PageProps<"/work/[slug]">) {
         <Media image={project.image} ratio="16 / 9" sizes="100vw" className="mt-16" />
         {sections}
       </main>
-      <Footer />
     </>
   );
 }

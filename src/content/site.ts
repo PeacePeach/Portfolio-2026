@@ -11,7 +11,6 @@ export const site = {
   title: "Han Xu — Product Design Lead",
   description:
     "Product Design Lead with 10+ years across fintech and B2B SaaS. I turn ambiguity into momentum through clarity, alignment, and evidence.",
-  email: "hello@example.com",
   /** The resume PDF, shared from Dropbox; the Resume link opens it in a new tab. */
   resumeUrl:
     "https://www.dropbox.com/scl/fi/z4s2ouc2l0hcwcz2jd37v/Han-Xu_Resume_2026m.pdf?rlkey=5eh0fgalezutw667h7ktj22sg&st=l825v147&dl=0",
@@ -51,14 +50,6 @@ export const site = {
   explore: {
     title: "Explore my work",
     intro: "Two ways in. Follow a whole project, or follow a skill across projects.",
-  },
-
-  footer: {
-    heading: "Let’s talk.",
-    links: [
-      { label: "LinkedIn", href: "#" },
-      { label: "Read.cv", href: "#" },
-    ],
   },
 
   /** Show a small "placeholder" tag on content whose status is placeholder. */

@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Header } from "@/components/Header";
-import { Footer } from "@/components/Footer";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { IntroTemplate } from "@/components/case-study/templates/IntroTemplate";
 import { NarrativeTemplate } from "@/components/case-study/templates/NarrativeTemplate";
@@ -96,7 +95,6 @@ export default function LeadershipPage() {
           </div>
         </section>
       </main>
-      <Footer />
     </>
   );
 }
