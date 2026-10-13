@@ -45,7 +45,7 @@ Shared tokens alias the site foundation in `src/app/globals.css` and the design 
 
 ## Chapters
 
-Case-study chapters use `CaseStudyChapterHeader` (`## _ CHAPTER TITLE`, dotted divider, chapter reveal): 128px chapter spacing, 12px title-to-divider, and 96px divider-to-content. Sections within a chapter use `.cs-section`: consecutive sections get 96px, a separator line, then 96px (`--cs-chapter-gap`, `--cs-section-gap`).
+Case-study chapters use `CaseStudyChapterHeader` (`## _ CHAPTER TITLE`, dotted divider, chapter reveal): 128px chapter spacing, 12px title-to-divider, and 96px divider-to-content. Numbered headers (`NN _ TITLE`) also drive the nav's case-study progress (Figma `110:21962`, `Header`): once Chapter 01 reaches the anchor line under the nav, the left side shows `Case study: <project title from projects.ts>` and one dot per numbered chapter (completed `check`, current `highlight`, upcoming `tertiary`), each a link to its chapter; unnumbered headers are skipped, and below `lg` the nav is unchanged. Nothing to configure: number a chapter header and it appears. Sections within a chapter use `.cs-section`: consecutive sections get 96px, a separator line, then 96px (`--cs-chapter-gap`, `--cs-section-gap`).
 
 ## CaseIntroTemplate
 
