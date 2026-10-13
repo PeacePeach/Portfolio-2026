@@ -60,19 +60,21 @@ export default function LeadershipPage() {
                 frame: false,
                 visual: <div className="flex flex-col gap-12">
                   <PillarFramework {...pillar.framework} />
-                  <div className="flex flex-col gap-4">
-                    <p className="type-label-m text-secondary">{leadershipProofLabel}</p>
-                    <ul className="flex flex-col gap-4">
-                      {pillar.proof.map((id) => {
-                        const fragment = fragments.find((f) => f.id === id);
-                        return fragment ? (
-                          <ScrollReveal as="li" key={id}>
-                            <PowerFragmentCard fragment={fragment} />
-                          </ScrollReveal>
-                        ) : null;
-                      })}
-                    </ul>
-                  </div>
+                  {pillar.proof?.length ? (
+                    <div className="flex flex-col gap-4">
+                      <p className="type-label-m text-secondary">{leadershipProofLabel}</p>
+                      <ul className="flex flex-col gap-4">
+                        {pillar.proof.map((id) => {
+                          const fragment = fragments.find((f) => f.id === id);
+                          return fragment ? (
+                            <ScrollReveal as="li" key={id}>
+                              <PowerFragmentCard fragment={fragment} />
+                            </ScrollReveal>
+                          ) : null;
+                        })}
+                      </ul>
+                    </div>
+                  ) : null}
                 </div>,
               }]}
             />

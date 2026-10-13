@@ -38,8 +38,8 @@ export type LeadershipPillar = {
   title: string;
   body: string;
   framework: PillarFrameworkData;
-  /** Super power fragment ids (src/content/powers.ts) shown as featured proof. */
-  proof: readonly string[];
+  /** Super power fragment ids (src/content/powers.ts) shown as featured proof; omit when the framework is the evidence. */
+  proof?: readonly string[];
 };
 
 /** The three pillars (Figma 176:3851, 176:3852, 176:3853). */
@@ -64,34 +64,67 @@ export const leadershipPillars: readonly LeadershipPillar[] = [
   {
     id: "pillar-cohesion",
     chapter: "02 _ PILLAR: COHESION",
-    title: "Make alignment last.",
-    body: "I surface competing priorities, create shared decision criteria, and turn disagreements into commitments teams can carry forward—without reopening the same debates at every handoff.",
+    title: "Help people grow and move together.",
+    body: "Strong teams need both alignment and trust. I create the conditions for people to work through disagreement, build shared ownership, strengthen their judgment, and grow together over time.",
+    // The people side of leadership: alignment, culture, growth and team health, one mechanism per row.
     framework: {
-      challenge: "Siloed teams. Competing agendas. Decisions stall without shared ownership.",
-      questions: ["Where do priorities collide?", "What trade-offs can we commit to?", "How do decisions survive handoffs?"],
-      methods: [
-        { title: "Facilitation", detail: "Stakeholder mapping, workshops" },
-        { title: "Decision Rules", detail: "Shared criteria, trade-off reviews" },
-        { title: "Team Enablement", detail: "Decision records, mentorship" },
+      challenge: "Competing priorities. Feedback tied to one manager. Friction that goes unspoken.",
+      questions: [
+        "Where do priorities collide?",
+        "Do people feel safe to disagree?",
+        "Who owns the outcome together?",
+        "How do we raise the bar together?",
+        "Who is ready for a bigger problem?",
+        "How do we work better next time?",
       ],
-      enables: ["Shared goals across functions", "Trade-offs teams can defend", "Ownership beyond one meeting"],
+      methods: [
+        { title: "Alignment", detail: "Explicit trade-offs, shared priorities" },
+        { title: "Team Culture", detail: "Trust, safety, shared expectations" },
+        { title: "Team Building", detail: "Rituals, working norms" },
+        { title: "Design Critique", detail: "Shared criteria, peer feedback" },
+        { title: "Growth & Coaching", detail: "Growth tracker, stretch scope" },
+        { title: "Retrospectives", detail: "Friction surfaced, practices improved" },
+      ],
+      enables: [
+        "Trade-offs teams can defend",
+        "Disagreement that moves work forward",
+        "Shared ownership beyond one meeting",
+        "Shared judgment that doesn’t wait on the manager",
+        "Designers leading ambiguous, higher-impact work",
+        "A team that keeps getting stronger",
+      ],
     },
     proof: ["journey", "roles"],
   },
   {
     id: "pillar-calibration",
     chapter: "03 _ PILLAR: CALIBRATION",
-    title: "Challenge assumptions before they scale.",
-    body: "I use targeted evidence to challenge confident assumptions, resolve the riskiest questions, and turn what we learn into shared quality standards—without slowing down delivery.",
+    title: "Use reality to continuously correct judgment.",
+    body: "Strong decisions improve when they are tested against evidence. I use research, behavioral signals, validation, and iteration to challenge assumptions and keep the team learning as the product evolves.",
+    // Mechanisms for correcting judgment with evidence; user advocacy is one of them, not the theme.
     framework: {
-      challenge: "Opinion-led decisions. Risks found too late. Quality varies as teams scale.",
-      questions: ["Which assumptions put us at risk?", "What’s the fastest credible test?", "How do we scale sound judgment?"],
-      methods: [
-        { title: "Risk Triage", detail: "Assumption audits, risk mapping" },
-        { title: "Targeted Testing", detail: "Benchmark, doorway, A/B tests" },
-        { title: "Quality Standards", detail: "Critique, review checklists" },
+      challenge: "Opinion-led decisions. Risks found too late. Beliefs that outlive the evidence.",
+      questions: [
+        "Do we understand the problem yet?",
+        "Which assumptions could break the experience?",
+        "What is real usage telling us?",
+        "Whose needs are missing from this decision?",
+        "What would change our mind?",
       ],
-      enables: ["Critical risks surfaced earlier", "Evidence-backed product decisions", "More consistent quality at scale"],
+      methods: [
+        { title: "Research", detail: "Interviews, problem framing" },
+        { title: "Validation", detail: "Targeted tests, tree tests" },
+        { title: "Behavioral Signals", detail: "Usage, funnels, support feedback" },
+        { title: "User Advocacy", detail: "Needs, friction and risks in reviews" },
+        { title: "Iteration", detail: "Decisions as hypotheses" },
+      ],
+      enables: [
+        "Clarity before converging",
+        "Critical risks surfaced earlier",
+        "Internal beliefs checked against reality",
+        "Users represented in every major decision",
+        "Judgment that improves as the product evolves",
+      ],
     },
     proof: ["validation", "navigation"],
   },
@@ -114,17 +147,17 @@ const recommendations = "https://www.linkedin.com/in/han-xu-a4392366/details/rec
 export const leadershipTestimonials: readonly TestimonialData[] = [
   {
     quote: "MENTORSHIP — Han brings clarity to complex challenges and gives designers the support, feedback, and confidence to grow into stronger thinkers.",
-    author: "Pei-Heng Yiu · Direct report",
+    author: "Pei-Heng Yiu · Direct report, Neo Financial",
     href: recommendations,
   },
   {
     quote: "PEOPLE LEADERSHIP — Han combines exceptional craft with natural leadership. He guides teams through complex options by grounding decisions in user impact, business impact, and what it takes to ship.",
-    author: "Jake Janosik · VP, Design",
+    author: "Jake Janosik · VP Design, Neo Financial",
     href: recommendations,
   },
   {
     quote: "COLLABORATION — “At Neo, he was a pillar of the design team - someone colleagues consistently turned to for clarity, support, and mentorship.”",
-    author: "Marcelle Saulnier-Holland · Director, Design",
+    author: "Marcelle Saulnier-Holland · Director Design, Neo Financial",
     href: recommendations,
   },
   {
