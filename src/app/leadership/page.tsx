@@ -24,7 +24,7 @@ import {
 } from "@/content/leadership";
 import { site } from "@/content/site";
 
-export const metadata: Metadata = { title: `Leadership — ${site.name}` };
+export const metadata: Metadata = { title: `Leadership — ${site.name}`, alternates: { canonical: "/leadership" } };
 
 /** Leadership page (Figma AI-Portfolio 174:2747), composed from the shared case-study templates. */
 export default function LeadershipPage() {

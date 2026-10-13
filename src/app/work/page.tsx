@@ -6,7 +6,7 @@ import { getProjects, getSuperPowers } from "@/content";
 import { site } from "@/content/site";
 import { defaultWorkView } from "@/content/work";
 
-export const metadata: Metadata = { title: `Work — ${site.name}` };
+export const metadata: Metadata = { title: `Work — ${site.name}`, alternates: { canonical: "/work" } };
 
 /** Work page (Figma 21:196). The view comes from ?view=case-studies|super-powers|hanxgpt. */
 export default function WorkPage() {

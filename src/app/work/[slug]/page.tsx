@@ -104,7 +104,9 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: PageProps<"/work/[slug]">): Promise<Metadata> {
   const { slug } = await params;
   const project = getProject(slug);
-  return { title: project ? `${project.title} — ${site.name}` : site.title };
+  return project
+    ? { title: `${project.title} — ${site.name}`, alternates: { canonical: `/work/${project.slug}` } }
+    : { title: site.title };
 }
 
 export default function CaseStudyPage(props: PageProps<"/work/[slug]">) {
