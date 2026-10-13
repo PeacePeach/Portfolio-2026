@@ -59,9 +59,9 @@ Used by Neo Advance (`<NeoHero />`, `neoAdvanceIntro`), Reimagining Analytics (`
 
 `templates/IntroTemplate.tsx` · Figma `83:3038` (specimen), `51:24883` (Neo Advance) · Preview `/case-study-templates/intro`
 
-Contract: `{ title, paragraphs, facts: { label, items }[] }`. A 720px block centred on the page: Display M title and Body M copy at left, Label S / Body S facts at right; stacks below `md`. Reuses the site type roles and spacing scale. The block sits 128px (`pt-32`) below the hero. Callers own the hero band and the page container (`container-page`). Each part reveals with the case-study text reveal; pass `reveal` to swap the motion (Neo Advance passes its Work → case morph rise).
+Contract: `{ eyebrow?, title, paragraphs, facts?: { label, items }[], align? }`. A 720px block centred on the page: Display M title and Body M copy at left, Label S / Body S facts at right; stacks below `md`. `eyebrow` adds a Body XS secondary all-caps line 12px above the title; with no `facts` the facts column is dropped. `align: "left"` (Figma AI-Portfolio `174:3199`) puts the title and copy, 647px wide, on the page's left edge instead. Reuses the site type roles and spacing scale. The block sits 128px (`pt-32`) below the hero. Callers own the hero band and the page container (`container-page`). Each part reveals with the case-study text reveal; pass `reveal` to swap the motion (Neo Advance passes its Work → case morph rise).
 
-Rendered by `CaseIntroTemplate`, which passes the morph rise as `reveal`.
+Rendered by `CaseIntroTemplate`, which passes the morph rise as `reveal`, and by the Leadership page (`leadershipIntro`, `align: "left"` with an eyebrow and no facts). Leadership's pillars are `CaseStudyChapterHeader` + `SimpleSectionTemplate` (`layout: "horizontal"`, `heading: "section"`) with `PowerFragmentCard`s as content (`leadershipPillars`).
 
 ## Replacing template text
 
@@ -115,7 +115,7 @@ Used by Neo Advance "How Neo Advance Works?" (`neoAdvanceHow`).
 Contract: `{ title, subtitle?, cards: ImpactCardData[] }`. A 947px block: `CaseStudySectionHeader` over a row of three `ImpactCard`s (one column below `md`). The header and each card use the site scroll reveal, cards staggered.
 
 - `shared/ImpactCard.tsx` (Figma `110:18673`): `{ icon, value, label, body }`. Icon is a key (`users`, `refresh`, `task`, `export`) mapped to `react-feather`, in Figma's accent blue; Display XS value, Heading S label, Body S proof; 40px radius, 1px line border.
-- `shared/CaseStudySectionHeader.tsx`: 508px block, Display XS title (32px regular) over Body M secondary copy, 12px apart. A title with no copy centres on the block.
+- `shared/CaseStudySectionHeader.tsx`: 508px block, Display XS title (32px regular) over Body M secondary copy, 12px apart. A title with no copy centres on the block. `description` takes a string or several paragraphs (24px apart); the Leadership page uses it for its framework and closing headers (`leadershipFramework`, `leadershipClosing`).
 
 Used by Neo Advance (`neoAdvanceImpact`) and Reimagining Analytics (`reimaginingAnalyticsImpact`).
 

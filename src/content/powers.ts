@@ -2,7 +2,8 @@ import { superPowerFilters } from "./work";
 import type { ImageRef, PowerFragment, SuperPower } from "./types";
 
 /**
- * Super powers (Figma 25:538) and their fragments. Each fragment has one
+ * Super powers (Figma 25:538) and their fragments. Fragment copy follows the
+ * Leadership page's featured proof cards (Figma AI-Portfolio 174:2747). Each fragment has one
  * primary power and links to the case-study section that tells its story.
  * Drawings live in public/illustrations: chalkboard style, white and grey
  * lines with dots of the highlight blue, no backdrop, each turned at its own
@@ -18,8 +19,8 @@ const art = (name: string, alt: string): ImageRef => ({
 const pool = {
   template: {
     kind: "case",
-    title: "Defined the lending platform before it existed",
-    body: "Neo Advance had no established lending model. I created a reusable framework across future lending products, aligning product leads and founders around the decisions every downstream experience would inherit.",
+    title: "Defined the Lending Platform Template",
+    body: "Neo Advance had to set patterns for future lending products before they existed. I created a shared model for entry points, account IA, and core journeys—unlocking decisions that had stalled the team.",
     summary: "2 DAYS · 3 PRODUCT LEADS · 2 FOUNDERS",
     project: "neo-advance",
     section: "neo-discovery",
@@ -27,9 +28,9 @@ const pool = {
   },
   journey: {
     kind: "case",
-    title: "Solved the journey, not just the screen",
-    body: "Conflicting ideas around credit progression were blocking the experience. I reframed the problem around the full customer journey and created one progression model the team could design against.",
-    summary: "1 SHARED MODEL · 200+ SCREENS",
+    title: "Aligned teams by solving the journey",
+    body: "Marketing, Product, and Engineering pushed conflicting credit-progression directions. I reframed the debate around the end-to-end journey and aligned stakeholders in 2 days.",
+    summary: "2 DAYS · 3 FUNCTIONS · 1 DIRECTION",
     project: "neo-advance",
     section: "neo-concept",
     image: art("journey", "A dotted path between stops, ending at a blue flag"),
@@ -37,7 +38,7 @@ const pool = {
   validation: {
     kind: "case",
     title: "Broke the late-stage validation trap",
-    body: "Two weeks before launch, testing 10 flows and 200+ screens was impractical. I triaged the highest-risk questions and ran three focused studies in three days.",
+    body: "Two weeks before launch, testing 10 flows and 200+ screens was impractical. I triaged high-risk questions and ran 3 focused studies in 3 days to resolve critical decisions.",
     summary: "3 STUDIES · 3 DAYS · 200+ SCREENS",
     project: "neo-advance",
     section: "neo-hifi",
@@ -46,8 +47,8 @@ const pool = {
   roles: {
     kind: "case",
     title: "Aligned three roles around one experience",
-    body: "Beacon’s monetization workflow depended on producers, pricing managers, and other stakeholders with conflicting ownership models. I clarified responsibilities and designed one workflow across the roles.",
-    summary: "3 ROLES · 1 SHARED WORKFLOW",
+    body: "Content, pricing, and product roles needed a coherent streaming workflow. I turned interviews into a job map, led a PM/UX workshop, and shaped an IA supporting ownership and cross-role handoffs.",
+    summary: "3 ROLES · JOB MAP · SHARED IA",
     project: "brightcove-beacon",
     section: "beacon-discovery",
     image: art("align", "Three arrows meeting at one blue point"),
@@ -55,8 +56,8 @@ const pool = {
   navigation: {
     kind: "case",
     title: "Proved navigation before redesigning",
-    body: "Before rebuilding Analytics, I tested the information architecture first. Tree testing raised task success from 54% to 87% and cut average task time from 68s to 12s.",
-    summary: "54% → 87% · 68s → 12s",
+    body: "I tree-tested three IA options instead of relying on opinions. Task success improved from 54% to 87%, while average task time fell from 68s to 12s—guiding the new analytics structure.",
+    summary: "54% → 87% SUCCESS · 68s → 12s",
     project: "reimagining-analytics",
     section: "analytics-strategy",
     image: art("dashboard", "A hand-drawn dashboard with a rising blue line"),
@@ -64,8 +65,8 @@ const pool = {
   partnership: {
     kind: "case",
     title: "Designed the human–AI partnership first",
-    body: "For EnzyHTP, I defined where AI should lead, assist, or step aside before designing the interface, turning fragmented scientific tools into one guided experiment workflow.",
-    summary: "6 WEEKS · 4 SCIENTISTS · 2 ENGINEERS",
+    body: "Scientists faced fragmented experiment workflows. I interviewed computational chemists, mapped where human judgment mattered, and defined a copilot model: AI proposes the plan while scientists retain control.",
+    summary: "6 WEEKS · 4 SCIENTISTS · 6 HYPOTHESES",
     project: "mutexa",
     section: "mutexa-relationship",
     image: art("spark", "A pencil line ending in a blue star"),

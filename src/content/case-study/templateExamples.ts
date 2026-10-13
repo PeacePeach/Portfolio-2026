@@ -47,3 +47,11 @@ export const introExample = {
     { label: "Role", items: ["XXXX", "XXXX", "XXXX", "XXXX", "XXXX"] },
   ],
 } satisfies IntroData;
+
+/** Left-aligned, with an eyebrow and no facts (Figma AI-Portfolio 174:3199). */
+export const introLeftExample = {
+  eyebrow: "Eyebrow",
+  title: "Page Title",
+  paragraphs: [introExample.paragraphs[0]],
+  align: "left",
+} satisfies IntroData;
