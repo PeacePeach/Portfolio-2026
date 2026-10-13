@@ -4,6 +4,7 @@ import type { ImageRef } from "@/content/types";
 import type { NarrativeData } from "@/components/case-study/templates/NarrativeTemplate";
 import type { ImpactData } from "@/components/case-study/templates/ImpactTemplate";
 import type { FollowUpData } from "@/components/case-study/templates/FollowUpTemplate";
+import type { ReflectionData } from "@/components/case-study/templates/ReflectionTemplate";
 import type { StatCircleData } from "@/components/case-study/shared/StatCircles";
 
 /** Mutexa / EnzyHTP case study intro. */
@@ -226,6 +227,11 @@ export const mutexaOutcome = {
     { icon: "users", value: "$50K", label: "NSF I-Corps grant", body: "Ranked among the top teams in Vanderbilt's Builder cohort and recommended for the NSF National I-Corps program and its customer-discovery grant." },
   ],
 } satisfies ImpactData;
+
+export const mutexaReflection: ReflectionData = {
+  headline: "Better AI isn’t about more autonomy. It’s about the right autonomy for the situation.",
+  body: "Mutexa changed how I think about AI. I started by asking how much of the scientific workflow we could automate, but the stronger model was knowing when AI should lead, when it should assist, and when uncertainty should stay with the scientist. Sometimes the more intelligent behavior is knowing when not to take control.",
+};
 
 /** Closing follow-up, as the other case studies: feedback beside the next case study. */
 export const mutexaFollowUp: FollowUpData = {

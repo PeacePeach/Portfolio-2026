@@ -127,7 +127,7 @@ Used by Neo Advance (`neoAdvanceImpact`) and Reimagining Analytics (`reimagining
 
 Contract: `{ headline, body, accent? }`. A centred 500px column: the headline (story title type, primary), then the supporting copy (story body) 33px below. `accent: "bar"` (default) adds a 4px rounded gradient bar 16px left of the headline (`--cs-reflection-accent` → 20%); `accent: "none"` drops it. Reveals with the site scroll reveal. Goes under a chapter header such as `0N _ REFLECTION`, optionally followed by a `FollowUpTemplate`.
 
-Used by Neo Advance (`neoAdvanceReflection`, then `FollowUpTemplate` with `neoAdvanceClosing`) and Reimagining Analytics (`reimaginingAnalyticsReflection`).
+Used by Neo Advance (`neoAdvanceReflection`, then `FollowUpTemplate` with `neoAdvanceClosing`) Reimagining Analytics (`reimaginingAnalyticsReflection`), Brightcove Beacon (`brightcoveBeaconReflection`) and Mutexa (`mutexaReflection`).
 
 ## FollowUpTemplate
 

@@ -89,7 +89,7 @@ import {
   brightcoveBeaconJobMapImage,
   brightcoveBeaconProblem,
 } from "@/content/case-study/brightcoveBeacon";
-import { mutexaContext, mutexaContextFigure, mutexaIntro, mutexaKeyExperience, mutexaRelationship, mutexaPrototypes, mutexaPrototypesImage, mutexaIterations, mutexaOpportunity, mutexaOpportunityStats, mutexaExpertise, mutexaToolLandscape, mutexaExitPoints, mutexaDiscovery, mutexaAnomalyTypes, mutexaResponseStates, mutexaErrorToExploration, mutexaOutcome, mutexaFollowUp } from "@/content/case-study/mutexa";
+import { mutexaContext, mutexaContextFigure, mutexaIntro, mutexaKeyExperience, mutexaRelationship, mutexaPrototypes, mutexaPrototypesImage, mutexaIterations, mutexaOpportunity, mutexaOpportunityStats, mutexaExpertise, mutexaToolLandscape, mutexaExitPoints, mutexaDiscovery, mutexaAnomalyTypes, mutexaResponseStates, mutexaErrorToExploration, mutexaOutcome, mutexaReflection, mutexaFollowUp } from "@/content/case-study/mutexa";
 import { getProject, getProjects } from "@/content";
 import { site } from "@/content/site";
 
@@ -390,9 +390,12 @@ async function CaseStudyContent({ params }: PageProps<"/work/[slug]">) {
             <NarrativeTemplate {...mutexaErrorToExploration} />
           </section>
           <ScrollReveal as="hr" className="border-line" />
-          <ImpactTemplate {...mutexaOutcome} className="my-24" />
-          <ScrollReveal as="hr" className="border-line" />
-          <FollowUpTemplate {...mutexaFollowUp} />
+          <ImpactTemplate {...mutexaOutcome} className="mt-24" />
+          <section aria-labelledby="mutexa-reflection">
+            <CaseStudyChapterHeader id="mutexa-reflection">04 _ REFLECTION</CaseStudyChapterHeader>
+            <ReflectionTemplate {...mutexaReflection} />
+            <FollowUpTemplate {...mutexaFollowUp} />
+          </section>
         </CaseIntroTemplate>
       </main>
     );
