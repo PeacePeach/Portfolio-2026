@@ -21,7 +21,7 @@ const TAU = Math.PI * 2;
  */
 
 const RING_POINTS = 160;
-const CLEARANCE = 2; // min visual gap between a node outline and its boundary (px)
+const CLEARANCE = 2; // min visual gap between a node outline and every boundary holding it (px)
 const COS = Float32Array.from({ length: RING_POINTS }, (_, i) => Math.cos((i / RING_POINTS) * TAU));
 const SIN = Float32Array.from({ length: RING_POINTS }, (_, i) => Math.sin((i / RING_POINTS) * TAU));
 
@@ -74,18 +74,20 @@ const SHAPES: Shape[] = [
     b: 100,
     rot: 0,
     lobe: { ang: -2.0, amt: 0.18, width: 0.5 },
-    labelAt: 0.5,
+    labelAt: 2.05, // lower-left edge, clear of the converging lines at lower right
   },
 ];
 
 const COMPLEXITY_AT = { x: 455, y: 228 };
 
 // Figma toolkit nodes: centre (Figma units), diameter, boundary index into SHAPES.
-const NODES: { label: string; x: number; y: number; d: number; ring: number }[] = [
+// `ring` is the node's home region; `also` lists extra regions it must stay inside
+// at the same time (intersection-only nodes). Every node is also inside Ambiguity.
+const NODES: { label: string; x: number; y: number; d: number; ring: number; also?: number[] }[] = [
   // Calibration
   { label: "Insight", x: 221, y: 202, d: 52.4, ring: 1 },
   { label: "Validation", x: 287, y: 184, d: 52.4, ring: 1 },
-  { label: "Critique", x: 407, y: 160, d: 52.4, ring: 1 },
+  { label: "Critique", x: 407, y: 160, d: 52.4, ring: 1, also: [2] }, // Calibration ∩ Cohesion
   { label: "Judgment", x: 283, y: 229, d: 52.4, ring: 1 },
   { label: "Iteration", x: 214, y: 252, d: 52.4, ring: 1 },
   { label: "Outcomes", x: 149, y: 200, d: 52.4, ring: 1 },
@@ -95,14 +97,14 @@ const NODES: { label: string; x: number; y: number; d: number; ring: number }[] 
   { label: "Mentorship", x: 647, y: 157, d: 64.4, ring: 2 },
   { label: "Communication", x: 765, y: 175, d: 81.1, ring: 2 },
   { label: "Trust", x: 855, y: 172, d: 52.4, ring: 2 },
-  { label: "Alignment", x: 591, y: 236, d: 52.4, ring: 2 },
+  { label: "Alignment", x: 591, y: 236, d: 52.4, ring: 2, also: [3] }, // Cohesion ∩ Direction
   // Direction
   { label: "Vision", x: 462, y: 310, d: 52.4, ring: 3 },
   { label: "Systems", x: 542, y: 310, d: 52.4, ring: 3 },
   { label: "Strategy", x: 630, y: 318, d: 52.4, ring: 3 },
   { label: "Framing", x: 700, y: 310, d: 52.4, ring: 3 },
   { label: "Journeys", x: 494, y: 360, d: 52.4, ring: 3 },
-  { label: "Trade-offs", x: 358, y: 268, d: 52.4, ring: 3 },
+  { label: "Trade-offs", x: 358, y: 268, d: 52.4, ring: 3, also: [1] }, // Direction ∩ Calibration
 ];
 
 type Ring = {
@@ -124,6 +126,7 @@ type Ring = {
 type Node = {
   label: string;
   ring: number;
+  bounds: number[]; // every boundary the whole node (+ CLEARANCE) must stay inside
   hx: number; // home (Figma position), follows its ring's drift
   hy: number;
   x: number;
@@ -266,7 +269,7 @@ export function LeadershipPhysics() {
           target: new Float32Array(RING_POINTS),
           harm: [2, 3, 4, 5].map((k) => ({
             k,
-            a: (0.06 / (k - 1)) * (0.7 + rnd() * 0.6),
+            a: ((shape.label === "Ambiguity" ? 0.05 : 0.035) / (k - 1)) * (0.7 + rnd() * 0.6),
             w: (0.12 + rnd() * 0.18) * (rnd() < 0.5 ? -1 : 1),
             p: rnd() * TAU,
           })),
@@ -289,6 +292,7 @@ export function LeadershipPhysics() {
         return {
           label: n.label,
           ring: n.ring,
+          bounds: [n.ring, ...(n.also ?? []), 0],
           hx: p.x,
           hy: p.y,
           x: p.x,
@@ -541,6 +545,40 @@ export function LeadershipPhysics() {
       }
     }
 
+    /** Node-node collisions (all pairs; 18 nodes, trivial). */
+    function collide(dragHeavy: boolean) {
+      for (let i = 0; i < nodes.length; i++) {
+        const a = nodes[i];
+        for (let j = i + 1; j < nodes.length; j++) {
+          const b = nodes[j];
+          const dx = b.x - a.x;
+          const dy = b.y - a.y;
+          const min = a.r + b.r;
+          const d2 = dx * dx + dy * dy;
+          if (d2 >= min * min || d2 === 0) continue;
+          const d = Math.sqrt(d2);
+          const nx = dx / d;
+          const ny = dy / d;
+          const overlap = min - d;
+          // dragged node behaves as infinite mass (unless it is being held back by a wall)
+          const wa = dragHeavy ? (a === drag ? 0 : b === drag ? 1 : 0.5) : 0.5;
+          const wb = dragHeavy ? (b === drag ? 0 : a === drag ? 1 : 0.5) : 0.5;
+          a.x -= nx * overlap * wa;
+          a.y -= ny * overlap * wa;
+          b.x += nx * overlap * wb;
+          b.y += ny * overlap * wb;
+          const rel = (b.vx - a.vx) * nx + (b.vy - a.vy) * ny;
+          if (rel < 0) {
+            const imp = -(1 + 0.6) * rel;
+            a.vx -= nx * imp * wa;
+            a.vy -= ny * imp * wa;
+            b.vx += nx * imp * wb;
+            b.vy += ny * imp * wb;
+          }
+        }
+      }
+    }
+
     function step(dt: number) {
       if (!reduced) time += dt;
       updateTargets();
@@ -548,9 +586,10 @@ export function LeadershipPhysics() {
       // Ring springs: toward organic target + neighbour coupling (rope tension).
       // Coupling acts on the deviation from the target, so the Figma contour is
       // the rest shape and only bulges get smoothed out along the rope.
-      const kTarget = 9;
-      const kNeighbour = 140;
-      const damping = 4.2;
+      // Slightly stiffer and better damped than before: elastic but controlled.
+      const kTarget = 15;
+      const kNeighbour = 200;
+      const damping = 6.5;
       for (const ring of rings) {
         const { rho, vel, target } = ring;
         for (let i = 0; i < RING_POINTS; i++) {
@@ -602,46 +641,28 @@ export function LeadershipPhysics() {
         n.y += n.vy * dt;
       }
 
-      // Node-node collisions (all pairs; 18 nodes, trivial).
-      for (let i = 0; i < nodes.length; i++) {
-        const a = nodes[i];
-        for (let j = i + 1; j < nodes.length; j++) {
-          const b = nodes[j];
-          const dx = b.x - a.x;
-          const dy = b.y - a.y;
-          const min = a.r + b.r;
-          const d2 = dx * dx + dy * dy;
-          if (d2 >= min * min || d2 === 0) continue;
-          const d = Math.sqrt(d2);
-          const nx = dx / d;
-          const ny = dy / d;
-          const overlap = min - d;
-          // dragged node behaves as infinite mass
-          const wa = a === drag ? 0 : b === drag ? 1 : 0.5;
-          const wb = b === drag ? 0 : a === drag ? 1 : 0.5;
-          a.x -= nx * overlap * wa;
-          a.y -= ny * overlap * wa;
-          b.x += nx * overlap * wb;
-          b.y += ny * overlap * wb;
-          const rel = (b.vx - a.vx) * nx + (b.vy - a.vy) * ny;
-          if (rel < 0) {
-            const imp = -(1 + 0.6) * rel;
-            a.vx -= nx * imp * wa;
-            a.vy -= ny * imp * wa;
-            b.vx += nx * imp * wb;
-            b.vy += ny * imp * wb;
-          }
-        }
-      }
+      collide(true);
 
       avoidLabels();
 
-      // Every node stays inside its own boundary and inside Ambiguity (two passes
-      // so satisfying one boundary cannot leave the other violated).
-      for (let pass = 0; pass < 2; pass++) {
-        for (const n of nodes) {
-          contain(n, rings[n.ring]);
-          contain(n, rings[0]);
+      // Multi-boundary containment: every node must sit wholly inside every ring
+      // in its `bounds` (own region, Ambiguity, and for intersection-only nodes the
+      // second region). Repeated passes converge on the intersection; rings bulge
+      // when the room is too tight.
+      for (let pass = 0; pass < 3; pass++) {
+        for (const n of nodes) for (const b of n.bounds) contain(n, rings[b]);
+      }
+      // A dragged node pinned by a wall cannot also shove a neighbour through it:
+      // resolve overlaps once more with equal weights, then re-contain.
+      collide(false);
+      for (const n of nodes) for (const b of n.bounds) contain(n, rings[b]);
+
+      // Intersection-only nodes get extra passes until both regions are satisfied.
+      for (const n of nodes) {
+        if (n.bounds.length < 3) continue;
+        for (let pass = 0; pass < 8; pass++) {
+          for (const b of n.bounds) contain(n, rings[b]);
+          if (n.bounds.every((b) => nearest(rings[b], n.x, n.y).d >= n.r + CLEARANCE - 0.05)) break;
         }
       }
     }
@@ -677,7 +698,9 @@ export function LeadershipPhysics() {
       ctx.fillStyle = "rgba(195,194,184,0.85)";
       // Two passes: mask the contour behind every letter first, then the letters,
       // so a neighbour's mask never eats into a letter.
-      const all = labels().flat();
+      const groups = labels();
+      const complexity = groups.pop() ?? [];
+      const all = groups.flat();
       for (const pass of [0, 1]) {
         for (const g of all) {
           ctx.save();
@@ -688,6 +711,10 @@ export function LeadershipPhysics() {
           ctx.restore();
         }
       }
+      // COMPLEXITY: quieter secondary label, no contour to mask.
+      ctx.font = `400 ${labelFont}px ${fontFamily}`;
+      ctx.fillStyle = "rgba(195,194,184,0.5)";
+      for (const g of complexity) ctx.fillText(g.ch, g.x, g.y);
     }
 
     function draw() {
