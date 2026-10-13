@@ -219,7 +219,7 @@ export function LeadershipPhysics({
     }
     const turn = () => (portrait ? Math.PI / 2 : 0);
 
-    /** Width decides scale; the diagram sets its own height (600-700 on desktop). */
+    /** Width decides scale; the canvas hugs the diagram (FIGMA_BOX already holds the bulge room), so page spacing stays the template's. */
     function measure(width: number) {
       portrait = width < 640;
       if (portrait) {
@@ -227,7 +227,7 @@ export function LeadershipPhysics({
         return Math.round(FIGMA_BOX.w * s + 70);
       }
       s = Math.min(1.05, (width - 60) / FIGMA_BOX.w);
-      return width >= 1000 ? 640 : Math.round(FIGMA_BOX.h * s + 80);
+      return Math.round(FIGMA_BOX.h * s + 20);
     }
 
     function build() {
@@ -920,7 +920,7 @@ export function LeadershipPhysics({
   }, []);
 
   return (
-    <div ref={wrapRef} className="relative h-[640px] w-full">
+    <div ref={wrapRef} className="relative h-[487px] w-full">
       <canvas
         ref={canvasRef}
         className="block"
