@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRightCircle, BookOpen, Edit2, Grid, Heart } from "react-feather";
+import { ArrowRight, BookOpen, Edit2, Grid, Heart } from "react-feather";
 import { getProject } from "@/content";
 import type { PowerFragment } from "@/content/types";
 import { workCopy } from "@/content/work";
@@ -44,7 +44,7 @@ export function PowerFragmentCard({ fragment }: { fragment: PowerFragment }) {
           className="flex items-center gap-1 rounded-[10px] outline-offset-4 transition-colors duration-(--duration-underline) ease-out-expo group-hover:text-primary group-has-focus-visible:text-primary after:absolute after:inset-0 after:z-[1] after:rounded-[10px]"
         >
           <span>{kind.action}</span>
-          <ArrowRightCircle size={20} strokeWidth={1.33} aria-hidden />
+          <ArrowRight size={18} strokeWidth={1.33} aria-hidden />
         </Link>
       </div>
 
