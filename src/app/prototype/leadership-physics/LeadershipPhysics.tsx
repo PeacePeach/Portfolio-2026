@@ -245,8 +245,8 @@ export function LeadershipPhysics() {
           }
           base[i] = r * s;
         }
-        // Rope, not maths: fixed asymmetric bulges and dents on the rest contour.
-        const dents = [0, 1, 2, 3].map(() => ({ ang: rnd() * TAU, amt: -0.07 + rnd() * 0.17, width: 0.22 + rnd() * 0.3 }));
+        // Slight, fixed asymmetry on the rest contour, so it reads as a drawn ellipse rather than a perfect one.
+        const dents = [0, 1, 2, 3].map(() => ({ ang: rnd() * TAU, amt: -0.025 + rnd() * 0.06, width: 0.45 + rnd() * 0.3 }));
         for (let i = 0; i < RING_POINTS; i++) {
           const th = (i / RING_POINTS) * TAU;
           let m = 1;
@@ -269,7 +269,7 @@ export function LeadershipPhysics() {
           target: new Float32Array(RING_POINTS),
           harm: [2, 3, 4, 5].map((k) => ({
             k,
-            a: ((shape.label === "Ambiguity" ? 0.05 : 0.035) / (k - 1)) * (0.7 + rnd() * 0.6),
+            a: ((shape.label === "Ambiguity" ? 0.035 : 0.02) / (k - 1)) * (0.7 + rnd() * 0.6),
             w: (0.12 + rnd() * 0.18) * (rnd() < 0.5 ? -1 : 1),
             p: rnd() * TAU,
           })),
@@ -306,6 +306,34 @@ export function LeadershipPhysics() {
       });
       updateTargets();
       rings.forEach((r) => r.rho.set(r.target));
+
+      // Intersection-only nodes rest at the roomiest point of their own overlap:
+      // farthest from both of its contours and, where there is room, outside the
+      // third region, so the three don't all pile into the central triple overlap.
+      for (const n of nodes) {
+        if (n.bounds.length < 3) continue;
+        const [a, b] = n.bounds;
+        const c = [1, 2, 3].find((k) => k !== a && k !== b)!;
+        const pick = (exclusive: boolean) => {
+          let best = -Infinity;
+          let at = { x: n.hx, y: n.hy };
+          for (let y = n.hy - 200 * s; y <= n.hy + 200 * s; y += 4) {
+            for (let x = n.hx - 200 * s; x <= n.hx + 200 * s; x += 4) {
+              let room = Math.min(roomIn(rings[a], x, y), roomIn(rings[b], x, y));
+              if (exclusive) room = Math.min(room, -roomIn(rings[c], x, y));
+              if (room > best) {
+                best = room;
+                at = { x, y };
+              }
+            }
+          }
+          return { best, at };
+        };
+        let home = pick(true);
+        if (home.best < n.r + CLEARANCE) home = pick(false);
+        n.hx = n.x = home.at.x;
+        n.hy = n.y = home.at.y;
+      }
     }
 
     function resize() {
@@ -405,6 +433,12 @@ export function LeadershipPhysics() {
       return { d: best, qx, qy, qi };
     }
 
+    /** Signed distance from (x, y) to a ring's contour: positive inside. */
+    function roomIn(ring: Ring, x: number, y: number) {
+      const d = nearest(ring, x, y).d;
+      return Math.hypot(x - ring.cx, y - ring.cy) < rhoAt(ring, Math.atan2(y - ring.cy, x - ring.cx)) ? d : -d;
+    }
+
     /**
      * Node vs one membrane, using the full node radius plus CLEARANCE: pressing
      * toward the edge bulges the ring out locally (capped); whatever is left is a
@@ -446,7 +480,7 @@ export function LeadershipPhysics() {
         // radial growth needed for this much normal displacement
         const along = Math.max(0.35, -(COS[idx] * nx + SIN[idx] * ny));
         // never bulge past the diagram's edge (no clipping inside the page)
-        const cap = Math.min(ring.target[idx] + ring.R * 0.45, edgeDistance(ring, (idx / RING_POINTS) * TAU));
+        const cap = Math.min(ring.target[idx] + ring.R * 0.22, edgeDistance(ring, (idx / RING_POINTS) * TAU));
         ring.rho[idx] = Math.max(ring.rho[idx], Math.min(cap, ring.rho[idx] + (pen * g * yieldShare) / along));
         if (n === drag && ring.vel[idx] < 0) ring.vel[idx] *= 1 - g * 0.6;
       }
@@ -587,9 +621,9 @@ export function LeadershipPhysics() {
       // Coupling acts on the deviation from the target, so the Figma contour is
       // the rest shape and only bulges get smoothed out along the rope.
       // Slightly stiffer and better damped than before: elastic but controlled.
-      const kTarget = 15;
-      const kNeighbour = 200;
-      const damping = 6.5;
+      const kTarget = 26;
+      const kNeighbour = 320;
+      const damping = 9;
       for (const ring of rings) {
         const { rho, vel, target } = ring;
         for (let i = 0; i < RING_POINTS; i++) {
@@ -618,9 +652,16 @@ export function LeadershipPhysics() {
           n.vy = (ty - n.y) * 18;
         } else {
           // Each node is biased toward its own Figma position (which drifts with its ring).
-          const ring = rings[n.ring];
-          n.vx += (n.hx + ring.cx - ring.ax - n.x) * 0.5 * dt;
-          n.vy += (n.hy + ring.cy - ring.ay - n.y) * 0.5 * dt;
+          // (intersection nodes follow the average drift of their two regions)
+          let ddx = 0;
+          let ddy = 0;
+          const own = n.bounds.slice(0, -1);
+          for (const b of own) {
+            ddx += (rings[b].cx - rings[b].ax) / own.length;
+            ddy += (rings[b].cy - rings[b].ay) / own.length;
+          }
+          n.vx += (n.hx + ddx - n.x) * 0.5 * dt;
+          n.vy += (n.hy + ddy - n.y) * 0.5 * dt;
           if (!reduced) {
             n.wander += (Math.sin(time * 0.7 + n.r) * 0.6 + (Math.random() - 0.5) * 1.5) * dt;
             n.vx += Math.cos(n.wander) * wanderForce * dt;
