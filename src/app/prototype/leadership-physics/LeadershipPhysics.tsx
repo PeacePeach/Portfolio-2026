@@ -60,12 +60,12 @@ const SHAPES: Shape[] = [
     cx: 290,
     cy: 222,
     a: 222,
-    b: 78,
+    b: 84,
     rot: -0.12,
-    lobe: { ang: -0.35, amt: 0.32, width: 0.35 },
+    lobe: { ang: -0.35, amt: 0.36, width: 0.35 },
     labelAt: -2.6,
   },
-  { label: "Cohesion", cx: 650, cy: 180, a: 312, b: 98, rot: -0.1, labelAt: -0.32 },
+  { label: "Cohesion", cx: 650, cy: 180, a: 312, b: 104, rot: -0.1, labelAt: -0.32 },
   {
     label: "Direction",
     cx: 530,
@@ -73,7 +73,7 @@ const SHAPES: Shape[] = [
     a: 280,
     b: 100,
     rot: 0,
-    lobe: { ang: -2.0, amt: 0.18, width: 0.5 },
+    lobe: { ang: -2.55, amt: 0.3, width: 0.4 },
     labelAt: 2.05, // lower-left edge, clear of the converging lines at lower right
   },
 ];
@@ -82,25 +82,28 @@ const COMPLEXITY_AT = { x: 455, y: 228 };
 
 // Figma toolkit nodes: centre (Figma units), diameter, boundary index into SHAPES.
 // `ring` is the node's home region; `also` lists extra regions it must stay inside
-// at the same time (intersection-only nodes). Every node is also inside Ambiguity.
+// at the same time (intersection-only nodes). Every node is also inside Ambiguity,
+// and outside every other region: each node keeps to exactly its own area of the
+// drawing (a Calibration node never enters Calibration ∩ Cohesion, only Critique does).
 const NODES: { label: string; x: number; y: number; d: number; ring: number; also?: number[] }[] = [
   // Calibration
   { label: "Insight", x: 221, y: 202, d: 52.4, ring: 1 },
   { label: "Validation", x: 287, y: 184, d: 52.4, ring: 1 },
   { label: "Critique", x: 407, y: 160, d: 52.4, ring: 1, also: [2] }, // Calibration ∩ Cohesion
-  { label: "Judgment", x: 283, y: 229, d: 52.4, ring: 1 },
+  { label: "Users", x: 273, y: 242, d: 52.4, ring: 1 },
   { label: "Iteration", x: 214, y: 252, d: 52.4, ring: 1 },
   { label: "Outcomes", x: 149, y: 200, d: 52.4, ring: 1 },
   // Cohesion
-  { label: "People", x: 560, y: 125, d: 52.4, ring: 2 },
+  { label: "People", x: 513, y: 111, d: 52.4, ring: 2 },
+  { label: "Empathy", x: 578, y: 121, d: 52.4, ring: 2 },
   { label: "Facilitation", x: 720, y: 125, d: 59.9, ring: 2 },
   { label: "Mentorship", x: 647, y: 157, d: 64.4, ring: 2 },
-  { label: "Communication", x: 765, y: 175, d: 81.1, ring: 2 },
+  { label: "Communication", x: 765, y: 185, d: 81.1, ring: 2 },
   { label: "Trust", x: 855, y: 172, d: 52.4, ring: 2 },
   { label: "Alignment", x: 591, y: 236, d: 52.4, ring: 2, also: [3] }, // Cohesion ∩ Direction
   // Direction
   { label: "Vision", x: 462, y: 310, d: 52.4, ring: 3 },
-  { label: "Systems", x: 542, y: 310, d: 52.4, ring: 3 },
+  { label: "Systems", x: 551, y: 320, d: 52.4, ring: 3 },
   { label: "Strategy", x: 630, y: 318, d: 52.4, ring: 3 },
   { label: "Framing", x: 700, y: 310, d: 52.4, ring: 3 },
   { label: "Journeys", x: 494, y: 360, d: 52.4, ring: 3 },
@@ -127,6 +130,9 @@ type Node = {
   label: string;
   ring: number;
   bounds: number[]; // every boundary the whole node (+ CLEARANCE) must stay inside
+  excl: number[]; // every boundary the whole node (+ CLEARANCE) must stay outside of
+  px: number; // last position that satisfied every boundary
+  py: number;
   hx: number; // home (Figma position), follows its ring's drift
   hy: number;
   x: number;
@@ -223,7 +229,7 @@ export function LeadershipPhysics({
     function measure(width: number) {
       portrait = width < 640;
       if (portrait) {
-        s = Math.min(1, width / (FIGMA_BOX.h + 110));
+        s = Math.min(1, width / (FIGMA_BOX.h + 80));
         return Math.round(FIGMA_BOX.w * s + 70);
       }
       s = Math.min(1.05, (width - 60) / FIGMA_BOX.w);
@@ -290,11 +296,14 @@ export function LeadershipPhysics({
       ctx.font = `400 ${nodeFont}px ${fontFamily}`;
       nodes = NODES.map((n) => {
         const p = toScreen(n.x, n.y);
-        const fit = ctx.measureText(n.label).width / 2 + 6;
+        const fit = ctx.measureText(n.label).width / 2 + (s < 0.75 ? 3 : s < 0.9 ? 4 : 6);
         return {
           label: n.label,
           ring: n.ring,
           bounds: [n.ring, ...(n.also ?? []), 0],
+          excl: [1, 2, 3].filter((k) => k !== n.ring && !(n.also ?? []).includes(k)),
+          px: p.x,
+          py: p.y,
           hx: p.x,
           hy: p.y,
           x: p.x,
@@ -309,32 +318,28 @@ export function LeadershipPhysics({
       updateTargets();
       rings.forEach((r) => r.rho.set(r.target));
 
-      // Intersection-only nodes rest at the roomiest point of their own overlap:
-      // farthest from both of its contours and, where there is room, outside the
-      // third region, so the three don't all pile into the central triple overlap.
+      // Every node rests inside exactly its own region. Intersection-only nodes take
+      // the roomiest point of their lens; the others keep their Figma spot, or the
+      // nearest spot that fits when the drawing is tight there.
       for (const n of nodes) {
-        if (n.bounds.length < 3) continue;
-        const [a, b] = n.bounds;
-        const c = [1, 2, 3].find((k) => k !== a && k !== b)!;
-        const pick = (exclusive: boolean) => {
-          let best = -Infinity;
-          let at = { x: n.hx, y: n.hy };
-          for (let y = n.hy - 200 * s; y <= n.hy + 200 * s; y += 4) {
-            for (let x = n.hx - 200 * s; x <= n.hx + 200 * s; x += 4) {
-              let room = Math.min(roomIn(rings[a], x, y), roomIn(rings[b], x, y));
-              if (exclusive) room = Math.min(room, -roomIn(rings[c], x, y));
-              if (room > best) {
-                best = room;
-                at = { x, y };
-              }
+        const need = n.r + CLEARANCE;
+        const lens = n.bounds.length > 2;
+        if (!lens && room(n, n.hx, n.hy) >= need) continue;
+        let best = -Infinity;
+        let at = { x: n.hx, y: n.hy };
+        for (let y = n.hy - 200 * s; y <= n.hy + 200 * s; y += 4) {
+          for (let x = n.hx - 200 * s; x <= n.hx + 200 * s; x += 4) {
+            const r = room(n, x, y);
+            // lens: maximise room; others: closest fitting point to home
+            const score = lens ? r : r >= need ? -Math.hypot(x - n.hx, y - n.hy) : r - 1e6;
+            if (score > best) {
+              best = score;
+              at = { x, y };
             }
           }
-          return { best, at };
-        };
-        let home = pick(true);
-        if (home.best < n.r + CLEARANCE) home = pick(false);
-        n.hx = n.x = home.at.x;
-        n.hy = n.y = home.at.y;
+        }
+        n.hx = n.x = n.px = at.x;
+        n.hy = n.y = n.py = at.y;
       }
     }
 
@@ -351,7 +356,7 @@ export function LeadershipPhysics({
       canvas.style.width = `${W}px`;
       canvas.style.height = `${H}px`;
       unit = Math.min(W, H);
-      nodeFont = Math.min(11, Math.max(9, 10.5 * s));
+      nodeFont = Math.min(11, Math.max(8.5, 10.5 * s));
       labelFont = Math.min(10.5, Math.max(9, 10 * s));
       fontFamily = getComputedStyle(document.body).fontFamily || "sans-serif";
       // Prototype: a new size simply rebuilds the composition.
@@ -435,10 +440,22 @@ export function LeadershipPhysics({
       return { d: best, qx, qy, qi };
     }
 
+    function inside(ring: Ring, x: number, y: number) {
+      return Math.hypot(x - ring.cx, y - ring.cy) < rhoAt(ring, Math.atan2(y - ring.cy, x - ring.cx));
+    }
+
     /** Signed distance from (x, y) to a ring's contour: positive inside. */
     function roomIn(ring: Ring, x: number, y: number) {
       const d = nearest(ring, x, y).d;
-      return Math.hypot(x - ring.cx, y - ring.cy) < rhoAt(ring, Math.atan2(y - ring.cy, x - ring.cx)) ? d : -d;
+      return inside(ring, x, y) ? d : -d;
+    }
+
+    /** Room a node centre has at (x, y) in its own region: inside every bound, outside every excluded ring. */
+    function room(n: Node, x: number, y: number) {
+      let r = Infinity;
+      for (const b of n.bounds) r = Math.min(r, roomIn(rings[b], x, y));
+      for (const e of n.excl) r = Math.min(r, -roomIn(rings[e], x, y));
+      return r;
     }
 
     /**
@@ -482,7 +499,7 @@ export function LeadershipPhysics({
         // radial growth needed for this much normal displacement
         const along = Math.max(0.35, -(COS[idx] * nx + SIN[idx] * ny));
         // never bulge past the diagram's edge (no clipping inside the page)
-        const cap = Math.min(ring.target[idx] + ring.R * 0.22, edgeDistance(ring, (idx / RING_POINTS) * TAU));
+        const cap = Math.min(ring.target[idx] + ring.R * 0.1, edgeDistance(ring, (idx / RING_POINTS) * TAU));
         ring.rho[idx] = Math.max(ring.rho[idx], Math.min(cap, ring.rho[idx] + (pen * g * yieldShare) / along));
         if (n === drag && ring.vel[idx] < 0) ring.vel[idx] *= 1 - g * 0.6;
       }
@@ -501,6 +518,61 @@ export function LeadershipPhysics({
           n.vy -= vn * ny * 1.3;
         }
       }
+    }
+
+    /**
+     * Node vs a region it does not belong to: the contour is a wall from outside.
+     * Pressing it dents the membrane in a little (capped); the rest is a hard
+     * clamp that keeps the whole node, plus CLEARANCE, outside the line.
+     */
+    function exclude(n: Node, ring: Ring) {
+      const need = n.r + CLEARANCE;
+      let q = nearest(ring, n.x, n.y);
+      let inRing = inside(ring, n.x, n.y);
+      if (!inRing && q.d >= need) return;
+      // outward normal at the contact (away from the ring's interior)
+      const normal = () => {
+        const d = q.d || 1;
+        return inRing ? { x: (q.qx - n.x) / d, y: (q.qy - n.y) / d } : { x: (n.x - q.qx) / d, y: (n.y - q.qy) / d };
+      };
+      let nrm = normal();
+      const pen = inRing ? need + q.d : need - q.d;
+      const yieldShare = n === drag ? 0.5 : 0.15;
+      const spacing = (rhoAt(ring, Math.atan2(q.qy - ring.cy, q.qx - ring.cx)) * TAU) / RING_POINTS;
+      const sigma = Math.max(2, (n.r * 1.4) / spacing);
+      const span = Math.ceil(sigma * 2.5);
+      for (let o = -span; o <= span; o++) {
+        const idx = (((q.qi + o) % RING_POINTS) + RING_POINTS) % RING_POINTS;
+        const g = Math.exp(-(o * o) / (sigma * sigma));
+        const along = Math.max(0.35, COS[idx] * nrm.x + SIN[idx] * nrm.y);
+        const floor = ring.target[idx] - ring.R * 0.08;
+        ring.rho[idx] = Math.min(ring.rho[idx], Math.max(floor, ring.rho[idx] - (pen * g * yieldShare) / along));
+        if (n === drag && ring.vel[idx] > 0) ring.vel[idx] *= 1 - g * 0.6;
+      }
+      ring.pressure = Math.min(1, ring.pressure + pen / ring.R);
+
+      q = nearest(ring, n.x, n.y);
+      inRing = inside(ring, n.x, n.y);
+      if (!inRing && q.d >= need) return;
+      nrm = normal();
+      const push = inRing ? need + q.d : need - q.d;
+      n.x += nrm.x * push;
+      n.y += nrm.y * push;
+      const vn = n.vx * nrm.x + n.vy * nrm.y;
+      if (vn < 0) {
+        n.vx -= vn * nrm.x * 1.3;
+        n.vy -= vn * nrm.y * 1.3;
+      }
+    }
+
+    /** All of a node's walls, inside and outside. */
+    function constrain(n: Node) {
+      for (const b of n.bounds) contain(n, rings[b]);
+      for (const e of n.excl) exclude(n, rings[e]);
+    }
+
+    function satisfied(n: Node) {
+      return room(n, n.x, n.y) >= n.r + CLEARANCE - 0.25;
     }
 
     type Glyph = { ch: string; x: number; y: number; rot: number };
@@ -680,32 +752,48 @@ export function LeadershipPhysics({
             n.vy *= maxSpeed / sp;
           }
         }
-        n.x += n.vx * dt;
-        n.y += n.vy * dt;
+        // no tunnelling: a node never moves more than a fraction of its radius per substep
+        let mx = n.vx * dt;
+        let my = n.vy * dt;
+        const m = Math.hypot(mx, my);
+        const cap = n.r * 0.4;
+        if (m > cap) {
+          mx *= cap / m;
+          my *= cap / m;
+        }
+        n.x += mx;
+        n.y += my;
       }
 
       collide(true);
 
       avoidLabels();
 
-      // Multi-boundary containment: every node must sit wholly inside every ring
-      // in its `bounds` (own region, Ambiguity, and for intersection-only nodes the
-      // second region). Repeated passes converge on the intersection; rings bulge
-      // when the room is too tight.
-      for (let pass = 0; pass < 3; pass++) {
-        for (const n of nodes) for (const b of n.bounds) contain(n, rings[b]);
-      }
+      // Region walls: every node sits wholly inside every ring in its `bounds` and
+      // wholly outside every ring in `excl`, so it keeps to exactly its own area.
+      // Repeated passes converge; rings bulge or dent a little when room is tight.
+      for (let pass = 0; pass < 3; pass++) for (const n of nodes) constrain(n);
       // A dragged node pinned by a wall cannot also shove a neighbour through it:
-      // resolve overlaps once more with equal weights, then re-contain.
+      // resolve overlaps once more with equal weights, then re-constrain.
       collide(false);
-      for (const n of nodes) for (const b of n.bounds) contain(n, rings[b]);
-
-      // Intersection-only nodes get extra passes until both regions are satisfied.
+      // Two sweeps: a dent made for one node can squeeze a neighbour already checked.
       for (const n of nodes) {
-        if (n.bounds.length < 3) continue;
         for (let pass = 0; pass < 8; pass++) {
-          for (const b of n.bounds) contain(n, rings[b]);
-          if (n.bounds.every((b) => nearest(rings[b], n.x, n.y).d >= n.r + CLEARANCE - 0.05)) break;
+          constrain(n);
+          if (satisfied(n)) break;
+        }
+      }
+      for (const n of nodes) {
+        for (let pass = 0; pass < 8 && !satisfied(n); pass++) constrain(n);
+        // Still wedged (non-convex corner, violent drag): go back to the last valid spot.
+        if (satisfied(n)) {
+          n.px = n.x;
+          n.py = n.y;
+        } else {
+          n.x = n.px;
+          n.y = n.py;
+          n.vx *= 0.3;
+          n.vy *= 0.3;
         }
       }
     }
