@@ -174,7 +174,9 @@ function field(x: number, y: number, t: number, scale: number) {
   return a * 1.2;
 }
 
-export function LeadershipPhysics() {
+export function LeadershipPhysics({
+  label = "Ambiguity as the outer field, with overlapping Calibration, Cohesion and Direction boundaries holding draggable labelled nodes, and Complexity in the overlap.",
+}: { label?: string }) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const statsRef = useRef<HTMLPreElement>(null);
@@ -923,7 +925,7 @@ export function LeadershipPhysics() {
         ref={canvasRef}
         className="block"
         role="img"
-        aria-label="Prototype: Ambiguity as the outer field, with overlapping Calibration, Cohesion and Direction boundaries holding draggable labelled nodes, and Complexity in the overlap."
+        aria-label={label}
       />
       <pre ref={statsRef} className="pointer-events-none absolute right-4 bottom-4 type-body-xs text-tertiary" />
     </div>

@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
@@ -12,6 +11,7 @@ import { CaseStudyChapterHeader } from "@/components/case-study/shared/CaseStudy
 import { CaseStudySectionHeader } from "@/components/case-study/shared/CaseStudySectionHeader";
 import { caseStudyTokens } from "@/components/case-study/shared/caseStudyTokens";
 import { PowerFragmentCard } from "@/components/work/PowerFragmentCard";
+import { LeadershipPhysics } from "@/app/prototype/leadership-physics/LeadershipPhysics";
 import { getSuperPowers } from "@/content";
 import {
   leadershipClosing,
@@ -42,7 +42,7 @@ export default function LeadershipPage() {
             <CaseStudySectionHeader id="leadership-framework" {...leadershipFramework} />
           </ScrollReveal>
           <ScrollReveal>
-            <Image src={diagram.src} alt={diagram.alt} width={diagram.width} height={diagram.height} unoptimized className="mx-auto block h-auto w-full max-w-[1020px]" />
+            <LeadershipPhysics label={diagram.alt} />
           </ScrollReveal>
         </section>
 
