@@ -1,5 +1,6 @@
 import type { IntroData } from "@/components/case-study/templates/IntroTemplate";
-import type { SimpleSectionData } from "@/components/case-study/templates/SimpleSectionTemplate";
+import type { PillarFrameworkData } from "@/components/case-study/shared/PillarFramework";
+import type { TestimonialData } from "@/components/case-study/shared/Testimonial";
 import type { ImageRef } from "./types";
 
 /**
@@ -29,19 +30,14 @@ export const leadershipFrameworkDiagram: ImageRef = {
   height: 484,
 };
 
-export type PillarFramework = {
-  challenge: string;
-  questions: readonly string[];
-  methods: readonly { title: string; detail: string }[];
-  enables: readonly string[];
-};
-
 export type LeadershipPillar = {
   id: string;
   /** Chapter header, e.g. "01 _ PILLAR: DIRECTION". */
   chapter: string;
-  section: SimpleSectionData;
-  framework: PillarFramework;
+  /** Pinned text beside the framework and proof (NarrativeTemplate). */
+  title: string;
+  body: string;
+  framework: PillarFrameworkData;
   /** Super power fragment ids (src/content/powers.ts) shown as featured proof. */
   proof: readonly string[];
 };
@@ -51,12 +47,8 @@ export const leadershipPillars: readonly LeadershipPillar[] = [
   {
     id: "pillar-direction",
     chapter: "01 _ PILLAR: DIRECTION",
-    section: {
-      title: "Direction starts with focus.",
-      body: "I frame the right problem, connect fragmented experiences into a coherent product model, and make strategic trade-offs explicit. The result is a clear, shared direction teams can execute.",
-      heading: "section",
-      layout: "horizontal",
-    },
+    title: "Direction starts with focus.",
+    body: "I frame the right problem, connect fragmented experiences into a coherent product model, and make strategic trade-offs explicit. The result is a clear, shared direction teams can execute.",
     framework: {
       challenge: "Competing priorities. Fragmented experiences. No shared product direction.",
       questions: ["Are we solving the right problem?", "How do the pieces fit together?", "What matters most, and when?"],
@@ -72,12 +64,8 @@ export const leadershipPillars: readonly LeadershipPillar[] = [
   {
     id: "pillar-cohesion",
     chapter: "02 _ PILLAR: COHESION",
-    section: {
-      title: "Make alignment last.",
-      body: "I surface competing priorities, create shared decision criteria, and turn disagreements into commitments teams can carry forward—without reopening the same debates at every handoff.",
-      heading: "section",
-      layout: "horizontal",
-    },
+    title: "Make alignment last.",
+    body: "I surface competing priorities, create shared decision criteria, and turn disagreements into commitments teams can carry forward—without reopening the same debates at every handoff.",
     framework: {
       challenge: "Siloed teams. Competing agendas. Decisions stall without shared ownership.",
       questions: ["Where do priorities collide?", "What trade-offs can we commit to?", "How do decisions survive handoffs?"],
@@ -93,12 +81,8 @@ export const leadershipPillars: readonly LeadershipPillar[] = [
   {
     id: "pillar-calibration",
     chapter: "03 _ PILLAR: CALIBRATION",
-    section: {
-      title: "Challenge assumptions before they scale.",
-      body: "I use targeted evidence to challenge confident assumptions, resolve the riskiest questions, and turn what we learn into shared quality standards—without slowing down delivery.",
-      heading: "section",
-      layout: "horizontal",
-    },
+    title: "Challenge assumptions before they scale.",
+    body: "I use targeted evidence to challenge confident assumptions, resolve the riskiest questions, and turn what we learn into shared quality standards—without slowing down delivery.",
     framework: {
       challenge: "Opinion-led decisions. Risks found too late. Quality varies as teams scale.",
       questions: ["Which assumptions put us at risk?", "What’s the fastest credible test?", "How do we scale sound judgment?"],
@@ -127,7 +111,7 @@ export const leadershipClosing = {
 const recommendations = "https://www.linkedin.com/in/han-xu-a4392366/details/recommendations/?detailScreenTabIndex=0";
 
 /** Testimonials (Figma 176:4657), two per row. */
-export const leadershipTestimonials = [
+export const leadershipTestimonials: readonly TestimonialData[] = [
   {
     quote: "MENTORSHIP — Han brings clarity to complex challenges and gives designers the support, feedback, and confidence to grow into stronger thinkers.",
     author: "Pei-Heng Yiu · Direct report",
@@ -147,4 +131,4 @@ export const leadershipTestimonials = [
     quote: "ANALYTICAL PROBLEM-SOLVING — Han is a deep thinker with a highly analytical approach. He challenges assumptions, uncovers the structure behind complexity, and turns it into clear solutions.",
     author: "Carolyn Pampino · Former VP Design, Brightcove",
   },
-] as const;
+];

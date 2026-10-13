@@ -2,7 +2,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, BookOpen, Edit2, Grid, Heart } from "react-feather";
+import { ArrowRightCircle, BookOpen, Edit2, Grid, Heart } from "react-feather";
+import { getProject } from "@/content";
 import type { PowerFragment } from "@/content/types";
 import { workCopy } from "@/content/work";
 import { useLike } from "@/lib/likes";
@@ -25,6 +26,8 @@ const kinds = {
 export function PowerFragmentCard({ fragment }: { fragment: PowerFragment }) {
   const kind = kinds[fragment.kind];
   const Icon = kind.icon;
+  // Case fragments name their case study in the header (Figma AI-Portfolio 176:3385).
+  const label = fragment.kind === "case" ? (getProject(fragment.project)?.title ?? kind.label) : kind.label;
   const { liked, toggle } = useLike(fragment.id);
 
   // The whole card is clickable through the stretched link; the like button sits above it.
@@ -33,7 +36,7 @@ export function PowerFragmentCard({ fragment }: { fragment: PowerFragment }) {
       <div className="flex items-start justify-between gap-4 border-b border-ink/10 px-5 pt-5 pb-3 type-body-s text-secondary">
         <span className="flex items-center gap-2">
           <Icon size={18} strokeWidth={1.33} aria-hidden />
-          {kind.label}
+          {label}
         </span>
         <Link
           href={`/work/${fragment.project}${fragment.section ? `#${fragment.section}` : ""}`}
@@ -41,7 +44,7 @@ export function PowerFragmentCard({ fragment }: { fragment: PowerFragment }) {
           className="flex items-center gap-1 rounded-[10px] outline-offset-4 transition-colors duration-(--duration-underline) ease-out-expo group-hover:text-primary group-has-focus-visible:text-primary after:absolute after:inset-0 after:z-[1] after:rounded-[10px]"
         >
           <span>{kind.action}</span>
-          <ArrowRight size={18} strokeWidth={1.33} aria-hidden />
+          <ArrowRightCircle size={20} strokeWidth={1.33} aria-hidden />
         </Link>
       </div>
 

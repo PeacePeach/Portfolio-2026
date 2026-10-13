@@ -61,7 +61,7 @@ Used by Neo Advance (`<NeoHero />`, `neoAdvanceIntro`), Reimagining Analytics (`
 
 Contract: `{ eyebrow?, title, paragraphs, facts?: { label, items }[], align? }`. A 720px block centred on the page: Display M title and Body M copy at left, Label S / Body S facts at right; stacks below `md`. `eyebrow` adds a Body XS secondary all-caps line 12px above the title; with no `facts` the facts column is dropped. `align: "left"` (Figma AI-Portfolio `174:3199`) puts the title and copy, 647px wide, on the page's left edge instead. Reuses the site type roles and spacing scale. The block sits 128px (`pt-32`) below the hero. Callers own the hero band and the page container (`container-page`). Each part reveals with the case-study text reveal; pass `reveal` to swap the motion (Neo Advance passes its Work → case morph rise).
 
-Rendered by `CaseIntroTemplate`, which passes the morph rise as `reveal`, and by the Leadership page (`leadershipIntro`, `align: "left"` with an eyebrow and no facts). Leadership's pillars are `CaseStudyChapterHeader` + `SimpleSectionTemplate` (`layout: "horizontal"`, `heading: "section"`) with `PowerFragmentCard`s as content (`leadershipPillars`).
+Rendered by `CaseIntroTemplate`, which passes the morph rise as `reveal`, and by the Leadership page (`leadershipIntro`, `align: "left"` with an eyebrow and no facts). Leadership's pillars are `CaseStudyChapterHeader` + a one-step `NarrativeTemplate` (scrolling artifacts): the pillar text pinned left, and as its unframed `visual` (`frame: false`) a `PillarFramework` panel over the featured-proof `PowerFragmentCard`s (`leadershipPillars`). The closing pairs `Testimonial`s on the `.cs-text-columns` grid.
 
 ## Replacing template text
 
@@ -72,6 +72,8 @@ Text components for the slot live in `shared/`:
 - `PersonaQuote` (Figma `43:348`): 48px round avatar over the persona name (chapter-label type, uppercase, one word per line, as wide as its longest word), left-aligned, 12px beside the quote (`caseStudyType.quote` = `type-body-m-italic`, primary). Used by Reimagining Analytics final design (`reimaginingAnalyticsFinalDesign`, `SimpleSectionTemplate` with `align: "left"` and `inset`); at the 561px left text width the quote runs about as tall as avatar and name. Optional `tags` add the screens' tasks as muted `Pill`s 16px under the quote (as `PersonaTasks`); used by Brightcove Beacon final design (`brightcoveBeaconFinalDesign`).
 
 - `brightcove-beacon/BeaconTeamMap` (Figma `114:282`, laid out for AI-Portfolio `164:5187`): Xstream.ly's team of teams as an SVG bubble map filling a 704×403 card; the opener step's `visual` in `brightcoveBeaconContext`. Bubble colours are the original illustration's.
+- `PillarFramework` (Figma AI-Portfolio `176:3567`): four columns (Business Challenge, Strategic Questions, Methods & Tools, What It Enables) on a `surface-2` panel with a `border-default` border; each item sits beside the shared `AccentBar` (the Reflection bar, now `shared/AccentBar.tsx`), rows lined up across columns; stacks below `md`.
+- `Testimonial` (Figma AI-Portfolio `176:4579`): `AccentBar` beside a quote in `type-body-m-italic` and its author (secondary, optional link) 12px below.
 - `StatCircles` (Figma Slides `187:3402`): a row of headline numbers, each centred in a 240px circle lit from its lower left in the Impact accent blue and fading into the page at its upper right; value in the Impact value style, label in Body M; circles reveal in turn and stack below `md`. Used as `SimpleSectionTemplate` content by Mutexa "The Opportunity" (`mutexaOpportunityStats`).
 - `PersonaTasks` (Figma `114:2259`): one workflow step's people (48px round avatar, name in Label S, role in Body S secondary), an optional handoff note (Body XS secondary), then their tasks as `muted` Pills. Used by Brightcove Beacon "How They Collaborate?" as each `NarrativeTemplate` step's `text` (`brightcoveBeaconCollaborationFlow`, `separate`).
 
@@ -162,7 +164,7 @@ The optional label above the title is always rendered all caps (`.cs-chapter-lab
 
 `templates/NarrativeTemplate.tsx` · Figma `83:3560` (joined), `116:667` (separate), `89:5173` (plain), `94:5545` (screens) · Preview `/case-study-templates/narrative`
 
-Text pinned on the left (320) beside images on the right (704), 128px apart. Contract: `label`, `steps: [{ id, title, body, images, visual?, details? }]`; `visual` replaces a step's images with any component (e.g. a diagram built in code), framed like a `separate` image, each image `{ src, alt, width, height, full? }`, plus `imageLayout`:
+Text pinned on the left (320) beside images on the right (704), 128px apart. Contract: `label`, `steps: [{ id, title, body, images, visual?, frame?, details? }]`; `visual` replaces a step's images with any component (e.g. a diagram built in code), framed like a `separate` image (`frame: false` drops the frame for content that draws its own surfaces), each image `{ src, alt, width, height, full? }`, plus `imageLayout`:
 
 | Steps | Text |
 | --- | --- |

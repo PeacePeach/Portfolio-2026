@@ -32,6 +32,8 @@ export type NarrativeStep = {
    * step's text swaps in, then scrolling continues to the next step.
    */
   visual?: ReactNode;
+  /** `false` drops the image frame around `visual`, for content that draws its own surfaces (Leadership pillars: framework panel and proof cards). */
+  frame?: boolean;
   /** `screens` layout: phone screenshots in columns, each column after the first set lower. */
   columns?: readonly (readonly NarrativeImage[])[];
   /** Optional text action that opens the first image's high-resolution view. */
@@ -107,7 +109,7 @@ export function NarrativeTemplate({ label, steps, imageLayout = "joined" }: Narr
                 <StoryTextBlock heading="section" label={s.label} title={s.title} body={s.body} text={s.text} />
               </ScrollReveal>
               {screens ? <ScreenColumns columns={s.columns ?? [imagesOf(s)]} /> : <div className={imageLayout === "separate" ? `flex flex-col ${labelled ? "gap-8" : "gap-4"}` : ""}>
-                {s.visual && <ScrollReveal><div className="overflow-hidden rounded-image border border-border-default">{s.visual}</div></ScrollReveal>}
+                {s.visual && (s.frame === false ? s.visual : <ScrollReveal><div className="overflow-hidden rounded-image border border-border-default">{s.visual}</div></ScrollReveal>)}
                 {imagesOf(s).map(image => (
                   <NarrativeFrame
                     key={image.src}

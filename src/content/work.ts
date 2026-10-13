@@ -39,7 +39,7 @@ export const workCopy = {
   hanxgpt: "HanXGPT is on its way.",
   empty: "Nothing matches these filters yet.",
   fragment: {
-    case: { label: "Case Fragments", action: "View case studies" },
+    case: { label: "Case Fragments", action: "Read the story" },
     story: { label: "Story", action: "View full" },
   },
 };

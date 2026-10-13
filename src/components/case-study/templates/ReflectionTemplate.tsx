@@ -1,5 +1,6 @@
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { caseStudyTokens, caseStudyType } from "../shared/caseStudyTokens";
+import { AccentBar } from "../shared/AccentBar";
 
 export type ReflectionData = {
   headline: string;
@@ -14,7 +15,7 @@ export function ReflectionTemplate({ headline, body, accent = "bar" }: Reflectio
     {/* Accent bar 16px to the headline; 33px from headline to body. */}
     <ScrollReveal className="mx-auto flex max-w-[500px] flex-col gap-[33px]">
       <blockquote className={`${caseStudyType.storyTitle} flex gap-4 text-(--cs-primary)`}>
-        {accent === "bar" && <span aria-hidden className="w-1 shrink-0 rounded-full bg-linear-to-b from-(--cs-reflection-accent) to-[color-mix(in_srgb,var(--cs-reflection-accent)_20%,transparent)]" />}
+        {accent === "bar" && <AccentBar />}
         <span>{headline}</span>
       </blockquote>
       <p className={`${caseStudyType.storyBody} cs-story-text-body`}>{body}</p>
