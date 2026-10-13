@@ -13,11 +13,11 @@ export const neoAdvanceIntro = {
   ],
   facts: [
     { label: "Duration", items: ["4 months"] },
-    { label: "Platform", items: ["IOS", "Android", "Web"] },
-    { label: "Type", items: ["0→1 product", "B2C Fintech", "Cross-product system"] },
+    { label: "Platform", items: ["iOS", "Android", "Web"] },
+    { label: "Type", items: ["0→1 product", "B2C fintech", "Cross-product system"] },
     {
       label: "Role",
-      items: ["Design lead", "Product Strategy", "User research", "Interaction Design", "Design execution"],
+      items: ["Design lead", "Product strategy", "User research", "Interaction design", "Design execution"],
     },
   ],
 } as const;

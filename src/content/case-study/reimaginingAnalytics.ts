@@ -17,7 +17,7 @@ export const reimaginingAnalyticsIntro = {
   facts: [
     { label: "Duration", items: ["4 weeks"] },
     { label: "Platform", items: ["Desktop", "Mobile"] },
-    { label: "Type", items: ["1-N product", "B2B", "Analytics", "Design System"] },
+    { label: "Type", items: ["1-N product", "B2B", "Analytics", "Design system"] },
     { label: "Role", items: ["Design lead", "User research", "UX strategy", "Design execution"] },
   ],
 } satisfies IntroData;
