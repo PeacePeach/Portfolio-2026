@@ -181,7 +181,7 @@ Text pinned on the left (320) beside images on the right (704), 128px apart. Con
 
 An image with `full` opens the zoom viewer; `pill` puts a shared `EvidencePill` (e.g. Before / After) 16px above it, and labelled blocks sit 32px apart within a step and 64px between steps; `details` adds a text button for the step's first zoomable image. On mobile each step's text sits above its images. Need another kind of visual beside pinned text? Add an `imageLayout`, as `screens` was, rather than reusing `StickyNarrativeText` in a project component.
 
-Used by Neo Advance (`neoAdvanceNarrative`, `neoAdvanceCoreFlows` with `screens`, `neoAdvanceDeliveryPanels` with `plain`) and Reimagining Analytics problem (`reimaginingAnalyticsProblem`, `separate`).
+Used by Neo Advance (`neoAdvanceNarrative`, `neoAdvanceCoreFlows` with `screens`, `neoAdvanceDeliveryPanels` with `separate`) and Reimagining Analytics problem (`reimaginingAnalyticsProblem`, `separate`).
 
 ## BeforeAfterTemplate
 

@@ -195,7 +195,7 @@ async function CaseStudyContent({ params }: PageProps<"/work/[slug]">) {
             <section aria-labelledby="neo-final">
               <CaseStudyChapterHeader id="neo-final">04 _ FINAL DESIGN</CaseStudyChapterHeader>
               <NarrativeTemplate {...neoAdvanceCoreFlows} />
-              <NarrativeTemplate label="Delivery frameworks" steps={neoAdvanceDeliveryPanels} imageLayout="plain" />
+              <NarrativeTemplate label="Delivery frameworks" steps={neoAdvanceDeliveryPanels} imageLayout="separate" />
             </section>
             <section aria-labelledby="neo-reflection">
               <CaseStudyChapterHeader id="neo-reflection">05 _ REFLECTION</CaseStudyChapterHeader>

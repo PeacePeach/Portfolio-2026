@@ -180,7 +180,7 @@ export const neoAdvanceFinalDelivery = [
 /** Figma 94:5545: the core flows on the shared narrative template, `screens` layout. */
 export const neoAdvanceCoreFlows: NarrativeData = { label: "Core flows", imageLayout: "screens", steps: neoAdvanceFinalDelivery };
 
-/** Figma 89:5173: delivery frameworks, on the same rolling narrative as early discovery (2x exports). */
+/** Figma 89:5173: delivery frameworks, on the same rolling narrative as early discovery, as separate cards (Figma 135:1472; 2x exports). */
 export const neoAdvanceDeliveryPanels = ([
   {
     id: "lending-system",
