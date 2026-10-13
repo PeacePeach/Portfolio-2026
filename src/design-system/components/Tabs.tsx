@@ -41,15 +41,17 @@ export type TabsProps = {
   tabs: readonly Tab[]; active: string; onChange: (id: string) => void;
   idPrefix: string; panelId: string; label?: string;
   appearance?: "outline" | "filled"; style?: CSSProperties;
+  /** `small` (Figma 213:798): compact Body XS tabs with no divider bar, aligned to the start of their container. */
+  size?: "default" | "small";
 };
 
 /** Existing theme-tab presentation; other selectors retain their own visuals. */
-export function Tabs({ tabs, active, onChange, idPrefix, panelId, label = "Evidence views", appearance = "outline", style }: TabsProps) {
+export function Tabs({ tabs, active, onChange, idPrefix, panelId, label = "Evidence views", appearance = "outline", style, size = "default" }: TabsProps) {
   const { register, onKeyDown } = useRovingTabs(tabs.map(t => t.id), active, onChange);
-  // Bar carries the dividers; the centred group is the tablist.
-  return <div className="cs-rules cs-tabs" style={style} data-appearance={appearance}>
+  // Default: the bar carries the dividers and centres the group. Small: just the group, at the start.
+  return <div className="cs-rules cs-tabs" style={style} data-appearance={appearance} data-size={size}>
     <div className="cs-tab-group" role="tablist" aria-label={label} onKeyDown={onKeyDown}>
-      {tabs.map(tab => <button key={tab.id} ref={register(tab.id)} type="button" role="tab" id={`${idPrefix}-${tab.id}`} aria-controls={panelId} aria-selected={active === tab.id} tabIndex={active === tab.id ? 0 : -1} onClick={() => onChange(tab.id)} className="type-body-s">{tab.label}</button>)}
+      {tabs.map(tab => <button key={tab.id} ref={register(tab.id)} type="button" role="tab" id={`${idPrefix}-${tab.id}`} aria-controls={panelId} aria-selected={active === tab.id} tabIndex={active === tab.id ? 0 : -1} onClick={() => onChange(tab.id)} className={size === "small" ? "type-body-xs cs-small-text" : "type-body-s"}>{tab.label}</button>)}
     </div>
   </div>;
 }

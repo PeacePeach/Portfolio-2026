@@ -1,8 +1,8 @@
 .cs-rules { font-family: var(--font-sans); }
 .cs-panel { width: 100%; max-width: var(--cs-content-width-desktop); min-height: var(--cs-panel-min-height); margin-inline: auto; overflow: hidden; color: var(--cs-primary); }
-.cs-panel-content { width: calc(var(--cs-image-width) * 2 + var(--cs-column-gap)); max-width: calc(100% - var(--cs-content-gutter) * 2); margin: var(--cs-content-top) auto; }
-/* A wide panel hugs its content, so the section gap below it starts right after the bullets. */
-.cs-panel[data-size="wide"] .cs-panel-content { margin-bottom: 0; }
+/* Width comes from the layout (EvidencePanelShell); the section around the panel owns the 96px above and below. */
+.cs-panel-content { width: var(--cs-content-width); max-width: calc(100% - var(--cs-content-gutter) * 2); margin-inline: auto; }
+.cs-panel-nav { margin-bottom: var(--cs-tabs-title-gap); }
 .cs-panel-header { display: flex; flex-direction: column; gap: var(--cs-title-description-gap); margin-bottom: var(--cs-header-evidence-gap); }
 .cs-panel-title { color: var(--cs-bullet-text); }
 .cs-panel-description { color: var(--cs-secondary); }
@@ -62,9 +62,7 @@
 .cs-evidence-row { margin-top: var(--cs-row-gap); }
 
 /* Structural variants share all evidence styling and motion. */
-.cs-panel[data-layout="before-iterated-after"] .cs-panel-content { width: calc(var(--cs-image-width) * 3 + var(--cs-column-gap) * 2); }
 .cs-panel[data-layout="before-iterated-after"] .cs-evidence-columns { grid-template-columns: repeat(3, var(--cs-image-width)); }
-.cs-panel[data-layout="grouped-before-after"] .cs-panel-content { width: calc(var(--cs-pair-image-width) * 2 + var(--cs-image-width) + var(--cs-image-pair-gap) + var(--cs-column-gap)); }
 .cs-panel[data-layout="grouped-before-after"] .cs-evidence-columns { grid-template-columns: calc(var(--cs-pair-image-width) * 2 + var(--cs-image-pair-gap)) var(--cs-image-width); }
 .cs-column[data-image-layout="pair"] .cs-evidence-images { flex-direction: row; gap: var(--cs-image-pair-gap); }
 .cs-column[data-image-layout="pair"] .cs-bullets { gap: var(--cs-group-bullet-gap); }

@@ -10,3 +10,7 @@
 @media (max-width: 767px) {
   .cs-tabs button { padding-inline: calc(var(--cs-tab-padding) / 2); }
 }
+/* Small (Figma 213:798): no divider bar, group at the start; 1px group padding, 4px × 16px tabs at every width. */
+.cs-tabs[data-size="small"] { justify-content: flex-start; padding-block: 0; border-block: 0; }
+.cs-tabs[data-size="small"] .cs-tab-group { padding: 1px; border-radius: calc(var(--cs-tab-radius) + 1px); }
+.cs-tabs[data-size="small"] button { height: auto; padding: var(--spacing) calc(var(--spacing) * 4); }

@@ -10,7 +10,8 @@ import { radius } from "@/design-system/tokens/radius";
 export const caseStudyTokens: CSSProperties & Record<`--cs-${string}`, string> = {
   // Figma variable "Case study / Content width / Desktop".
   "--cs-content-width-desktop": "1174px",
-  "--cs-panel-min-height": "1066px",
+  // Tabbed panel floor (Figma 89:4105): 29px small tabs, 32px, then the tallest phone-screen panel, so swapping tabs doesn't move the page.
+  "--cs-panel-min-height": "873px",
   // No exact shared border token. Keep RGB alpha: color-mix changed corner pixels.
   "--cs-border": "1px solid rgb(255 255 255 / 10%)",
   "--cs-radius": radius.surface,
@@ -28,6 +29,8 @@ export const caseStudyTokens: CSSProperties & Record<`--cs-${string}`, string> =
   "--cs-tab-radius": radius.control,
   "--cs-tab-gap": "calc(var(--spacing) * 1.5)",
   "--cs-tab-padding": "calc(var(--spacing) * 8)",
+  // Small tabs (Figma 89:3670) to the Before / After title below them.
+  "--cs-tabs-title-gap": "calc(var(--spacing) * 8)",
   // Title to content below it: default 64px; `compact` sections use half (32px).
   "--cs-content-top": "calc(var(--spacing) * 16)",
   "--cs-content-top-compact": "calc(var(--spacing) * 8)",
@@ -99,7 +102,7 @@ export const caseStudyWideEvidenceTokens: Record<`--cs-${string}`, string> = {
   // Two 568px columns fill the 1174px panel; the page already provides the side margin.
   "--cs-content-gutter": "0px",
   "--cs-image-radius": radius.image,
-  // The 1066px tab-panel floor fits phone screens (Figma 79:2211); desktop screenshots are far shorter, so the panel hugs them.
+  // The tab-panel floor fits phone screens (Figma 89:4105); desktop screenshots are far shorter, so the panel hugs them.
   "--cs-panel-min-height": "auto",
 };
 

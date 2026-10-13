@@ -1,7 +1,7 @@
 "use client";
 
 import { useId, useState, type ReactNode } from "react";
-import { EvidencePanelShell } from "../shared/EvidencePanelShell";
+import { EvidencePanelShell, evidenceContentWidth } from "../shared/EvidencePanelShell";
 import { EvidencePanelHeader } from "../shared/EvidencePanelHeader";
 import { EvidenceColumn, type EvidenceColumnData, type EvidenceImage } from "../shared/EvidenceColumn";
 import { CaseStudyTabs, type CaseStudyTab } from "../shared/CaseStudyTabs";
@@ -26,12 +26,12 @@ export type BeforeAfterData = ComparisonContent & (
   | { variant: "grouped-before-after"; groupedSide: "after"; after: Omit<EvidenceColumnData, "images"> & { images: readonly [EvidenceImage, EvidenceImage] } }
 );
 
-type TemplateNavigation = { navigation?: ReactNode; contentId?: string; activeTabId?: string; contentKey?: string };
+type TemplateNavigation = { navigation?: ReactNode; contentId?: string; activeTabId?: string; contentKey?: string; contentWidth?: string };
 
 /** One tab of a tabbed panel: its label and its own Before / After configuration. */
 export type BeforeAfterTab = CaseStudyTab & { data: BeforeAfterData };
 
-/** `tabs`: several Before / After panels behind shared case-study tabs (Figma 79:2211); the panel swaps per tab. */
+/** `tabs`: several Before / After panels behind small case-study tabs (Figma 89:3670); the panel swaps per tab. */
 export type BeforeAfterTabsData = { tabs: readonly BeforeAfterTab[]; tabsLabel: string };
 
 /** Structure only. Shared primitives own every visual and motion rule. */
@@ -39,22 +39,29 @@ export function BeforeAfterTemplate(props: (BeforeAfterData & TemplateNavigation
   return "tabs" in props ? <BeforeAfterTabs {...props} /> : <BeforeAfterPanel {...props} />;
 }
 
+function panelLayout(data: BeforeAfterData) {
+  const variant = data.variant ?? "before-after";
+  const groupedSide = data.variant === "grouped-before-after" ? data.groupedSide ?? "before" : undefined;
+  const pairWidth = (groupedSide === "after" ? data.after : data.before).images[0]?.width;
+  return { variant, groupedSide, pairWidth };
+}
+
 function BeforeAfterTabs({ tabs, tabsLabel }: BeforeAfterTabsData) {
   const id = useId();
   const [active, setActive] = useState(tabs[0].id);
   const tab = tabs.find(tab => tab.id === active) ?? tabs[0];
-  return <BeforeAfterPanel {...tab.data} contentKey={tab.id} contentId={`${id}panel`} activeTabId={`${id}tab-${tab.id}`} navigation={
-    <CaseStudyTabs tabs={tabs} active={tab.id} onChange={setActive} idPrefix={`${id}tab`} panelId={`${id}panel`} label={tabsLabel} />
+  // Every tab shares the widest tab's width, so the tabs and title stay put when the layout changes.
+  const widths = [...new Set(tabs.map(({ data }) => { const { variant, pairWidth } = panelLayout(data); return evidenceContentWidth(variant, pairWidth); }))];
+  return <BeforeAfterPanel {...tab.data} contentKey={tab.id} contentId={`${id}panel`} activeTabId={`${id}tab-${tab.id}`} contentWidth={widths.length > 1 ? `max(${widths.join(", ")})` : widths[0]} navigation={
+    <CaseStudyTabs size="small" tabs={tabs} active={tab.id} onChange={setActive} idPrefix={`${id}tab`} panelId={`${id}panel`} label={tabsLabel} />
   } />;
 }
 
 function BeforeAfterPanel(props: BeforeAfterData & TemplateNavigation) {
   const titleId = useId();
-  const { title, description, before, after, size, navigation, contentId, activeTabId } = props;
-  const variant = props.variant ?? "before-after";
-  const groupedSide = props.variant === "grouped-before-after" ? props.groupedSide ?? "before" : undefined;
-  const pairWidth = (groupedSide === "after" ? after : before).images[0]?.width;
-  return <EvidencePanelShell labelledBy={titleId} navigation={navigation} contentId={contentId} activeTabId={activeTabId} layout={variant} groupedSide={groupedSide} pairWidth={pairWidth} size={size}>
+  const { title, description, before, after, size, navigation, contentId, activeTabId, contentWidth } = props;
+  const { variant, groupedSide, pairWidth } = panelLayout(props);
+  return <EvidencePanelShell labelledBy={titleId} navigation={navigation} contentId={contentId} activeTabId={activeTabId} layout={variant} groupedSide={groupedSide} pairWidth={pairWidth} size={size} contentWidth={contentWidth}>
     <CaseStudyPanelReveal>
       <CaseStudyContentSwap contentKey={props.contentKey ?? variant}>
         <EvidencePanelHeader id={titleId} title={title} description={description} text={props.text} />

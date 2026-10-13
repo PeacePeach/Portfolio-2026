@@ -38,7 +38,7 @@ A case-study page composes chapters directly in `src/app/work/[slug]/page.tsx`: 
 
 Figma `89:3670`. Desktop width is `--cs-content-width-desktop` (Figma variable `Case study / Content width / Desktop`, 1174px).
 
-- `EvidencePanelShell` draws no background, border or radius; the tab bar's top and bottom dividers are the only rules.
+- `EvidencePanelShell` draws no background, border, radius or rules. Tabs, when given, are the small `CaseStudyTabs` on the content's left edge, 32px above the title (`--cs-tabs-title-gap`); the section around the panel keeps its 96px above and below.
 - `EvidenceBullet` owns the one 16px check/x icon: `--cs-positive` / `--cs-negative` circle, white centred mark. The icon is centred on the first line box, so it sits centred beside a one-line bullet and level with the first line of a longer one. Do not offset individual bullets.
 
 Shared tokens alias the site foundation in `src/app/globals.css` and the design system in `src/design-system/` (see [design-system.md](design-system.md)); motion composes the existing site primitives.
@@ -199,7 +199,7 @@ Bullets are optional; a column with none renders only its pill and images.
 
 `size: "wide"` uses the simple-section screenshot width (568px columns, 16px gaps, 5px `radius-image` corners, `border-default` frames); with tabs it drops the 1066px panel floor (sized for phone screens) and hugs its content, so the next chapter or section starts its usual gap right after the bullets. `rows` (`before-after` only) stacks more Before / After pairs under the same header, 48px apart (`--cs-row-gap`); a column's `label` renames its pill, and `label: null` hides the pill but keeps its space, so one pill can label a whole row. Without `navigation` the panel drops the tab-bar spacing and fixed min height. Used by Reimagining Analytics role-based experience (`reimaginingAnalyticsRoles`, Figma `116:891`).
 
-Tabs (Figma `79:2211`): pass `{ tabsLabel, tabs: [{ id, label, data }] }` instead of one panel's data, where each `data` is a full Before / After configuration (any variant). The template owns the active tab and renders the shared `CaseStudyTabs`; only the inner content swaps, with the case-study swap motion. Used by Neo Advance hi-fi exploration (`neoAdvanceValidation`).
+Tabs (Figma `89:3670`): pass `{ tabsLabel, tabs: [{ id, label, data }] }` instead of one panel's data, where each `data` is a full Before / After configuration (any variant). The template owns the active tab and renders the shared `CaseStudyTabs` at `size="small"`: no divider lines, left-aligned with the title and description, 32px above them. Every tab shares the widest tab's content width, so the tabs and title never move when a tab with another variant opens; narrower content sits at the left. Phone-screen tabs keep an 873px floor (tabs, gap and the tallest Figma panel) so swapping tabs doesn't move the page; `wide` tabs hug their content. Only the inner content swaps, with the case-study swap motion. Used by Neo Advance hi-fi exploration (`neoAdvanceValidation`) and Brightcove Beacon design execution (`brightcoveBeaconSprintFlows`, `wide`).
 
 ## TellMeAboutIt
 
