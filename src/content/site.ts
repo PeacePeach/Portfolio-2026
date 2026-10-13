@@ -20,7 +20,7 @@ export const site = {
 
   nav: [
     { label: "Work", href: "/work" },
-    { label: "About", href: "/about" },
+    { label: "Leadership", href: "/leadership" },
     // Placeholder until the resume file is added (e.g. /public/resume.pdf).
     { label: "Resume", href: "/resume" },
   ],
