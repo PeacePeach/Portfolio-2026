@@ -6,13 +6,14 @@ import type { mutexaContextFigure } from "@/content/case-study/mutexa";
  * Mutexa "The Context" (Figma AI-Portfolio 176:3670): from `md`, the three-step
  * recording at 822px with each Body M caption (218px) centred under its step's
  * enzyme, shifted so the middle enzyme sits on the page's centre line, under the
- * heading's. Below `md` the steps stack, each centred over its caption.
+ * heading's (from `lg`; between `md` and `lg` it fits the content width, unshifted).
+ * Below `md` the steps stack, each centred over its caption.
  */
 export function MutexaContextFigure({ figure }: { figure: typeof mutexaContextFigure }) {
   return (
     <>
       <ScrollReveal className="hidden md:block">
-        <figure className="relative mx-auto" style={{ width: `${figure.width / 16}rem`, transform: `translateX(${50 - figure.steps[1].x}%)` }}>
+        <figure className="relative mx-auto max-w-full max-lg:transform-none!" style={{ width: `${figure.width / 16}rem`, transform: `translateX(${50 - figure.steps[1].x}%)` }}>
           {/* Animated WebP: served as is. */}
           <Image src={figure.src} alt={figure.alt} width={figure.width} height={figure.height} unoptimized className="block h-auto w-full" />
           <figcaption>
