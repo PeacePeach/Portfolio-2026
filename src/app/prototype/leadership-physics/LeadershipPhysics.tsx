@@ -2,6 +2,8 @@
 
 import { useEffect, useRef } from "react";
 
+const TAU = Math.PI * 2;
+
 /*
  * Leadership physics: an isolated experiment (not production code, not shared).
  *
@@ -19,6 +21,9 @@ import { useEffect, useRef } from "react";
  */
 
 const RING_POINTS = 160;
+const CLEARANCE = 2; // min visual gap between a node outline and its boundary (px)
+const COS = Float32Array.from({ length: RING_POINTS }, (_, i) => Math.cos((i / RING_POINTS) * TAU));
+const SIN = Float32Array.from({ length: RING_POINTS }, (_, i) => Math.sin((i / RING_POINTS) * TAU));
 
 // Colours mirror globals.css tokens (canvas cannot read Tailwind classes).
 const C = {
@@ -45,11 +50,11 @@ type Shape = {
   b: number;
   rot: number;
   lobe?: { ang: number; amt: number; width: number }; // ellipse-local angle
-  labelAt: { ang: number; inset: number; onLine?: boolean };
+  labelAt: number; // screen angle of the label centre on the contour (landscape)
 };
 
 const SHAPES: Shape[] = [
-  { label: "Ambiguity", cx: 510, cy: 228, a: 468, b: 198, rot: -0.1, labelAt: { ang: -Math.PI / 2, inset: 0, onLine: true } },
+  { label: "Ambiguity", cx: 510, cy: 228, a: 468, b: 198, rot: -0.1, labelAt: -Math.PI / 2 },
   {
     label: "Calibration",
     cx: 290,
@@ -58,9 +63,9 @@ const SHAPES: Shape[] = [
     b: 78,
     rot: -0.12,
     lobe: { ang: -0.35, amt: 0.32, width: 0.35 },
-    labelAt: { ang: Math.PI, inset: 62 },
+    labelAt: -2.6,
   },
-  { label: "Cohesion", cx: 650, cy: 180, a: 312, b: 98, rot: -0.1, labelAt: { ang: -0.15, inset: 76 } },
+  { label: "Cohesion", cx: 650, cy: 180, a: 312, b: 98, rot: -0.1, labelAt: -0.32 },
   {
     label: "Direction",
     cx: 530,
@@ -69,7 +74,7 @@ const SHAPES: Shape[] = [
     b: 100,
     rot: 0,
     lobe: { ang: -2.0, amt: 0.18, width: 0.5 },
-    labelAt: { ang: 0.28, inset: 13 },
+    labelAt: 0.5,
   },
 ];
 
@@ -119,6 +124,8 @@ type Ring = {
 type Node = {
   label: string;
   ring: number;
+  hx: number; // home (Figma position), follows its ring's drift
+  hy: number;
   x: number;
   y: number;
   vx: number;
@@ -127,8 +134,6 @@ type Node = {
   wander: number; // wander heading
   hot: number; // 0..1 hover/drag blend
 };
-
-const TAU = Math.PI * 2;
 
 function rand(seed: number) {
   // deterministic so server/client and reloads look the same
@@ -189,7 +194,8 @@ export function LeadershipPhysics() {
     let labelFont = 12;
     let fontFamily = "sans-serif";
     let rings: Ring[] = [];
-    let labelWidths: Record<string, number> = {};
+    let glyphWidths: Record<string, number> = {};
+    const LABEL_TRACKING = 1.2;
     let nodes: Node[] = [];
     let time = 0;
 
@@ -212,10 +218,10 @@ export function LeadershipPhysics() {
     function measure(width: number) {
       portrait = width < 640;
       if (portrait) {
-        s = Math.min(1, width / (FIGMA_BOX.h + 15));
-        return Math.round(FIGMA_BOX.w * s + 20);
+        s = Math.min(1, width / (FIGMA_BOX.h + 110));
+        return Math.round(FIGMA_BOX.w * s + 70);
       }
-      s = Math.min(1.15, (width - 24) / FIGMA_BOX.w);
+      s = Math.min(1.05, (width - 60) / FIGMA_BOX.w);
       return width >= 1000 ? 640 : Math.round(FIGMA_BOX.h * s + 80);
     }
 
@@ -236,6 +242,17 @@ export function LeadershipPhysics() {
           }
           base[i] = r * s;
         }
+        // Rope, not maths: fixed asymmetric bulges and dents on the rest contour.
+        const dents = [0, 1, 2, 3].map(() => ({ ang: rnd() * TAU, amt: -0.07 + rnd() * 0.17, width: 0.22 + rnd() * 0.3 }));
+        for (let i = 0; i < RING_POINTS; i++) {
+          const th = (i / RING_POINTS) * TAU;
+          let m = 1;
+          for (const d of dents) {
+            const x = wrapAngle(th - d.ang) / d.width;
+            m += d.amt * Math.exp(-x * x);
+          }
+          base[i] *= m;
+        }
         const ring: Ring = {
           shape,
           ax: c.x,
@@ -249,7 +266,7 @@ export function LeadershipPhysics() {
           target: new Float32Array(RING_POINTS),
           harm: [2, 3, 4, 5].map((k) => ({
             k,
-            a: (0.05 / (k - 1)) * (0.7 + rnd() * 0.6),
+            a: (0.06 / (k - 1)) * (0.7 + rnd() * 0.6),
             w: (0.12 + rnd() * 0.18) * (rnd() < 0.5 ? -1 : 1),
             p: rnd() * TAU,
           })),
@@ -259,9 +276,10 @@ export function LeadershipPhysics() {
         return ring;
       });
 
-      ctx.font = `600 ${labelFont}px ${fontFamily}`;
-      labelWidths = {};
-      for (const t of [...SHAPES.map((sh) => sh.label.toUpperCase()), "COMPLEXITY"]) labelWidths[t] = ctx.measureText(t).width;
+      ctx.font = `500 ${labelFont}px ${fontFamily}`;
+      glyphWidths = {};
+      for (const t of [...SHAPES.map((sh) => sh.label.toUpperCase()), "COMPLEXITY"])
+        for (const ch of t) glyphWidths[ch] = ctx.measureText(ch).width + LABEL_TRACKING;
 
       // Node size: the Figma diameter, grown where needed so the label fits.
       ctx.font = `400 ${nodeFont}px ${fontFamily}`;
@@ -271,6 +289,8 @@ export function LeadershipPhysics() {
         return {
           label: n.label,
           ring: n.ring,
+          hx: p.x,
+          hy: p.y,
           x: p.x,
           y: p.y,
           vx: 0,
@@ -298,7 +318,7 @@ export function LeadershipPhysics() {
       canvas.style.height = `${H}px`;
       unit = Math.min(W, H);
       nodeFont = Math.min(11, Math.max(9, 10.5 * s));
-      labelFont = Math.min(12, Math.max(10, 12 * s));
+      labelFont = Math.min(10.5, Math.max(9, 10 * s));
       fontFamily = getComputedStyle(document.body).fontFamily || "sans-serif";
       // Prototype: a new size simply rebuilds the composition.
       if (changed || !rings.length) build();
@@ -317,7 +337,8 @@ export function LeadershipPhysics() {
           const th = (i / RING_POINTS) * TAU;
           let m = 1;
           for (const h of ring.harm) m += h.a * Math.sin(h.k * th + h.w * t + h.p);
-          ring.target[i] = ring.base[i] * m;
+          // the rest shape itself also stays inside the diagram (no clipping)
+          ring.target[i] = Math.min(ring.base[i] * m, edgeDistance(ring, th));
         }
       }
     }
@@ -332,65 +353,153 @@ export function LeadershipPhysics() {
       return Math.min(tx, ty);
     }
 
-    /** Node vs one membrane: push the ring out locally (capped bulge), then hard clamp. */
-    function contain(n: Node, ring: Ring) {
-      const pad = 2;
-      const dx = n.x - ring.cx;
-      const dy = n.y - ring.cy;
-      const d = Math.hypot(dx, dy) || 0.0001;
-      const ang = Math.atan2(dy, dx);
-      const need = d + n.r + pad;
-      const have = rhoAt(ring, ang);
-      if (need > have) {
-        const pen = need - have;
-        // A dragged node presses the membrane out; a free node mostly gets
-        // pushed back in, so the membrane can relax once the hand lets go.
-        const yieldShare = n === drag ? 0.85 : 0.3;
-        const sigma = (n.r * 2.4) / Math.max(d, n.r); // angular width of the bulge
-        const span = Math.ceil((sigma * 2.5 * RING_POINTS) / TAU);
-        const centre = (((ang / TAU) * RING_POINTS) % RING_POINTS + RING_POINTS) % RING_POINTS;
-        const c0 = Math.round(centre);
-        for (let o = -span; o <= span; o++) {
-          const idx = (((c0 + o) % RING_POINTS) + RING_POINTS) % RING_POINTS;
-          const da = ((c0 + o - centre) / RING_POINTS) * TAU;
-          const g = Math.exp(-(da * da) / (sigma * sigma));
-          // never bulge past the diagram's edge (no clipping inside the page)
-          const cap = Math.min(ring.target[idx] + ring.R * 0.45, edgeDistance(ring, (idx / RING_POINTS) * TAU));
-          ring.rho[idx] = Math.min(cap, ring.rho[idx] + pen * g * yieldShare);
-          if (n === drag && ring.vel[idx] < 0) ring.vel[idx] *= 1 - g * 0.6;
+    /**
+     * Nearest point on a ring's drawn contour to (x, y). The contour is drawn as
+     * quadratic curves through segment midpoints, so each piece lies inside the
+     * triangle (midpoint, vertex, midpoint): checking the vertex polyline and the
+     * midpoint chords gives a distance that never overestimates the drawn line.
+     */
+    function nearest(ring: Ring, x: number, y: number) {
+      let best = Infinity;
+      let qx = 0;
+      let qy = 0;
+      let qi = 0;
+      const px = (i: number) => ring.cx + COS[i] * ring.rho[i];
+      const py = (i: number) => ring.cy + SIN[i] * ring.rho[i];
+      const seg = (ax: number, ay: number, bx: number, by: number, i: number) => {
+        const vx = bx - ax;
+        const vy = by - ay;
+        const t = Math.max(0, Math.min(1, ((x - ax) * vx + (y - ay) * vy) / (vx * vx + vy * vy || 1)));
+        const cx = ax + vx * t;
+        const cy = ay + vy * t;
+        const d = Math.hypot(x - cx, y - cy);
+        if (d < best) {
+          best = d;
+          qx = cx;
+          qy = cy;
+          qi = i;
         }
-        ring.pressure = Math.min(1, ring.pressure + pen / ring.R);
+      };
+      // Coarse pass on every 4th vertex, then exact segments around the best one.
+      let ci = 0;
+      let cd = Infinity;
+      for (let i = 0; i < RING_POINTS; i += 4) {
+        const d = (px(i) - x) ** 2 + (py(i) - y) ** 2;
+        if (d < cd) {
+          cd = d;
+          ci = i;
+        }
       }
-      // Hard containment: whatever the ring did, the node stays inside it.
-      const limit = Math.max(0, rhoAt(ring, ang) - n.r - pad);
-      if (d > limit) {
-        const ux = dx / d;
-        const uy = dy / d;
-        n.x = ring.cx + ux * limit;
-        n.y = ring.cy + uy * limit;
-        const vn = n.vx * ux + n.vy * uy;
-        if (vn > 0) {
-          n.vx -= vn * ux * 1.3;
-          n.vy -= vn * uy * 1.3;
+      for (let o = -8; o <= 8; o++) {
+        const i = (((ci + o) % RING_POINTS) + RING_POINTS) % RING_POINTS;
+        const j = (i + 1) % RING_POINTS;
+        const k = (i + 2) % RING_POINTS;
+        const ax = px(i), ay = py(i), bx = px(j), by = py(j), cx = px(k), cy = py(k);
+        seg(ax, ay, bx, by, j);
+        seg((ax + bx) / 2, (ay + by) / 2, (bx + cx) / 2, (by + cy) / 2, j);
+      }
+      return { d: best, qx, qy, qi };
+    }
+
+    /**
+     * Node vs one membrane, using the full node radius plus CLEARANCE: pressing
+     * toward the edge bulges the ring out locally (capped); whatever is left is a
+     * hard clamp, so no part of the node outline ever gets closer than CLEARANCE.
+     */
+    function contain(n: Node, ring: Ring) {
+      const need = n.r + CLEARANCE;
+      // Centre outside the contour (only after a violent drag): pull it back in radially first.
+      let dx = n.x - ring.cx;
+      let dy = n.y - ring.cy;
+      let dc = Math.hypot(dx, dy) || 0.0001;
+      let ang = Math.atan2(dy, dx);
+      const lim = rhoAt(ring, ang) - need;
+      if (dc > lim) {
+        const k = Math.max(0, lim) / dc;
+        n.x = ring.cx + dx * k;
+        n.y = ring.cy + dy * k;
+      }
+
+      let q = nearest(ring, n.x, n.y);
+      if (q.d >= need) return;
+      const pen = need - q.d;
+      // inward normal at the contact
+      let nx = (n.x - q.qx) / (q.d || 1);
+      let ny = (n.y - q.qy) / (q.d || 1);
+      // A dragged node presses the membrane out; a free node mostly gets
+      // pushed back in, so the membrane can relax once the hand lets go.
+      const yieldShare = n === drag ? 0.85 : 0.3;
+      dx = n.x - ring.cx;
+      dy = n.y - ring.cy;
+      dc = Math.hypot(dx, dy) || 0.0001;
+      ang = Math.atan2(dy, dx);
+      const spacing = (rhoAt(ring, ang) * TAU) / RING_POINTS;
+      const sigma = Math.max(2, (n.r * 1.4) / spacing); // bulge width in ring points
+      const span = Math.ceil(sigma * 2.5);
+      for (let o = -span; o <= span; o++) {
+        const idx = (((q.qi + o) % RING_POINTS) + RING_POINTS) % RING_POINTS;
+        const g = Math.exp(-(o * o) / (sigma * sigma));
+        // radial growth needed for this much normal displacement
+        const along = Math.max(0.35, -(COS[idx] * nx + SIN[idx] * ny));
+        // never bulge past the diagram's edge (no clipping inside the page)
+        const cap = Math.min(ring.target[idx] + ring.R * 0.45, edgeDistance(ring, (idx / RING_POINTS) * TAU));
+        ring.rho[idx] = Math.max(ring.rho[idx], Math.min(cap, ring.rho[idx] + (pen * g * yieldShare) / along));
+        if (n === drag && ring.vel[idx] < 0) ring.vel[idx] *= 1 - g * 0.6;
+      }
+      ring.pressure = Math.min(1, ring.pressure + pen / ring.R);
+
+      // Hard containment: whatever the ring did, keep the full clearance.
+      q = nearest(ring, n.x, n.y);
+      if (q.d < need) {
+        nx = (n.x - q.qx) / (q.d || 1);
+        ny = (n.y - q.qy) / (q.d || 1);
+        n.x += nx * (need - q.d);
+        n.y += ny * (need - q.d);
+        const vn = n.vx * nx + n.vy * ny;
+        if (vn < 0) {
+          n.vx -= vn * nx * 1.3;
+          n.vy -= vn * ny * 1.3;
         }
       }
     }
 
-    type Label = { text: string; x: number; y: number; w: number; onLine?: boolean };
+    type Glyph = { ch: string; x: number; y: number; rot: number };
+
+    /** Walk `dist` px along a ring's contour from an angle (one Newton step is plenty here). */
+    function walk(ring: Ring, angle: number, dist: number) {
+      const e = 0.01;
+      const r = rhoAt(ring, angle);
+      const dr = (rhoAt(ring, angle + e) - rhoAt(ring, angle - e)) / (2 * e);
+      return angle + dist / Math.hypot(r, dr);
+    }
 
     /**
-     * Boundary labels pinned to a point on the moving contour, just inside it
-     * (Ambiguity sits on the line, which breaks around it as in Figma), plus
-     * COMPLEXITY: a system-wide concept, not a boundary, sitting in the overlap
-     * and drifting with it.
+     * Boundary labels: small glyphs laid directly on the moving contour (the line
+     * is masked behind them), always reading left to right. COMPLEXITY is a quiet
+     * straight label in the overlap that drifts with it, not a region.
      */
-    function labels(): Label[] {
-      const out: Label[] = rings.map((ring) => {
-        const { ang, inset, onLine } = ring.shape.labelAt;
-        const a = ang + turn();
-        const r = rhoAt(ring, a) - inset * s;
+    function labels(): Glyph[][] {
+      const out = rings.map((ring) => {
         const text = ring.shape.label.toUpperCase();
-        return { text, x: ring.cx + Math.cos(a) * r, y: ring.cy + Math.sin(a) * r, w: labelWidths[text] ?? 0, onLine };
+        const a0 = ring.shape.labelAt + turn();
+        const r0 = rhoAt(ring, a0);
+        const dr0 = (rhoAt(ring, a0 + 0.01) - rhoAt(ring, a0 - 0.01)) / 0.02;
+        // tangent for increasing angle; walk the other way if that would read upside down
+        const dir = dr0 * Math.cos(a0) - r0 * Math.sin(a0) < 0 ? -1 : 1;
+        const total = [...text].reduce((t, ch) => t + (glyphWidths[ch] ?? 0), 0);
+        let a = walk(ring, a0, (-dir * total) / 2);
+        return [...text].map((ch) => {
+          const half = (glyphWidths[ch] ?? 0) / 2;
+          const mid = walk(ring, a, dir * half);
+          const r = rhoAt(ring, mid);
+          const p1 = walk(ring, mid, dir * 2);
+          const x = ring.cx + Math.cos(mid) * r;
+          const y = ring.cy + Math.sin(mid) * r;
+          const r1 = rhoAt(ring, p1);
+          const rot = Math.atan2(ring.cy + Math.sin(p1) * r1 - y, ring.cx + Math.cos(p1) * r1 - x);
+          a = walk(ring, mid, dir * half);
+          return { ch, x, y, rot };
+        });
       });
       const home = toScreen(COMPLEXITY_AT.x, COMPLEXITY_AT.y);
       let dx = 0;
@@ -399,40 +508,34 @@ export function LeadershipPhysics() {
         dx += (rings[i].cx - rings[i].ax) / 3;
         dy += (rings[i].cy - rings[i].ay) / 3;
       }
-      out.push({ text: "COMPLEXITY", x: home.x + dx, y: home.y + dy, w: labelWidths.COMPLEXITY ?? 0 });
+      const text = "COMPLEXITY";
+      const total = [...text].reduce((t, ch) => t + (glyphWidths[ch] ?? 0), 0);
+      let x = home.x + dx - total / 2;
+      out.push(
+        [...text].map((ch) => {
+          const w = glyphWidths[ch] ?? 0;
+          const g = { ch, x: x + w / 2, y: home.y + dy, rot: 0 };
+          x += w;
+          return g;
+        }),
+      );
       return out;
     }
 
-    /** Labels stay readable: free nodes are nudged off them like off a static obstacle. */
+    /** Labels stay readable: free nodes are nudged off each glyph like off a small static obstacle. */
     function avoidLabels() {
-      const halfH = labelFont * 0.8;
-      for (const l of labels()) {
-        const x0 = l.x - l.w / 2 - 4;
-        const x1 = l.x + l.w / 2 + 4;
-        const y0 = l.y - halfH;
-        const y1 = l.y + halfH;
-        for (const n of nodes) {
-          if (n === drag) continue;
-          const px = Math.min(Math.max(n.x, x0), x1);
-          const py = Math.min(Math.max(n.y, y0), y1);
-          let dx = n.x - px;
-          let dy = n.y - py;
-          let d = Math.hypot(dx, dy);
-          if (d >= n.r) continue;
-          if (d === 0) {
-            // centre inside the label box: leave through the nearer vertical side
-            dy = n.y < l.y ? -1 : 1;
-            dx = 0;
-            d = 0;
-            n.y = dy < 0 ? y0 - n.r : y1 + n.r;
-          } else {
-            n.x += (dx / d) * (n.r - d);
-            n.y += (dy / d) * (n.r - d);
-          }
-          const vn = (n.vx * dx + n.vy * dy) / (d || 1);
-          if (vn < 0) {
-            n.vx -= (vn * dx) / (d || 1);
-            n.vy -= (vn * dy) / (d || 1);
+      const gr = labelFont * 0.65;
+      for (const glyphs of labels()) {
+        for (const g of glyphs) {
+          for (const n of nodes) {
+            if (n === drag) continue;
+            const dx = n.x - g.x;
+            const dy = n.y - g.y;
+            const d = Math.hypot(dx, dy) || 0.0001;
+            const min = n.r + gr;
+            if (d >= min) continue;
+            n.x += (dx / d) * (min - d);
+            n.y += (dy / d) * (min - d);
           }
         }
       }
@@ -475,6 +578,10 @@ export function LeadershipPhysics() {
           n.vx = (tx - n.x) * 18;
           n.vy = (ty - n.y) * 18;
         } else {
+          // Each node is biased toward its own Figma position (which drifts with its ring).
+          const ring = rings[n.ring];
+          n.vx += (n.hx + ring.cx - ring.ax - n.x) * 0.5 * dt;
+          n.vy += (n.hy + ring.cy - ring.ay - n.y) * 0.5 * dt;
           if (!reduced) {
             n.wander += (Math.sin(time * 0.7 + n.r) * 0.6 + (Math.random() - 0.5) * 1.5) * dt;
             n.vx += Math.cos(n.wander) * wanderForce * dt;
@@ -529,10 +636,13 @@ export function LeadershipPhysics() {
 
       avoidLabels();
 
-      // Every node stays inside its own boundary and inside Ambiguity.
-      for (const n of nodes) {
-        contain(n, rings[n.ring]);
-        contain(n, rings[0]);
+      // Every node stays inside its own boundary and inside Ambiguity (two passes
+      // so satisfying one boundary cannot leave the other violated).
+      for (let pass = 0; pass < 2; pass++) {
+        for (const n of nodes) {
+          contain(n, rings[n.ring]);
+          contain(n, rings[0]);
+        }
       }
     }
 
@@ -557,16 +667,27 @@ export function LeadershipPhysics() {
       ctx.closePath();
     }
 
-    function drawLabel(l: Label) {
-      ctx.font = `600 ${labelFont}px ${fontFamily}`;
+    function drawLabels() {
+      ctx.font = `500 ${labelFont}px ${fontFamily}`;
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
-      if (l.onLine) {
-        ctx.fillStyle = C.background;
-        ctx.fillRect(l.x - l.w / 2 - 6, l.y - labelFont, l.w + 12, labelFont * 2);
+      ctx.lineJoin = "round";
+      ctx.lineWidth = 6;
+      ctx.strokeStyle = C.background;
+      ctx.fillStyle = "rgba(195,194,184,0.85)";
+      // Two passes: mask the contour behind every letter first, then the letters,
+      // so a neighbour's mask never eats into a letter.
+      const all = labels().flat();
+      for (const pass of [0, 1]) {
+        for (const g of all) {
+          ctx.save();
+          ctx.translate(g.x, g.y);
+          ctx.rotate(g.rot);
+          if (pass === 0) ctx.strokeText(g.ch, 0, 0);
+          else ctx.fillText(g.ch, 0, 0);
+          ctx.restore();
+        }
       }
-      ctx.fillStyle = C.primary;
-      ctx.fillText(l.text, l.x, l.y);
     }
 
     function draw() {
@@ -581,7 +702,7 @@ export function LeadershipPhysics() {
         ctx.lineWidth = 1 + p * 0.5;
         ctx.stroke();
       }
-      labels().forEach(drawLabel);
+      drawLabels();
 
       ctx.font = `400 ${nodeFont}px ${fontFamily}`;
       ctx.textAlign = "center";
