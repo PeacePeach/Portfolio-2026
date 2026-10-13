@@ -30,6 +30,7 @@ import { caseStudyControl, caseStudyTokens, caseStudyType } from "@/components/c
 import { ArrowRight } from "react-feather";
 import { CaseStudyChapterHeader } from "@/components/case-study/shared/CaseStudyChapterHeader";
 import { CaseStudyHashScroll } from "@/components/case-study/CaseStudyHashScroll";
+import { ThinkingIndicator } from "@/components/case-study/shared/tell-me-about-it/ThinkingIndicator";
 import {
   neoAdvanceCoreFlows,
   neoAdvanceDeliveryPanels,
@@ -110,8 +111,11 @@ export default function CaseStudyPage(props: PageProps<"/work/[slug]">) {
   return (
     <Suspense
       fallback={
-        <main id="main" className="container-page pt-[calc(var(--spacing-header)+4rem)]">
-          <p role="status" className="type-body-l text-secondary">Loading case study…</p>
+        // The H loader from Tell Me About It, centred on the screen: 1.5× on phones, 2× from sm.
+        <main id="main" style={caseStudyTokens} className="flex min-h-svh items-center justify-center">
+          <div className="scale-150 sm:scale-200">
+            <ThinkingIndicator label="Loading case study…" reduce={false} />
+          </div>
         </main>
       }
     >
