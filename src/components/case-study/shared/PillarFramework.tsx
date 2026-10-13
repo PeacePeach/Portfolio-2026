@@ -17,7 +17,7 @@ export const pillarFrameworkLabels = {
 
 /**
  * Leadership pillar framework (Figma AI-Portfolio 176:3567): four columns on a
- * raised panel, each a Body XS label over items marked with the accent bar.
+ * panel matching the fragment cards below it (local to the Leadership page), each a Body XS label over items marked with the accent bar.
  * Rows line up across columns (items at least 84 px, 32 px apart).
  */
 export function PillarFramework({ challenge, questions, methods, enables }: PillarFrameworkData) {
@@ -38,7 +38,7 @@ export function PillarFramework({ challenge, questions, methods, enables }: Pill
   // Desktop: one grid, so every column's nth item shares a row with the others (labels on row 1).
   // Below `md` the columns stack, each label over its items.
   return (
-    <ScrollReveal className="grid grid-cols-1 gap-x-10 gap-y-4 rounded-image border border-border-default bg-surface-2 p-6 md:gap-y-8 md:grid-cols-[minmax(0,125fr)_minmax(0,147fr)_minmax(0,124fr)_minmax(0,147fr)]">
+    <ScrollReveal className="grid grid-cols-1 gap-x-10 gap-y-4 rounded-[10px] border border-ink/10 bg-card p-6 md:gap-y-8 md:grid-cols-[minmax(0,125fr)_minmax(0,147fr)_minmax(0,124fr)_minmax(0,147fr)]">
       {columns.map((column, c) => (
         <div key={column.label} className="contents">
           <p className={`type-body-xs uppercase text-secondary ${colStart[c]} md:row-start-1`}>{column.label}</p>

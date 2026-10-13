@@ -100,29 +100,29 @@ export const leadershipPillars: readonly LeadershipPillar[] = [
     id: "pillar-calibration",
     chapter: "03 _ PILLAR: CALIBRATION",
     title: "Use reality to continuously correct judgment.",
-    body: "Strong decisions improve when they are tested against evidence. I use research, behavioral signals, validation, and iteration to challenge assumptions and keep the team learning as the product evolves.",
+    body: "Strong decisions improve when they are tested against evidence. I use research, user insight, behavioral signals, validation, and iteration to challenge assumptions, advocate for users, and keep the team learning as the product evolves.",
     // Mechanisms for correcting judgment with evidence; user advocacy is one of them, not the theme.
     framework: {
       challenge: "Opinion-led decisions. Risks found too late. Beliefs that outlive the evidence.",
       questions: [
         "Do we understand the problem yet?",
+        "What are users telling us that the room is missing?",
         "Which assumptions could break the experience?",
         "What is real usage telling us?",
-        "Whose needs are missing from this decision?",
         "What would change our mind?",
       ],
       methods: [
         { title: "Research", detail: "Interviews, problem framing" },
+        { title: "User Advocacy", detail: "Research, feedback, friction, unmet needs" },
         { title: "Validation", detail: "Targeted tests, tree tests" },
         { title: "Behavioral Signals", detail: "Usage, funnels, support feedback" },
-        { title: "User Advocacy", detail: "Needs, friction and risks in reviews" },
         { title: "Iteration", detail: "Decisions as hypotheses" },
       ],
       enables: [
         "Clarity before converging",
+        "User reality stays present in important decisions",
         "Critical risks surfaced earlier",
         "Internal beliefs checked against reality",
-        "Users represented in every major decision",
         "Judgment that improves as the product evolves",
       ],
     },
