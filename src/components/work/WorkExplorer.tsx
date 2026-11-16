@@ -183,11 +183,14 @@ function ProjectGrid({ projects }: { projects: Project[] }) {
   const reduce = useReducedMotion();
   if (!projects.length) return <p className="type-body-m text-secondary">{workCopy.empty}</p>;
   return (
-    <ul className="grid gap-4 sm:grid-cols-2">
+    // Touch screens show each tile's copy below it (ProjectCard), so rows get more air and,
+    // in the single column, a default-border divider to tie the copy to its own tile.
+    <ul className="grid gap-4 sm:grid-cols-2 [@media(hover:none)]:gap-y-8">
       <AnimatePresence mode="popLayout" initial={false}>
         {projects.map((p) => (
           <motion.li
             key={p.slug}
+            className="max-sm:[@media(hover:none)]:not-first:border-t max-sm:[@media(hover:none)]:not-first:border-border-default max-sm:[@media(hover:none)]:not-first:pt-8"
             layout={!reduce}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}

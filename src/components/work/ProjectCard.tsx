@@ -44,7 +44,8 @@ function preloadHero(slug: string) {
 /**
  * Work page tile (Figma 21:196). Shows the project artwork; on hover or
  * keyboard focus a blurred panel rises with the name, description and tags.
- * Touch screens show the panel all the time. A project with a `scene`
+ * Touch screens have no hover, so there the same copy sits below the
+ * artwork instead of covering it (a `revealed` tile keeps its panel). A project with a `scene`
  * plays it as a looping live animation in place of the artwork, held still
  * while the pointer is over the tile.
  * A tile whose case study has a hero opens it with a shared-element
@@ -61,6 +62,7 @@ export function ProjectCard({ project, revealed = false, className = "aspect-[42
   const [hovered, setHovered] = useState(false);
   const router = useRouter();
   const scene = useRef<HTMLDivElement>(null);
+  const tile = useRef<HTMLDivElement>(null);
   const morphs = morphTargets.has(project.slug);
   const href = `/work/${project.slug}`;
 
@@ -71,7 +73,7 @@ export function ProjectCard({ project, revealed = false, className = "aspect-[42
       return;
     }
     e.preventDefault();
-    const r = e.currentTarget.getBoundingClientRect();
+    const r = (tile.current ?? e.currentTarget).getBoundingClientRect();
     const copy = scene.current?.cloneNode(true) as HTMLElement | undefined;
     startCaseMorph({
       slug: project.slug,
@@ -81,8 +83,27 @@ export function ProjectCard({ project, revealed = false, className = "aspect-[42
     });
     window.setTimeout(() => router.push(href), morphTiming.navigate * 1000);
   };
-  const shown = revealed ? "" : "opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 [@media(hover:none)]:opacity-100";
+  // On touch screens the panel gives way to the copy below the tile.
+  const shown = revealed ? "" : "opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 [@media(hover:none)]:hidden";
   const fade = "transition-opacity duration-(--duration-underline) ease-out-expo";
+  const copy = (
+    <>
+      <div className="flex flex-col gap-2">
+        <h3 className="type-display-xs">{project.title}</h3>
+        <p className="type-body-s text-secondary">{project.description}</p>
+      </div>
+      {project.tags.length ? (
+        <ul className="flex flex-wrap gap-1" aria-label="Tags">
+          {project.tags.map((t) => (
+            <li key={t} className="type-body-xs rounded-full border border-secondary bg-tag text-secondary px-2.5 py-1">
+              {tagLabel(t)}
+            </li>
+          ))}
+        </ul>
+      ) : null}
+    </>
+  );
+  const tileClass = `relative ${className} overflow-hidden rounded-[10px] bg-tile`;
 
   return (
     <Link
@@ -93,60 +114,53 @@ export function ProjectCard({ project, revealed = false, className = "aspect-[42
         if (e.pointerType === "mouse") setHovered(true);
       }}
       onPointerLeave={() => setHovered(false)}
-      className={`group relative block ${className} overflow-hidden rounded-[10px] bg-tile outline-offset-4`}
+      className={`group block rounded-[10px] outline-offset-4 ${revealed ? tileClass : ""}`}
     >
-      {/* The scene and the panel are separate GPU layers; rounded by the tile alone, their
-          antialiasing along the corner curves let a hairline of the scene through the panel. The
-          (no-op) mask flattens them into one layer before this rounded clip, so the corners are clean. */}
-      <div className="absolute inset-0 overflow-hidden rounded-[10px] [mask-image:linear-gradient(#000,#000)]">
-        {Scene ? (
-          <SceneStage ref={scene} width={TILE.width} height={TILE.height} className="absolute! inset-0 size-full">
-            <ScenePause value={hovered}>
-              <Scene rounded={false} />
-            </ScenePause>
-          </SceneStage>
-        ) : project.image ? (
-          <div className="absolute inset-0 animate-drift">
-            <Image
-              src={project.image.src}
-              alt={project.image.alt}
-              fill
-              sizes="(min-width: 48rem) 34vw, 100vw"
-              unoptimized={project.image.src.endsWith(".svg")}
-              className="object-cover"
-            />
-          </div>
-        ) : null}
-
-        <div
-          className={`absolute inset-x-0 bottom-0 flex min-h-[51.3%] ${revealed ? "" : "translate-y-2"} flex-col justify-center text-primary transition-transform duration-(--duration-underline) ease-out-expo group-hover:translate-y-0 group-focus-visible:translate-y-0 [@media(hover:none)]:translate-y-0`}
-        >
-          {/* Frame 35: 70 % black over a 50 px background blur. Explicit colours: the palette has no black.
-            The panel runs 1 px past the tile's sides and 20 px past its bottom, and the tile's rounded clip
-            trims it: on a fractional tile edge the panel then fully covers the scene in the antialiased
-            pixel. Its top corners are a border radius, not a clip-path: on GPU compositing a clip-path
-            trims the tint but not the backdrop blur, which showed as a pale patch outside the corner. */}
-          <div
-            aria-hidden="true"
-            className={`absolute -inset-x-px top-0 -bottom-5 rounded-t-[11px] bg-[rgba(0,0,0,0.7)] backdrop-blur-[25px] ${shown} ${fade}`}
-          />
-          <div className={`relative flex flex-col gap-4 px-5 pt-8 pb-5 ${shown} ${fade}`}>
-            <div className="flex flex-col gap-2">
-              <h3 className="type-display-xs">{project.title}</h3>
-              <p className="type-body-s text-secondary">{project.description}</p>
+      <div ref={revealed ? undefined : tile} className={revealed ? "contents" : tileClass}>
+        {/* The scene and the panel are separate GPU layers; rounded by the tile alone, their
+            antialiasing along the corner curves let a hairline of the scene through the panel. The
+            (no-op) mask flattens them into one layer before this rounded clip, so the corners are clean. */}
+        <div className="absolute inset-0 overflow-hidden rounded-[10px] [mask-image:linear-gradient(#000,#000)]">
+          {Scene ? (
+            <SceneStage ref={scene} width={TILE.width} height={TILE.height} className="absolute! inset-0 size-full">
+              <ScenePause value={hovered}>
+                <Scene rounded={false} />
+              </ScenePause>
+            </SceneStage>
+          ) : project.image ? (
+            <div className="absolute inset-0 animate-drift">
+              <Image
+                src={project.image.src}
+                alt={project.image.alt}
+                fill
+                sizes="(min-width: 48rem) 34vw, 100vw"
+                unoptimized={project.image.src.endsWith(".svg")}
+                className="object-cover"
+              />
             </div>
-            {project.tags.length ? (
-              <ul className="flex flex-wrap gap-1" aria-label="Tags">
-                {project.tags.map((t) => (
-                  <li key={t} className="type-body-xs rounded-full border border-secondary bg-tag text-secondary px-2.5 py-1">
-                    {tagLabel(t)}
-                  </li>
-                ))}
-              </ul>
-            ) : null}
+          ) : null}
+
+          <div
+            className={`absolute inset-x-0 bottom-0 flex min-h-[51.3%] ${revealed ? "" : "translate-y-2"} flex-col justify-center text-primary transition-transform duration-(--duration-underline) ease-out-expo group-hover:translate-y-0 group-focus-visible:translate-y-0 [@media(hover:none)]:translate-y-0`}
+          >
+            {/* Frame 35: 70 % black over a 50 px background blur. Explicit colours: the palette has no black.
+              The panel runs 1 px past the tile's sides and 20 px past its bottom, and the tile's rounded clip
+              trims it: on a fractional tile edge the panel then fully covers the scene in the antialiased
+              pixel. Its top corners are a border radius, not a clip-path: on GPU compositing a clip-path
+              trims the tint but not the backdrop blur, which showed as a pale patch outside the corner. */}
+            <div
+              aria-hidden="true"
+              className={`absolute -inset-x-px top-0 -bottom-5 rounded-t-[11px] bg-[rgba(0,0,0,0.7)] backdrop-blur-[25px] ${shown} ${fade}`}
+            />
+            <div className={`relative flex flex-col gap-4 px-5 pt-8 pb-5 ${shown} ${fade}`}>
+              {copy}
+            </div>
           </div>
         </div>
       </div>
+      {revealed ? null : (
+        <div className="hidden flex-col gap-4 pt-4 text-primary [@media(hover:none)]:flex">{copy}</div>
+      )}
     </Link>
   );
 }
